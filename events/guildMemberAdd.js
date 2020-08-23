@@ -1,13 +1,18 @@
 // Cet événement a lieu quand un utilisateur rejoint un serveur.
 
 const { client } = require('../index.js'),
-  Canvas = require('canvas');
+  Canvas = require('canvas'),
+  { GuildMember } = require('discord.js');
 
 module.exports = class {
   constructor() {
     this.client = client;
   }
 
+  /**
+   * Afficher un message et une image de bienvenue à l'arrivée d'un membre. Vérifier si son pseudo est correct
+   *
+   */
   async run(member) {
     const verify = async () => {
       if (member.guild.id !== '574626014664327178') return;
@@ -22,7 +27,7 @@ module.exports = class {
             `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
           );
       }
-      let regGDCP = /(?:(?:f+i+t+z+)|(?:k+e+f+e+)|(?:s+[yi]+l+v+e+n+[iy]+)|(?:g+r+a+d+y+)|(?:e+d+a+l+i+n+e+)|(?:d+e+l+l+a+)|(?:a+l+d+e+n+))/gi;
+      let regGDCP = /(?:(?:f+i+t+z+)|(?:k+e+f+e+)|(?:s+[yi]+l+v+e+n+[iy]+)|(?:g+r+a+d+y+)|(?:e+d+a+l+i+n+e+)|(?:d+e+l+l+a+)|(?:a+l+d+e+n+)|(?:h+i+t+l+e+r+))/gi;
       if (regGDCP.test(member.user.username)) {
         let newNickname = 'Pseudo à changer';
         await member.setNickname(newNickname);
@@ -99,7 +104,6 @@ module.exports = class {
       canvas.height / 3.5
     );
 
-    // Add an exclamation point here and below
     ctx.font = applyText(canvas, `${member.displayName}!`);
     ctx.fillStyle = '#ffffff';
     ctx.fillText(
