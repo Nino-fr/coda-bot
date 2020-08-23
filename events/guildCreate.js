@@ -1,6 +1,7 @@
 // Cet événement a lieu quand le bot rejoint un nouveau serveur.
 
-const { client } = require('../index.js');
+// Importer le client et la classe Guild.
+const { client } = require('../index.js'), { Guild } = require('discord.js');
 
 module.exports = class {
   constructor() {
