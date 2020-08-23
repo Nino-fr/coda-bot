@@ -1,5 +1,5 @@
 const { Message, TextChannel, Webhook } = require('discord.js'),
-  { client } = require('./index.js').default,
+  { client } = require('./index.js'),
   prefix = client.config.defaultSettings.prefix,
   OwnerID = client.config.ownerID,
   moment = require('moment'),
@@ -19,9 +19,14 @@ module.exports = class {
    * @param { Message } message Le message
    */
   async run(message) {
+    /**
+     * Une fonction pour envoyer un message dans un salon, alternative à `message.channel.send`
+     * @param { Message } msg Ce qu'il faut répondre
+     */
     const repondre = (msg) => {
       message.channel.send(msg);
     };
+    // Si le contenu du message est "postcode", le bot envoie un embed expliquant comment partager du code sur Discord.
     if (message.content === 'postcode') {
       return client.repondre(message, {
         embed: {
@@ -32,6 +37,7 @@ module.exports = class {
         },
       });
     }
+    // Deux conditions créant une prévisualisation des liens Discord vers des messages.
     if (message.content.includes('https://discord.com/channels/')) {
       try {
         if (message.author.bot) return;
@@ -74,6 +80,7 @@ module.exports = class {
         console.log(err);
       }
     }
+    // La deuxième condition qui fait pareil mais avec les liens `discordapp.com`
     if (message.content.includes('https://discordapp.com/channels/')) {
       try {
         if (message.author.bot) return;
@@ -117,21 +124,21 @@ module.exports = class {
         console.log(err);
       }
     }
+    // Corriger l'orthographe du mot `length`, n'est pas spécialement utile
     if (
       message.content.includes('lenght' || 'lenhgt' || 'lenhgt' || 'lenhtg')
     ) {
       try {
-        if (message.author.bot) {
-          return;
-        } else
-          return client.repondre(
-            message,
-            ":warning: Ce n'est pas `lenght` ni une autre écriture, mais c'est `length`."
-          );
+        if (message.author.bot) return;
+        return client.repondre(
+          message,
+          ":warning: Ce n'est pas `lenght` ni une autre écriture, mais c'est `length`."
+        );
       } catch (err) {
         client.utils.get('error').run(err, message, client);
       }
     }
+    // Une commande envoyant un message vide
     if (message.content.startsWith(prefix + 'rien')) {
       try {
         client.repondre(message, '__\n__');
@@ -139,6 +146,7 @@ module.exports = class {
         client.utils.get('error').run(err, message, client);
       }
     }
+    // Deux conditions permettant d'envoyer un embed de prévisualisation des liens YouTube
     if (/https\:\/\/youtu\.be\/[\w\d\-]+/.test(message.content)) {
       function convertMS(ms) {
         var d, h, m, s;
@@ -388,7 +396,8 @@ module.exports = class {
         }
       });
     }
-
+    // Permettre aux membres d'envoyer des emojis animés/d'un autre serveur du bot. Le bot supprime les messages contenant {{emoji: lenomdelemoji}}
+    // (remplacer lenomdelemoji par le nom de l'emoji souhaité) et qui renvoie un webhook ayant l'apparence du membre avec le même message où a été remplacé le {{emoji: lenomdelemoji}}
     let regEmoji = /\{ ?\{ ?emoji ?: ?[^\{\}]+ ?\} ?\}/g;
     if (regEmoji.test(message.content)) {
       try {
@@ -420,6 +429,7 @@ module.exports = class {
         client.utils.get('error').run(err, message, client);
       }
     }
+    // Faire réagir le bot à un message. Peut réagir avec des émojis animés.
     if (message.content.startsWith(prefix + 'react')) {
       try {
         if (message.author.bot) return;
@@ -547,6 +557,7 @@ module.exports = class {
         client.utils.get('error').run(err, message, client);
       }
     }
+    // Condition censurant les liens d'invitation Discord n'étant pas envoyés dans les bons salons.
     let invitationlink = /(?:https?:\/\/)?discord.gg\/[\w\d]+/gim;
     if (invitationlink.test(message.content)) {
       if (!message.channel.name.includes('pub')) {
@@ -562,6 +573,7 @@ module.exports = class {
         );
       }
     }
+    // Censure des liens Wattpad n'étant pas envoyés dans les salons pub.
     let wattylink = /https:\/\/www.wattpad.com\/user\/[\w\d-,\.]+/gi;
     let storylink = /https:\/\/www.wattpad.com\/story\/\d+\-[^\s]+/gi;
     let mywtt = /https:\/\/my.w.tt\/[^ ]+/gi;
@@ -913,6 +925,8 @@ module.exports = class {
     //     repondre(`Bravo ${mem} !`);
     //   }
     // }
+
+    // Créer une prévisualisation des liens Wattpad vers une histoire.
     let storyURL = message.content.match(
       /https:\/\/www.wattpad.com\/story\/\d+\-[^\s]+/i
     );
@@ -1024,7 +1038,11 @@ module.exports = class {
         }
       });
     }
-    const modo = message.guild.roles.cache.find((r) => r.name === 'Modérateur');
+    // Le rôle modérateur
+    const modo = message.guild.roles.cache.find((r) =>
+      r.name.toLowerCase().includes('modérateur')
+    );
+    // Mettre à jour les permissions du rôle modérateur
     if (message.content === 'updatemodo') {
       message.guild.channels.cache.forEach(async (ch) => {
         if (
@@ -1084,16 +1102,19 @@ module.exports = class {
         'VIEW_GUILD_INSIGHTS',
       ]);
     }
+    // Quitter le serveur dans lequel a été envoyé le message
     if (message.content === prefix + 'leave') {
       client.guilds.cache.forEach(async (g) => {
         if (g.id !== '574626014664327178' && g.id !== '707875749343789066')
           await g.leave();
       });
     }
+    // Obtenir la liste des émojis d'un serveur (remplacer "Brol" par le nom du serveur).
     if (message.content === prefix + 'listemojis') {
       let guilde = client.guilds.cache.find((g) => g.name === 'Brol');
       repondre(guilde.emojis.cache.map((e) => `${e.name} : ${e.id}`));
     }
+    // Liste des membres étant depuis plus de six mois dans le serveur.
     if (message.content === prefix + 'anciens') {
       let guild = message.guild;
       let anciensarray = [];
@@ -1104,13 +1125,19 @@ module.exports = class {
       });
       repondre(anciensarray.join('\n'));
     }
+    // Déclarer les args
     let args = message.content.slice(prefix.length).trim().split(/ +/g);
+    // Enlever le nom de la commande des args
     args.shift();
+
+    // Changer le statut du bot. Envoyer `${prefix}status idle|dnd|online|invisible`
     if (message.content.startsWith(`${prefix}status`)) {
       if (!message.author.id === OwnerID) return;
       message.delete();
       await client.user.setStatus(args[0].toLowerCase());
     }
+
+    // Prévisualisation des liens Wattpad vers un profil.
     let urlwatt = /https:\/\/www.wattpad.com\/user\/((?:[^ ])+)/;
     if (urlwatt.test(message.content)) {
       let lien = message.content.match(urlwatt)[0];
@@ -1278,6 +1305,7 @@ module.exports = class {
       });
     }
 
+    // Sanctionner les messages contenant plus de huit mentions et n'étant pas envoyé par un admin ou un modérateur.
     if (message.mentions.members.size > 8) {
       if (
         message.member.roles.cache.has(modo.id) ||
@@ -1289,6 +1317,8 @@ module.exports = class {
       );
       //   warnMember(message.member, 'Plus de cinq mentions dans un seul message.');
     }
+
+    // Censurer les insultes/mots grossiers.
     let bdw = /(?:(?:conna(?:r|s)(?:s|d|e))|(?:(?:s+a+l+o+p+e+)(?!t+e*))|(?:e+ncu+l[ée]*)|(?:(?<!\w)pu+t+e+s*)|(?:fd+p+))/gi;
     if (bdw.test(message.content)) {
       // if (message.member.roles.cache.has(modo.id)) return;
@@ -1306,6 +1336,7 @@ module.exports = class {
       );
     }
 
+    // Commande retenue, permet au personnel de Foxfire de mute les prodiges insolents
     if (message.content.startsWith(prefix + 'retenue')) {
       if (message.guild.id === '574626014664327178') {
         const mentor = message.guild.roles.cache.find(
@@ -1367,6 +1398,8 @@ module.exports = class {
           );
       } else return repondre('Vous ne pouvez pas mettre des gens en retenue !');
     }
+
+    // Mettre fin à une retenue.
     if (message.content.startsWith(prefix + 'finretenue')) {
       const mentor = message.guild.roles.cache.find((r) => r.name === 'Mentor');
       const dirlo = message.guild.roles.cache.find(
@@ -1403,6 +1436,8 @@ module.exports = class {
         } else return repondre("Cette personne n'est pas en retenue, voyons !");
       } else return repondre("Tu n'as pas le droit de faire ça !");
     }
+
+    // Faire entrer un prodige dans la noblesse.
     if (message.content.startsWith(prefix + 'noblesse')) {
       const elite = message.guild.roles.cache.find(
         (r) => r.name === 'Élite de Foxfire'
@@ -1454,32 +1489,6 @@ module.exports = class {
       repondre(
         `Félicitations ${noble} ! Tu as rejoins la noblesse et obtenu le métier ${metier.name} et le talent ${talent.name}`
       );
-    }
-    if (message.content === 'initdatabases') {
-      // client.papotins.deleteAll();
-      if (!message.author.id === OwnerID) return;
-      const initDatabases = async () => {
-        const papotins = await JSON.parse(
-          (
-            await client.channels.cache
-              .get('746688731557265481')
-              .messages.fetch('746706426931445771')
-          ).content
-            .replace('```json', '')
-            .replace('```', '')
-        );
-        console.log(papotins);
-        for (const [key, value] of Object.entries(papotins)) {
-          client.papotins.set(key, {
-            epingles: value.epingles,
-            boost: value.boost,
-            lastUpdate: new Date(),
-          });
-        }
-
-        console.log(client.papotins);
-      };
-      initDatabases();
     }
   }
 };
