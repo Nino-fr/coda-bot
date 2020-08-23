@@ -384,27 +384,6 @@ assistance.on('message', async (message) => {
       (r) => r.name === 'Assistant'
     );
     if (message.content.startsWith('a!repondre')) {
-      /* if (message.content === "a!billets") {
-            try {
-              message.channel.send({
-                embed: {
-                  title: "Liste des billets d'aide ouverts",
-                  description: `${assistance.channels.cache
-                    .map(async (channel) =>
-                      (channel.type === "dm" &&
-                      channel.lastMessage ===
-                        "<:pin:678191871151046687> Votre échange avec l'Assistance vient de se terminer. Si vous avez à nouveau besoin d'aide, renvoyez-moi un mp :)")
-                        ? `${} 🔓`
-                        : `${} 🔒`
-                    )
-                    .join("\n")}`,
-                  color: 0x1f75fe,
-                },
-              });
-            } catch (err) {
-              client.utils.get("error").run(err, message, assistance);
-            }
-          } */
       try {
         if (!message.member.roles.cache.has(assistant.id))
           return repondre(
