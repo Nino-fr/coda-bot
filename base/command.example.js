@@ -19,6 +19,7 @@ class Example extends Command {
     try {
       // Code
     } catch (err) {
+      // Catch n'importe quelle erreur liée au code contenu dans le try.
       this.client.utils.get('error').run(err, message, this.client);
     }
   }
