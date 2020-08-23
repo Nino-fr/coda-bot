@@ -11,7 +11,7 @@ module.exports = class {
 
   /**
    * Afficher un message et une image de bienvenue à l'arrivée d'un membre. Vérifier si son pseudo est correct
-   *
+   * @param {GuildMember} member Le membre qui a rejoint
    */
   async run(member) {
     const verify = async () => {
