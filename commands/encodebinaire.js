@@ -16,7 +16,7 @@ class EncodeBinaire extends Command {
       if (!args[0])
         return this.repondre(
           message,
-          'Vous devez spécifier un code binaire à traduire !'
+          'Vous devez spécifier un texte à traduire !'
         );
       let toTrans = args.join(' ');
 
