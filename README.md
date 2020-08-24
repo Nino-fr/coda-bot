@@ -1,6 +1,7 @@
 # Coda
 
-<h3>Salut ! Tu es actuellement dans le code source du bot Discord privé et open source **Coda** créé par **Nino** (`Nino#3670` sur Discord).</h3>
+Salut ! <br />
+Tu es actuellement dans le code source du bot Discord privé et open source **Coda** créé par **Nino** (`Nino#3670` sur Discord).<br /><br />
 
 Ici, tu trouveras tout le code de toutes les commandes et les fonctionnalités de ce bot. La seule chose que tu ne trouveras pas, ce sont les bases de données contenant par exemple les papotins.
 
