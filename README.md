@@ -34,4 +34,3 @@ Voici le serveur principal du bot. Il est sur la série littéraire *Gardiens de
     <img src="https://img.shields.io/badge/Made%20With-Discord.js%2012.3.1-blue.svg?style=for-the-badge"
         alt="Fait avec Discord.js">
 </p>
-
