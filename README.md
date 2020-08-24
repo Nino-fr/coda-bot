@@ -23,7 +23,7 @@ Ce code est donc en JavaScript.
   </li>
 </ul>
 
-Voici le serveur principal du bot. Il est sur la série littéraire *Gardiens des cités perdues* donc si ça t'intéresse, je t'invite à le découvrir <br />
+Voici le serveur principal du bot. Il est sur la série littéraire *Gardiens des cités perdues* donc si ça t'intéresse, je t'invite à le découvrir <br /> <br />
 [![Rejoins le serveur ici](https://discord.com/api/guilds/574626014664327178/embed.png?style=banner2)](https://discord.gg/NC4svsf)
 <p>
     
