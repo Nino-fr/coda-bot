@@ -22,3 +22,16 @@ Ce code est donc en JavaScript.
     <a href="https://github.com/Nino-fr/coda-discord-bot/tree/v2">La v2 est là !</a>
   </li>
 </ul>
+
+Voici le serveur principal du bot. Il est sur la série littéraire *Gardiens des cités perdues* donc si ça t'intéresse, je t'invite à le découvrir !
+[![Rejoins le serveur ici](https://discord.com/api/guilds/574626014664327178/embed.png?style=banner2)](https://discord.gg/NC4svsf)
+<p>
+    <a href="https://discord.gg/NC4svsf"><img
+            src="https://img.shields.io/discord/574626014664327178?color=7289da&logo=discord&logoColor=white"
+            alt="Discord server" /></a>
+</p>
+<p>
+    <img src="https://img.shields.io/badge/Made%20With-Discord.js%2012.3.1-blue.svg?style=for-the-badge"
+        alt="Fait avec Discord.js">
+</p>
+
