@@ -1,9 +1,7 @@
-const Command = require('../base/Command.js');
-const fs = require('fs'); /* 
-const papotins = JSON.parse(
-  fs.readFileSync('./databases/papotins.json', 'utf8')
-); */
-const { Message } = require('discord.js');
+const Command = require('../base/Command.js'),
+  fs = require('fs'),
+  // papotins = JSON.parse(fs.readFileSync('./databases/papotins.json', 'utf8')),
+  { Message } = require('discord.js');
 
 class boostPapotin extends Command {
   constructor() {
@@ -20,9 +18,8 @@ class boostPapotin extends Command {
   /**
    *
    * @param {Message} message
-   * @param {String[]} args
    */
-  async run(message, args) {
+  async run(message) {
     try {
       const papotins = await JSON.parse(
         (
@@ -43,11 +40,7 @@ class boostPapotin extends Command {
 
       if (this.client.papotins.get(member.id).boost === true)
         return this.repondre(message, 'Vous possédez déjà un boost !');
-      if (this.client.papotins.get(member.id).boost === 'boosted')
-        return this.repondre(
-          message,
-          "Vous n'avez droit à un boost que tous les deux papotins !"
-        );
+
       if (!member.roles.cache.has('746710882200846336'))
         return this.repondre(
           message,
@@ -62,26 +55,15 @@ class boostPapotin extends Command {
         };
       if (papotins[member.id].boost === true)
         return this.repondre(message, 'Vous possédez déjà un boost !');
-      if (papotins[member.id].boost === 'boosted')
-        return this.repondre(
-          message,
-          "Vous n'avez droit à un boost que tous les deux papotins !"
-        );
+
       papotins[member.id].boost = true;
 
-      /* fs.writeFile(
-        './databases/papotins.json',
-        JSON.stringify(papotins),
-        (err) => {
-          if (err) throw err;
-        }
-      );
-      */
       (
         await this.client.channels.cache
           .get('746688731557265481')
           .messages.fetch('746706426931445771')
       ).edit('```json\n' + JSON.stringify(papotins) + '\n```');
+      await member.roles.remove('746710882200846336');
       return this.repondre(
         message,
         'Félicitations <@' +

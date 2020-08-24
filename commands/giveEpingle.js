@@ -1,8 +1,5 @@
 const Command = require('../base/Command.js');
 const fs = require('fs');
-/* const papotins = JSON.parse(
-  fs.readFileSync('./databases/papotins.json', 'utf8')
-); */
 
 class GiveEpingle extends Command {
   constructor() {
@@ -96,13 +93,7 @@ class GiveEpingle extends Command {
             papotins[member.id].epingles.indexOf(i),
             1
           );
-          /* fs.writeFile(
-            './databases/papotins.json',
-            JSON.stringify(papotins),
-            (err) => {
-              if (err) console.log(err);
-            }
-          ); */
+
           (
             await this.client.channels.cache
               .get('746688731557265481')

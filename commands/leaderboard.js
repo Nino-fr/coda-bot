@@ -32,25 +32,18 @@ class Leaderboard extends Command {
         if (value.epingles.length === 0) continue;
         epingles.set(key, value.epingles.length);
       }
-      let epinglesarr = [];
-      epingles.forEach((key, value) => {
-        epinglesarr.push({ valeur: `${key} : ${value}` });
-      });
-      let sortedArr = epinglesarr.sort((a, b) => b - a);
+      const larray = Array.from(epingles.entries());
+
+      let sortedArr = larray.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
+
       let newArr;
       if (sortedArr.length > 10) {
         newArr = sortedArr.slice(0, 9);
       } else newArr = sortedArr;
       let i = 0;
-      for (let element of newArr) {
+      for (const element of sortedArr) {
         console.log(element);
-        let theMember = message.guild.members.cache.get(
-          element.valeur
-            .match(/\: .+/)
-            .toString()
-            .match(/(?<=: ).+/)
-            .toString()
-        );
+        let theMember = message.guild.members.cache.get(element[0]);
         if (!theMember) continue;
         i += 1;
         let nickname = theMember.nickname
@@ -60,9 +53,7 @@ class Leaderboard extends Command {
 
         leaderboard.addField(
           `${i}. ${nickname}`,
-          `${element.valeur.match(/[^: ]+/).toString()} épingle${
-            parseInt(element.valeur.match(/[^: ]+/).toString()) > 1 ? 's' : ''
-          }`,
+          `${element[1]} épingle${parseInt(element[1]) > 1 ? 's' : ''}`,
           true
         );
       }

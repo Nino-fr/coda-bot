@@ -1,9 +1,5 @@
 const Command = require('../base/Command.js');
-const fs = require('fs');
 const { Message } = require('discord.js');
-/* const papotins = JSON.parse(
-  fs.readFileSync('./databases/papotins.json', 'utf8')
-); */
 
 class Papotin extends Command {
   constructor() {
@@ -200,13 +196,7 @@ class Papotin extends Command {
         .get(message.author.id, 'epingles')
         .push(epingle);
       await papotins[member.id].epingles.push(epingle);
-      /* fs.writeFile(
-        './databases/papotins.json',
-        JSON.stringify(papotins),
-        (err) => {
-          if (err) throw err;
-        }
-      ); */
+
       (
         await this.client.channels.cache
           .get('746688731557265481')

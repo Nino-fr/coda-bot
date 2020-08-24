@@ -1,8 +1,4 @@
 const Command = require('../base/Command.js');
-// const fs = require('fs');
-/* const papotins = JSON.parse(
-  fs.readFileSync('./databases/papotins.json', 'utf8')
-); */
 
 class Example extends Command {
   constructor() {
