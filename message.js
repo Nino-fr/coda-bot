@@ -19,10 +19,6 @@ module.exports = class {
    * @param { Message } message Le message
    */
   async run(message) {
-    /**
-     * Une fonction pour envoyer un message dans un salon, alternative à `message.channel.send`
-     * @param { Message } msg Ce qu'il faut répondre
-     */
     const repondre = (msg) => {
       message.channel.send(msg);
     };
@@ -276,7 +272,6 @@ module.exports = class {
         .toString()
         .match(/(?<=https:\/\/www.youtube.com\/watch\?v=)[\w\d\-]+/)
         .toString();
-      // const fetch = require('node-fetch');
       const axios = require('axios');
       let ytdvideo = await axios.default.get(
         `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
@@ -757,7 +752,6 @@ module.exports = class {
             let userAvatarURL = await res.data.match(
               /(?<="avatar":")(?:.(?!,"is))+/
             );
-            // let regAvatar = /(?<="avatar":")(?:.(?!,"is))+/;
             let pseudo = await res.data
               .match(/(?<=<title>)(?:.(?!\/title))+/)
               .toString()
@@ -775,21 +769,7 @@ module.exports = class {
             };
             let accountCreatedAt = `Le ${createdat.day}/${createdat.month}/${createdat.year} à ${createdat.hour}h${createdat.min} et ${createdat.sec} secondes`;
             let ascii = /&#x(\d+);/g;
-            /*  await pseudo.match(ascii).map(async (matched) => {
-              loguer(matched.match(/\d+/).toString());
-              loguer(
-                String.fromCharCode(getValues(asc, matched.match(/\d+/).toString()))
-              );
-            });
-            if (ascii.test(pseudo)) {
-              loguer(true);
-              await pseudo.match(ascii).forEach(async (ascc) => {
-                await pseudo.replace(
-                  ascii,
-                  String.fromCharCode(getValues(asc, ascc.match(/\d+/).toString()))
-                );
-              });
-            } */
+
             if (ascii.test(pseudo)) {
               let pesdo = pseudo.match(ascii)[1];
               await message.channel.send({
@@ -901,30 +881,6 @@ module.exports = class {
         }
       });
     }
-
-    // if (message.content.includes("tu es passé level 7 ! Et tu as aussi gagné")) {
-    //   if (message.author.id === "628944382162370571") {
-    //     /*let messagecontent = (await message.channel.messages.fetch())
-    //       .array()
-    //       .slice((await message.channel.messages.fetch()).size - 1)
-    //       .pop();
-    //     let msg = (await message.channel.messages.fetch()).find(
-    //       (m) => m.content === messagecontent
-    //     );
-    //     let mem = msg.member;
-    //     */
-    //     let mem = message.mentions.members.first();
-    //     let noble = message.guild.roles.cache.find(
-    //       (r) => r.name === "Membre de la noblesse"
-    //     );
-    //     let prodige = message.guild.roles.cache.find((r) => r.name === "Prodige");
-    //     if (!prodige) return repondre("Une erreur est survenue.");
-    //     if (!noble) return repondre("Une erreur est survenue.");
-    //     mem.roles.add(noble.id);
-    //     mem.roles.remove(prodige.id);
-    //     repondre(`Bravo ${mem} !`);
-    //   }
-    // }
 
     // Créer une prévisualisation des liens Wattpad vers une histoire.
     let storyURL = message.content.match(
@@ -1162,7 +1118,6 @@ module.exports = class {
         let userAvatarURL = await res.data.match(
           /(?<="avatar":")(?:.(?!,"is))+/
         );
-        // let regAvatar = /(?<="avatar":")(?:.(?!,"is))+/;
         let pseudo = await res.data
           .match(/(?<=<title>)(?:.(?!\/title))+/)
           .toString()
@@ -1180,21 +1135,7 @@ module.exports = class {
         };
         let accountCreatedAt = `Le ${createdat.day}/${createdat.month}/${createdat.year} à ${createdat.hour}h${createdat.min} et ${createdat.sec} secondes`;
         let ascii = /&#x(\d+);/g;
-        /*  await pseudo.match(ascii).map(async (matched) => {
-          loguer(matched.match(/\d+/).toString());
-          loguer(
-            String.fromCharCode(getValues(asc, matched.match(/\d+/).toString()))
-          );
-        });
-        if (ascii.test(pseudo)) {
-          loguer(true);
-          await pseudo.match(ascii).forEach(async (ascc) => {
-            await pseudo.replace(
-              ascii,
-              String.fromCharCode(getValues(asc, ascc.match(/\d+/).toString()))
-            );
-          });
-        } */
+
         if (ascii.test(pseudo)) {
           let pesdo = pseudo.match(ascii)[1];
           await message.channel.send({
@@ -1312,18 +1253,12 @@ module.exports = class {
         message.member.permissions.has('ADMINISTRATOR')
       )
         return;
-      repondre(
-        'Non mais oh ! Du calme sur les mentions ! ' // Ajouter peut-être "Je te mets un warn, ça t'apprendra."
-      );
-      //   warnMember(message.member, 'Plus de cinq mentions dans un seul message.');
+      repondre('Non mais oh ! Du calme sur les mentions ! ');
     }
 
     // Censurer les insultes/mots grossiers.
     let bdw = /(?:(?:conna(?:r|s)(?:s|d|e))|(?:(?:s+a+l+o+p+e+)(?!t+e*))|(?:e+ncu+l[ée]*)|(?:(?<!\w)pu+t+e+s*)|(?:fd+p+))/gi;
     if (bdw.test(message.content)) {
-      // if (message.member.roles.cache.has(modo.id)) return;
-      /* repondre("Surveille ton langage ! Pour la peine, je te mets un warn !");
-      warnMember(message.member, "Grossier personnage"); */
       let nom = message.member.nickname
         ? message.member.nickname
         : message.author.username;
@@ -1343,7 +1278,7 @@ module.exports = class {
           (r) => r.name === 'Mentor'
         );
         const dirlo = message.guild.roles.cache.find(
-          (r) => r.name === 'Directeur de Foxfire'
+          (r) => r.name === 'Directrice de Foxfire'
         );
         const heraut = message.guild.roles.cache.find(
           (r) => r.name === "Héraut de la Tour d'Argent"
@@ -1353,7 +1288,8 @@ module.exports = class {
           message.member.roles.cache.has(mentor.id) ||
           message.member.roles.cache.has(dirlo.id) ||
           message.member.roles.cache.has(heraut.id) ||
-          message.member.roles.cache.has(modo.id)
+          message.member.roles.cache.has(modo.id) ||
+          message.member.permissions.has('ADMINISTRATOR')
         ) {
           const puni =
             message.mentions.members.first() ||
@@ -1362,7 +1298,7 @@ module.exports = class {
             (r) => r.name === 'muted'
           );
           if (!puni) return repondre('Qui dois-je mettre en retenue ?');
-          let raison = args.slice(1).slice(1).join(' ');
+          let raison = args.slice(1).join(' ');
           const prodig = message.guild.roles.cache.find(
             (r) => r.name === 'Prodige'
           );
@@ -1386,7 +1322,7 @@ module.exports = class {
             setTimeout(function () {
               puni.roles.remove(muted.id);
               repondre(`La retenue de ${puni} est terminée !`);
-            }, 120000);
+            }, 120000000);
           } else {
             return repondre(
               'Vous ne pouvez mettre en retenue que les prodiges !'
@@ -1403,7 +1339,7 @@ module.exports = class {
     if (message.content.startsWith(prefix + 'finretenue')) {
       const mentor = message.guild.roles.cache.find((r) => r.name === 'Mentor');
       const dirlo = message.guild.roles.cache.find(
-        (r) => r.name === 'Directeur de Foxfire'
+        (r) => r.name === 'Directrice de Foxfire'
       );
       const heraut = message.guild.roles.cache.find(
         (r) => r.name === "Héraut de la Tour d'Argent"
@@ -1413,7 +1349,8 @@ module.exports = class {
         message.member.roles.cache.has(mentor.id) ||
         message.member.roles.cache.has(dirlo.id) ||
         message.member.roles.cache.has(heraut.id) ||
-        message.member.roles.cache.has(modo.id)
+        message.member.roles.cache.has(modo.id) ||
+        message.member.permissions.has('ADMINISTRATOR')
       ) {
         const puni =
           message.mentions.members.first() ||
@@ -1427,7 +1364,7 @@ module.exports = class {
           return repondre(
             "Cette personne n'est pas un prodige ! Comment pourrait-elle être en retenue ?"
           );
-        let raison = args.slice(1).slice(1).join(' ');
+        let raison = args.slice(1).join(' ');
         if (puni.roles.cache.has(muted.id)) {
           await puni.roles.remove(muted.id);
           repondre(
@@ -1444,12 +1381,12 @@ module.exports = class {
       );
       const noble =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args.slice(1)[0]);
+        message.guild.members.cache.get(args[0]);
       if (!noble) return repondre('Veuillez préciser un membre');
       if (!noble.roles.cache.has(elite.id))
         return repondre("Cette personne n'est pas dans l'Élite de Foxfire.");
       const dirlo = message.guild.roles.cache.find(
-        (r) => r.name === 'Directeur de Foxfire'
+        (r) => r.name === 'Directrice de Foxfire'
       );
       const heraut = message.guild.roles.cache.find(
         (r) => r.name === "Héraut de la Tour d'Argent"
@@ -1457,7 +1394,8 @@ module.exports = class {
       if (
         !message.member.roles.cache.has(modo.id) &&
         !message.member.roles.cache.has(dirlo.id) &&
-        !message.member.roles.cache.has(heraut.id)
+        !message.member.roles.cache.has(heraut.id) &&
+        !message.member.permissions.has('ADMINISTRATOR')
       ) {
         return repondre('Vous ne pouvez pas faire ça !');
       }
@@ -1466,28 +1404,42 @@ module.exports = class {
       );
       const reg = /<([^>]+)>/;
       const metier = message.guild.roles.cache.find(
-        (r) => r.name === args.slice(1).join(' ').match(reg)[1]
+        (r) =>
+          r.name.toLowerCase() ===
+          args
+            .slice(1)
+            .join(' ')
+            .match(reg)
+            .toString()
+            .match(/[^<>]+/)
+            .toString()
+            .toLowerCase()
       );
       const talent = message.guild.roles.cache.find(
-        (r) => r.name === args.slice(3).join(' ').match(reg)[1]
+        (r) =>
+          r.name.toLowerCase() ===
+          args
+            .slice(1)
+            .join(' ')
+            .match(/<[^>]+> <([^>]+)>/)[1]
+            .toLowerCase()
       );
       const prodig = message.guild.roles.cache.find(
-        (r) => r.name === 'Prodige'
+        (r) => r.name.toLowerCase() === 'prodige'
       );
       let newPseudo = args
         .slice(1)
-        .slice(2)
         .join(' ')
-        .match(/<[^>]+> <([^>]+)>/)[1];
-      // loguer(args.slice(1).slice(2).join(" "));
-      await noble.roles.add(noblesse.id);
-      await noble.roles.add(metier.id);
-      await noble.roles.add(talent.id);
-      await noble.setNickname(newPseudo);
-      await noble.roles.remove(elite.id);
-      await noble.roles.remove(prodig.id);
+        .match(/<[^>]+> <[^>]+> <([^>]+)>/)[1];
+      console.log(noblesse, reg, metier, talent, prodig, elite);
+      await noble.roles.add(noblesse).catch((e) => console.error(e));
+      await noble.roles.add(metier).catch((e) => console.error(e));
+      await noble.roles.add(talent).catch((e) => console.error(e));
+      await noble.setNickname(newPseudo).catch((e) => console.error(e));
+      await noble.roles.remove(elite).catch((e) => console.error(e));
+      await noble.roles.remove(prodig).catch((e) => console.error(e));
       repondre(
-        `Félicitations ${noble} ! Tu as rejoins la noblesse et obtenu le métier ${metier.name} et le talent ${talent.name}`
+        `Félicitations ${noble} ! Tu as rejoint la noblesse et obtenu le métier ${metier.name} et le talent ${talent.name}`
       );
     }
   }
