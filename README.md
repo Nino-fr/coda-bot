@@ -7,12 +7,12 @@ Ici, tu trouveras tout le code de toutes les commandes et les fonctionnalités d
 
 Tu auras le code de la première version dans la branche [`v1`](https://github.com/Nino-fr/coda-bot/tree/v1) et le code de la seconde version dans la branche [`v2`](https://github.com/Nino-fr/coda-bot/tree/v2).
 
-Merci de ne pas copier bêtement ce code, essayez de le comprendre et, pourquoi pas, de l'améliorer pour créer le bot qui vous plaît !
+Merci de ne pas copier bêtement ce code, essaie de le comprendre et, pourquoi pas, de l'améliorer pour créer le bot qui te plaît !
 Ce bot est construit avec la librairie [`discord.js`](https://discord.js.org/#/) basée sur l'API Discord.
 
 Ce code est donc en JavaScript.
 
-**Prêts à découvrir le code ? C'est parti !**
+**Prêt(e) à découvrir le code ? C'est parti !**
 
 <ul>
   <li>
@@ -27,7 +27,7 @@ Voici le serveur principal du bot. Il est sur la série littéraire *Gardiens de
 [![Rejoins le serveur ici](https://discord.com/api/guilds/574626014664327178/embed.png?style=banner2)](https://discord.gg/NC4svsf)
 
 <p>
-    <img src="https://img.shields.io/badge/Made%20With-Discord.js%2012.3.1-blue.svg?style=for-the-badge"
+    <img src="https://img.shields.io/badge/Fait%20avec-Discord.js%2012.3.1-blue.svg?style=for-the-badge"
         alt="Fait avec Discord.js">
 </p>
 
