@@ -1,6 +1,5 @@
 const Command = require('../base/Command.js');
 const { MessageEmbed, Message } = require('discord.js');
-const Enmap = require('enmap');
 
 class Leaderboard extends Command {
   constructor() {
@@ -27,7 +26,7 @@ class Leaderboard extends Command {
       const papotins = this.client.papotins;
       const collectionneur = message.member;
 
-      let epingles = new Enmap();
+      let epingles = new Map();
       for (const [key, value] of papotins) {
         if (value.epingles.length === 0) continue;
         epingles.set(key, value.epingles.length);
@@ -36,16 +35,12 @@ class Leaderboard extends Command {
 
       let sortedArr = larray.sort((a, b) => parseInt(b[1]) - parseInt(a[1]));
 
-      let newArr;
-      if (sortedArr.length > 10) {
-        newArr = sortedArr.slice(0, 9);
-      } else newArr = sortedArr;
       let i = 0;
       for (const element of sortedArr) {
-        console.log(element);
         let theMember = message.guild.members.cache.get(element[0]);
         if (!theMember) continue;
         i += 1;
+        if (i === 11) break;
         let nickname = theMember.nickname
           ? theMember.nickname
           : theMember.user.username;

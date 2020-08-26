@@ -208,6 +208,8 @@ class Papotin extends Command {
           this.client.channels.cache.get('746688731557265481').send(err)
         );
       let user = message.author;
+      if (epingle === undefined)
+        epingle = ['Lutin', 'Sasquatch', 'Verminion'].random();
       switch (epingle) {
         case 'Lutin':
           message.channel.send(
