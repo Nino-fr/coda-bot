@@ -34,7 +34,10 @@ class RemoveRole extends Command {
         message.guild.members.cache.get(args[0]);
       let role =
         message.guild.roles.cache.find(
-          (r) => r.name === args.join(' ') || r.name === args.slice(1).join(' ')
+          (r) => r.name.toLowerCase() === args.join(' ').toLowerCase()
+        ) ||
+        message.guild.roles.cache.find(
+          (r) => r.name.toLowerCase() === args.slice(1).join(' ').toLowerCase()
         ) ||
         message.guild.roles.cache.get(args[0]) ||
         message.guild.roles.cache.get(args[1]);

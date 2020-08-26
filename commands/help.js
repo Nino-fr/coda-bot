@@ -1,14 +1,7 @@
 const Command = require('../base/Command.js');
 const { cyan } = require('../colours.json');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, Message } = require('discord.js');
 
-/*
-  The HELP command is used to display every command's name and description
-  to the user, so that he may see what commands are available. The help
-  command is also filtered by level, so if a user does not have access to
-  a command, it is not shown to them. If a command name is given with the
-  help command, its extended help is shown.
-*/
 class Help extends Command {
   constructor() {
     super({
@@ -19,7 +12,12 @@ class Help extends Command {
       aliases: ['h', 'halp', 'aide', 'commands'],
     });
   }
-
+  /**
+   *
+   * @param { Message } message La commande
+   * @param { String[] } args Les args passés après la commande
+   * @param { Number | String } level Le niveau de permission de l'utilisateur
+   */
   async run(message, args, level) {
     if (args[0]) {
       if (
@@ -90,8 +88,8 @@ class Help extends Command {
             let command = args[0];
             if (this.client.commands.has(command)) {
               command = this.client.commands.get(command);
-              if (level < this.client.levelCache[command.conf.permLevel])
-                return;
+              /* if (level < this.client.levelCache[command.conf.permLevel])
+                return; */
               message.channel.send(
                 `= ${command.help.name} = \n${
                   command.help.description
@@ -112,8 +110,8 @@ class Help extends Command {
             } else if (this.client.aliases.has(command)) {
               command = this.client.aliases.get(command);
               command = this.client.commands.get(command);
-              if (level < this.client.levelCache[command.conf.permLevel])
-                return;
+              /* if (level < this.client.levelCache[command.conf.permLevel])
+                return; */
               return message.channel.send(
                 `= ${command.help.name} = \n${
                   command.help.description
@@ -177,8 +175,8 @@ class Help extends Command {
             let command = args[0];
             if (this.client.commands.has(command)) {
               command = this.client.commands.get(command);
-              if (level < this.client.levelCache[command.conf.permLevel])
-                return;
+              /* if (level < this.client.levelCache[command.conf.permLevel])
+                return; */
 
               embed
                 .addField('Commande :', command.help.name)
@@ -205,8 +203,8 @@ class Help extends Command {
             } else if (this.client.aliases.has(command)) {
               command = this.client.aliases.get(command);
               command = this.client.commands.get(command);
-              if (level < this.client.levelCache[command.conf.permLevel])
-                return;
+              /* if (level < this.client.levelCache[command.conf.permLevel])
+                return; */
               embed
                 .addField('Commande :', command.help.name)
                 .addField('Description :', command.help.description, true)

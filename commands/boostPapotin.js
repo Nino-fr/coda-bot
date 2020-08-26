@@ -53,8 +53,6 @@ class boostPapotin extends Command {
           epingles: [],
           boost: false,
         };
-      if (papotins[member.id].boost === true)
-        return this.repondre(message, 'Vous possédez déjà un boost !');
 
       papotins[member.id].boost = true;
 
@@ -63,7 +61,11 @@ class boostPapotin extends Command {
           .get('746688731557265481')
           .messages.fetch('746706426931445771')
       ).edit('```json\n' + JSON.stringify(papotins) + '\n```');
-      await member.roles.remove('746710882200846336');
+      await message.member.roles
+        .remove('746710882200846336')
+        .catch((err) =>
+          this.client.channels.cache.get('746688731557265481').send(err)
+        );
       return this.repondre(
         message,
         'Félicitations <@' +
