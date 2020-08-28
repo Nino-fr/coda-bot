@@ -26,6 +26,11 @@ Tu auras le code de la première version dans la branche [`v1`](https://github.c
 Merci de ne pas copier bêtement ce code, essaie de le comprendre et, pourquoi pas, de l'améliorer pour créer le bot qui te plaît !
 Ce bot est construit avec la librairie [`discord.js`](https://discord.js.org/#/) basée sur l'API Discord.
 
+<p>
+    <img src="https://img.shields.io/badge/Fait%20avec-Discord.js%2012.3.1-blue.svg?style=for-the-badge"
+        alt="Fait avec Discord.js">
+</p>
+
 Ce code est donc en JavaScript.
 
 **Prêt(e) à découvrir le code ? C'est parti !**
@@ -43,11 +48,6 @@ Ce code est donc en JavaScript.
 
 Voici le serveur principal du bot. Il est sur la série littéraire _Gardiens des cités perdues_ donc si ça t'intéresse, je t'invite à le découvrir ! <br /> <br />
 [![Rejoins le serveur ici](https://discord.com/api/guilds/574626014664327178/embed.png?style=banner2)](https://discord.gg/NC4svsf)
-
-<p>
-    <img src="https://img.shields.io/badge/Fait%20avec-Discord.js%2012.3.1-blue.svg?style=for-the-badge"
-        alt="Fait avec Discord.js">
-</p>
 
 ## Modules requis
 
