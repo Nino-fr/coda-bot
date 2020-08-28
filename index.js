@@ -55,7 +55,7 @@ class Coda extends Client {
   }
 
   /**
-   * Remplacer chaque entité html et chaque charactère ascii dans une chaîne de caractères par le symbole correspondant
+   * Remplacer chaque entité html dans une chaîne de caractères par le symbole correspondant et supprimer chaque balise html
    * @param {string} str La chaîne de caractère à corriger
    * @returns {string}
    */
@@ -64,6 +64,10 @@ class Coda extends Client {
     try {
       str.match(/&#\d+;/g).forEach((ress) => {
         toChange = ress.match(/\d+/);
+        str = String(str).replace(
+          /&#\d+;/,
+          String.fromCharCode(parseInt(toChange))
+        );
       });
     } catch {}
     return String(str)
@@ -83,7 +87,6 @@ class Coda extends Client {
       .replace(/&ugrave;/gi, 'ù')
       .replace(/&ucirc;/gi, 'û')
       .replace(/&iacute;/gi, 'í')
-      .replace(/&\#\d+;/gi, String.fromCharCode(parseInt(toChange)))
       .replace(/<[^>]+>/gi, '');
   }
 
