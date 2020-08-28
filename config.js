@@ -1,6 +1,6 @@
 const config = {
   ownerID: '428582719044452352',
-  version: '2.0.3',
+  version: '2.1.0',
   // Bot Owner, level 10 by default. You do not need to supply the owner ID, as the bot
   // will pull this information directly from its application page.
 
@@ -16,7 +16,7 @@ const config = {
   support: ['428582719044452352', '557612750734491661', '536283567865593856'],
 
   // Your Bot's Token. Available on https://discordapp.com/developers/applications/me
-  token: 'Vous avez vraiment cru que j'allais vous donner le token ?',
+  token: "Vous avez vraiment cru que j'allais vous donner le token ?",
 
   assistanceToken: 'Toujours pas',
 
@@ -60,7 +60,7 @@ const config = {
           const modRole = message.guild.roles.cache.find((r) =>
             r.name.toLowerCase().includes('mod')
           );
-          if (modRole && message.member.roles.cache.has(modRole.id))
+          if (modRole || message.member.roles.cache.has(modRole.id))
             return true;
         } catch (e) {
           return false;
@@ -76,7 +76,7 @@ const config = {
           const adminRole = message.guild.roles.cache.find((r) =>
             r.name.toLowerCase().includes('admin')
           );
-          return adminRole && message.member.roles.cache.has(adminRole.id);
+          return adminRole || message.member.roles.cache.has(adminRole.id);
         } catch (e) {
           return false;
         }
