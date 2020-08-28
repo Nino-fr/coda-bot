@@ -1,6 +1,6 @@
-## Coda
+# Coda
 
-# Sommaire
+## Sommaire
 
 <ol>
   <li>
@@ -14,7 +14,7 @@
   </li>
 </ol>
 
-# Introduction
+## Introduction
 
 Salut ! <br />
 Tu es actuellement dans le code source du bot Discord privé et open source **Coda** créé par **Nino** (`Nino#3670` sur Discord).<br /><br />
@@ -39,7 +39,7 @@ Ce code est donc en JavaScript.
   </li>
 </ul>
 
-# Serveur principal
+## Serveur principal
 
 Voici le serveur principal du bot. Il est sur la série littéraire _Gardiens des cités perdues_ donc si ça t'intéresse, je t'invite à le découvrir ! <br /> <br />
 [![Rejoins le serveur ici](https://discord.com/api/guilds/574626014664327178/embed.png?style=banner2)](https://discord.gg/NC4svsf)
@@ -49,7 +49,7 @@ Voici le serveur principal du bot. Il est sur la série littéraire _Gardiens de
         alt="Fait avec Discord.js">
 </p>
 
-# Modules requis
+## Modules requis
 
 Vous vous en doutez, pour utiliser ce code, il faut installer plusieurs modules. En voici la liste :
 
