@@ -277,7 +277,6 @@ module.exports = class {
         `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
       );
       ytdvideo = ytdvideo.data;
-      console.log(ytdvideo);
       let likeCount = ytdvideo.items[0].statistics.likeCount;
       let dislikeCount = ytdvideo.items[0].statistics.dislikeCount;
       let views = ytdvideo.items[0].statistics.viewCount;
@@ -1431,7 +1430,6 @@ module.exports = class {
         .slice(1)
         .join(' ')
         .match(/<[^>]+> <[^>]+> <([^>]+)>/)[1];
-      console.log(noblesse, reg, metier, talent, prodig, elite);
       await noble.roles.add(noblesse).catch((e) => console.error(e));
       await noble.roles.add(metier).catch((e) => console.error(e));
       await noble.roles.add(talent).catch((e) => console.error(e));
