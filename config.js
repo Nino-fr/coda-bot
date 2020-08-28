@@ -1,10 +1,8 @@
 const config = {
   ownerID: '428582719044452352',
   version: '2.1.0',
-  // Bot Owner, level 10 by default. You do not need to supply the owner ID, as the bot
-  // will pull this information directly from its application page.
 
-  // Bot Admins, level 9 by default. Array of user ID strings.
+  // Bot Admins. Tableau des ID des administrateurs du bot
   admins: [
     '428582719044452352',
     '557612750734491661',
@@ -12,17 +10,13 @@ const config = {
     '699294152193736704',
   ],
 
-  // Bot Support, level 8 by default. Array of user ID strings
+  // Bot Support. Tableau des ID des membres du support du bot du bot
   support: ['428582719044452352', '557612750734491661', '536283567865593856'],
 
-  // Your Bot's Token. Available on https://discordapp.com/developers/applications/me
-  token: "Vous avez vraiment cru que j'allais vous donner le token ?",
+  // Le token de votre bot, trouvable sur https://discordapp.com/developers/applications/me
+  token: "Vous avez vraiment cru que j'allais vous donner le token de Coda ?",
 
-  assistanceToken: 'Toujours pas',
-
-  // Default per-server settings. These settings are entered in a database on first load,
-  // And are then completely ignored from this file. To modify default settings, use the `conf` command.
-  // DO NOT REMOVE THIS BEFORE YOUR BOT IS LOADED AND FUNCTIONAL.
+  assistanceToken: 'Celui-ci non plus !',
 
   defaultSettings: {
     prefix: '&',
@@ -34,33 +28,26 @@ const config = {
     welcomeMessage: 'Bienvenue dans ce serveur {{user}} !',
   },
 
-  // PERMISSION LEVEL DEFINITIONS.
-
   permLevels: [
-    // This is the lowest permisison level, this is for non-roled users.
+    // Niveau de permission des simples membres
     {
       level: 1,
       name: 'Membre',
-      // Don't bother checking, just return true which allows them to execute any command their
-      // level allows them to.
+      // Pas besoin de vérifier, tout le monde est membre
       check: () => true,
     },
 
-    // This is your permission level, the staff levels should always be above the rest of the roles.
     {
       level: 2,
-      // This is the name of the role.
+      // Niveau de permission des modérateurs du serveur
       name: 'Moderateur',
-      // The following lines check the guild the message came from for the roles.
-      // Then it checks if the member that authored the message has the role.
-      // If they do return true, which will allow them to execute the command in question.
-      // If they don't then return false, which will prevent them from executing the command.
+      // Les lignes suivantes vérifient que l'utilisateur possède bien un rôle contenant "mod"
       check: (message) => {
         try {
           const modRole = message.guild.roles.cache.find((r) =>
             r.name.toLowerCase().includes('mod')
           );
-          if (modRole || message.member.roles.cache.has(modRole.id))
+          if (modRole && message.member.roles.cache.has(modRole.id))
             return true;
         } catch (e) {
           return false;
@@ -71,23 +58,23 @@ const config = {
     {
       level: 3,
       name: 'Administrateur',
+      // Les lignes suivantes vérifient que l'utilisateur possède bien un rôle contenant "admin"
       check: (message) => {
         try {
           const adminRole = message.guild.roles.cache.find((r) =>
             r.name.toLowerCase().includes('admin')
           );
-          return adminRole || message.member.roles.cache.has(adminRole.id);
+          return adminRole && message.member.roles.cache.has(adminRole.id);
         } catch (e) {
           return false;
         }
       },
     },
-    // This is the server owner.
+    // Niveau de permission du propriétaire du serveur
     {
       level: 4,
       name: 'Propriétaire du serveur',
-      // Simple check, if the guild owner id matches the message author's ID, then it will return true.
-      // Otherwise it will return false.
+      // Vérifie si l'utilisateur est le propriétaire du serveur
       check: (message) =>
         message.channel.type === 'text'
           ? message.guild.owner.user.id === message.author.id
@@ -96,31 +83,29 @@ const config = {
           : false,
     },
 
-    // Bot Support is a special inbetween level that has the equivalent of server owner access
-    // to any server they joins, in order to help troubleshoot the bot on behalf of owners.
+    // L'équipe de support du bot
     {
       level: 5,
       name: 'Bot Support',
-      // The check is by reading if an ID is part of this array. Yes, this means you need to
-      // change this and reboot the bot to add a support user. Make it better yourself!
+      // Vérifie si l'utilisateur fait partie de l'équipe de support
       check: (message) => config.support.includes(message.author.id),
     },
 
-    // Bot Admin has some limited access like rebooting the bot or reloading commands.
+    // Niveau de permission des administrateurs du bot
     {
       level: 6,
       name: 'Bot Admin',
       check: (message) => config.admins.includes(message.author.id),
     },
 
-    // This is the bot owner, this should be the highest permission level available.
-    // The reason this should be the highest level is because of dangerous commands such as eval
-    // or exec (if the owner has that).
+    // Niveau de permission du/des propriétaire(s) du bot
     {
       level: 7,
       name: 'Propriétaire',
-      // Another simple check, compares the message author id to the one stored in the config file.
-      check: (message) => '428582719044452352' === message.author.id,
+      // Si un seul propriétaire, faire :
+      check: (message) => config.ownerID === message.author.id,
+      // Si plusieurs propriétaires, faire :
+      // check: (message) => ["ID du premier propriétaire", "ID du deuxième", "etc"].includes(message.author.id)
     },
   ],
 };
