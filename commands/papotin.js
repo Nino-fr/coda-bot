@@ -75,15 +75,7 @@ class Papotin extends Command {
 
       let epingle;
       console.log(base);
-      let names,
-        randOne,
-        randTwo,
-        randThree,
-        randFour,
-        randFive,
-        randSix,
-        rand,
-        arr;
+      let names, randOne, randTwo, randThree, randFour, randFive, randSix, arr;
 
       switch (base) {
         case 1:
@@ -98,7 +90,6 @@ class Papotin extends Command {
             'Apyrodon',
             'Mastodonte',
           ];
-          // let rolePap = await message.guild.roles.cache.find(r => r.name.toLowerCase()=== "papotin");
           randOne = Math.floor(Math.random() * names.length);
           randTwo = Math.floor(Math.random() * names.length);
           randThree = Math.floor(Math.random() * names.length);
@@ -106,12 +97,10 @@ class Papotin extends Command {
           randFive = Math.floor(Math.random() * names.length);
           randSix = Math.floor(Math.random() * names.length);
           arr = [randOne, randTwo, randThree, randFour, randFive, randSix];
-          // console.log((", " + arr.join(", ") + ","))
           for (let ii of names) {
             let regex = new RegExp(', ' + names.indexOf(ii) + ',', 'g');
             let tomatch = ', ' + arr.join(', ') + ',';
             let matched = tomatch.match(regex);
-            // console.log(tomatch);
             if (matched) {
               if (matched.length === 5) {
                 epingle = 'Grogodon';
@@ -127,14 +116,23 @@ class Papotin extends Command {
                 break;
               }
             } else matched = undefined;
-            // console.log("Matched : " + matched)
           }
-          if (epingle === undefined || epingle === null) epingle = 'Mastodonte';
+          if (epingle === undefined || epingle === null)
+            epingle = [
+              'Argentavis',
+              'Licorne',
+              'Méganeura',
+              'Selkie',
+              'Colibri lunaire',
+              'Kelpie',
+              'Gorgonops',
+              'Apyrodon',
+              'Mastodonte',
+            ].random();
           console.log(epingle);
           break;
         case 2:
           names = ['Sasquatch', 'Banshee', 'Gremlin'];
-          // rolePap = await message.guild.roles.cache.find(r => r.name.toLowerCase()=== "papotin");
           randOne = Math.floor(Math.random() * names.length);
           randTwo = Math.floor(Math.random() * names.length);
           randThree = Math.floor(Math.random() * names.length);
@@ -146,7 +144,6 @@ class Papotin extends Command {
             let regex = new RegExp(', ' + names.indexOf(ii) + ',', 'g');
             let tomatch = ', ' + arr.join(', ') + ',';
             let matched = tomatch.match(regex);
-            // console.log(tomatch);
             if (matched) {
               if (matched.length === 6) {
                 epingle = 'Grogodon';
@@ -161,13 +158,13 @@ class Papotin extends Command {
             } else matched = undefined;
             console.log('Matched : ' + matched);
           }
-          if (epingle === undefined || epingle === null) epingle = 'Lutin';
+          if (epingle === undefined || epingle === null)
+            epingle = ['Sasquatch', 'Banshee', 'Gremlin'].random();
           console.log(epingle);
 
           break;
         case 3:
           names = ['Verminion', 'Jaculus', 'Lutin', 'Boobrie', 'Alcyon'];
-          // rolePap = await message.guild.roles.cache.find(r => r.name.toLowerCase()=== "papotin");
           randOne = Math.floor(Math.random() * names.length);
           randTwo = Math.floor(Math.random() * names.length);
           randThree = Math.floor(Math.random() * names.length);
@@ -186,12 +183,41 @@ class Papotin extends Command {
                 break;
               }
             } else matched = undefined;
-            // console.log("Matched : " + matched)
           }
+          if (epingle === undefined || epingle === null)
+            epingle = [
+              'Verminion',
+              'Jaculus',
+              'Lutin',
+              'Boobrie',
+              'Alcyon',
+            ].random();
           console.log(epingle);
           break;
       }
 
+      if (epingle === undefined || epingle === null)
+        epingle = [
+          'Argentavis',
+          'Licorne',
+          'Méganeura',
+          'Selkie',
+          'Colibri lunaire',
+          'Kelpie',
+          'Gorgonops',
+          'Apyrodon',
+          'Mastodonte',
+          'Sasquatch',
+          'Banshee',
+          'Gremlin',
+          'Verminion',
+          'Jaculus',
+          'Lutin',
+          'Boobrie',
+          'Alcyon',
+          'Kraken',
+        ].random();
+      if (epingle === undefined || epingle === null) epingle = 'Alicorne';
       await this.client.papotins
         .get(message.author.id, 'epingles')
         .push(epingle);
@@ -208,8 +234,6 @@ class Papotin extends Command {
           this.client.channels.cache.get('746688731557265481').send(err)
         );
       let user = message.author;
-      if (epingle === undefined)
-        epingle = ['Lutin', 'Sasquatch', 'Verminion'].random();
       switch (epingle) {
         case 'Lutin':
           message.channel.send(
