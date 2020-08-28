@@ -58,6 +58,10 @@ class Coda extends Client {
    * Remplacer chaque entité html dans une chaîne de caractères par le symbole correspondant et supprimer chaque balise html
    * @param {string} str La chaîne de caractère à corriger
    * @returns {string}
+   * @example
+    // Exemple d'utilisation de la fonction
+    correctString("Toutes les peluches de Chuck Norris n&#039;ont plus de t&ecirc;tes.");
+    // => "Toutes les peluches de Chuck Norris n'ont plus de têtes"
    */
   correctString(str) {
     let toChange;
@@ -91,7 +95,7 @@ class Coda extends Client {
   }
 
   /**
-   * Créons un système de levels de permissions pour empêcher aux simples membres d'exécuter certaines commandes.
+   * Créons un système de niveaux de permissions pour empêcher les simples membres d'exécuter certaines commandes.
    * @param {Message} message
    */
   permlevel(message) {
@@ -161,7 +165,7 @@ class Coda extends Client {
   }
 
   /**
-   * Retirer les mentions everyone, le token du bot et rend ce qui est passé en paramètre plus lisible.
+   * Retirer les mentions everyone et le token du bot d'un texte/code
    * @param {*} text Le texte/code à clean
    * @returns
    */
@@ -179,9 +183,9 @@ class Coda extends Client {
   }
 
   /**
-   * Get les réglages d'un serveur spécifique
-   * @param {Guild} guild Le serveur dont on veut get les réglages
-   * @returns
+   * Obtenir les réglages d'un serveur spécifique
+   * @param {Guild} guild Le serveur dont on veut obtenir les réglages
+   * @returns {object}
    */
   getSettings(guild) {
     const defaults = this.settings.get('default') || {};
@@ -196,7 +200,7 @@ class Coda extends Client {
   /**
    * Changer des réglages.
    * @param {String} id L'id du réglage à changer
-   * @param {ObjectConstructor} newSettings Les nouveaux réglages
+   * @param {object} newSettings Les nouveaux réglages
    */
   writeSettings(id, newSettings) {
     const defaults = this.settings.get('default');
@@ -214,9 +218,10 @@ class Coda extends Client {
 
   /**
    * Attendre une réponse de à une `question`. Seul **un** utilisateur peut répondre.
+   * Raccourci de la méthode `awaitMessages()`
    * @param {Message} msg Le message
-   * @param {*} question La question posée
-   * @param {*} limit Le temps maximum d'attente
+   * @param {string} question La question posée
+   * @param {number} [limit=60000] Le temps maximum d'attente
    */
   async awaitReply(msg, question, limit = 60000) {
     const filter = (m) => m.author.id === msg.author.id;
@@ -263,14 +268,14 @@ const init = async () => {
     const eventName = file.split('.')[0];
     client.logger.log(`Event ${eventName} chargé`);
     const event = new (require(`./events/${file}`))(client);
-    // This line is awesome by the way. Just sayin'.
     client.on(eventName, (...args) => event.run(...args));
     delete require.cache[require.resolve(`./events/${file}`)];
   });
 
   client.logger.log(`Event message chargé`);
   const event = new (require(`./message.js`))();
-  // This line is awesome by the way. Just sayin'.
+  // Un second event message ne se trouvant pas dans le dossier `events` car un fichier
+  // de ce nom y existe déjà.
   client.on('message', (...args) => event.run(...args));
 
   client.levelCache = {};
