@@ -1,4 +1,20 @@
-# Coda
+## Coda
+
+# Sommaire
+
+<ol>
+  <li>
+    <a href="https://github.com/Nino-fr/coda-bot#introduction">Introduction</a>
+  </li>
+  <li>
+    <a href="https://github.com/Nino-fr/coda-bot#serveur-principal">Serveur principal du bot</a>
+  </li>
+  <li>
+    <a href="https://github.com/Nino-fr/coda-bot#modules-requis">Modules requis</a>
+  </li>
+</ol>
+
+# Introduction
 
 Salut ! <br />
 Tu es actuellement dans le code source du bot Discord privé et open source **Coda** créé par **Nino** (`Nino#3670` sur Discord).<br /><br />
