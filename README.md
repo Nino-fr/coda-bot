@@ -23,7 +23,9 @@ Ce code est donc en JavaScript.
   </li>
 </ul>
 
-Voici le serveur principal du bot. Il est sur la série littéraire *Gardiens des cités perdues* donc si ça t'intéresse, je t'invite à le découvrir ! <br /> <br />
+# Serveur principal
+
+Voici le serveur principal du bot. Il est sur la série littéraire _Gardiens des cités perdues_ donc si ça t'intéresse, je t'invite à le découvrir ! <br /> <br />
 [![Rejoins le serveur ici](https://discord.com/api/guilds/574626014664327178/embed.png?style=banner2)](https://discord.gg/NC4svsf)
 
 <p>
@@ -31,3 +33,51 @@ Voici le serveur principal du bot. Il est sur la série littéraire *Gardiens de
         alt="Fait avec Discord.js">
 </p>
 
+# Modules requis
+
+Vous vous en doutez, pour utiliser ce code, il faut installer plusieurs modules. En voici la liste :
+
+<ul>
+  <li>
+    <a href="https://www.npmjs.com/package/axios">axios</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/canvas">canvas</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/chalk">chalk</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/discord.js">discord.js</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/enmap">enmap</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/klaw">klaw</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/moment">moment</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/moment-duration-format">moment-duration-format</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/ms">ms</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/readline-sync">readline-sync</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/updated-youtube-info">updated-youtube-info</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/weather-js">weather-js</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/ytdl-getinfo">ytdl-getinfo</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/better-sqlite3">better-sqlite3</a>
+  </li>
+</ul>
