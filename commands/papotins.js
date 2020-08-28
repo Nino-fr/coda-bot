@@ -1,6 +1,6 @@
 const Command = require('../base/Command.js');
 
-class Example extends Command {
+class Papotins extends Command {
   constructor() {
     super({
       name: 'papotins',
@@ -11,14 +11,23 @@ class Example extends Command {
       enabled: true,
     });
   }
-
-  async run(message, args, level) {
+  /**
+   *
+   * @param {Message} message
+   * @param {string[]} args
+   */
+  async run(message, args) {
     try {
       if (!message.guild.id === '574532041836593153') return;
       const lemembre =
         message.mentions.members.first() ||
         message.guild.members.cache.get(args[0]) ||
-        message.member;
+        message.guild.members.cache.find((mem) =>
+          mem.nickname
+            ? mem.nickname.toLowerCase() === args.join(' ').toLowerCase()
+            : mem.user.username.toLowerCase() === args.join(' ').toLowerCase()
+        );
+      message.member;
       const member = lemembre.nickname
         ? lemembre.nickname
         : lemembre.user.username;
@@ -29,12 +38,8 @@ class Example extends Command {
         return message.channel.send(
           'Aucune épingle de papotin trouvée pour ce membre.'
         );
-      // let epingles = papotins[lemembre.id].epingles;
       let epingles = this.client.papotins.get(lemembre.id, 'epingles');
-      /* let msgboost =
-        papotins[lemembre.id].boost === true
-          ? 'Épingle rare **garantie** dans le prochain papotin.'
-          : 'Aucun boost.'; */
+
       let msgboost =
         this.client.papotins.get(lemembre.id, 'boost') === true
           ? 'Épingle rare **garantie** dans le prochain papotin.'
@@ -60,4 +65,4 @@ class Example extends Command {
   }
 }
 
-module.exports = Example;
+module.exports = Papotins;
