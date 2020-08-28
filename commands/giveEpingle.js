@@ -17,15 +17,6 @@ class GiveEpingle extends Command {
 
   async run(message, args) {
     try {
-      const papotins = await JSON.parse(
-        (
-          await this.client.channels.cache
-            .get('746688731557265481')
-            .messages.fetch('746706426931445771')
-        ).content
-          .replace('```json', '')
-          .replace('```', '')
-      );
       let destinataire =
         message.mentions.members.first() ||
         message.guild.members.cache.get(args[0]);
@@ -47,7 +38,7 @@ class GiveEpingle extends Command {
       )
         return this.repondre(message, "Vous n'avez aucune épingle à donner");
 
-      let epingle = 'lol';
+      let epingle = undefined;
       let epingles = this.client.papotins.get(member.id, 'epingles');
 
       await this.client.papotins.ensure(destinataire.id, {
@@ -79,30 +70,8 @@ class GiveEpingle extends Command {
           break;
         } else continue;
       }
-      for (let i of papotins[member.id].epingles) {
-        if (i.toLowerCase() === nom.toLowerCase()) {
-          if (!papotins[destinataire.id])
-            papotins[destinataire.id] = {
-              epingles: [],
-              boost: false,
-            };
-          papotins[destinataire.id].epingles.push(i);
 
-          epingle = i;
-          papotins[member.id].epingles.splice(
-            papotins[member.id].epingles.indexOf(i),
-            1
-          );
-
-          (
-            await this.client.channels.cache
-              .get('746688731557265481')
-              .messages.fetch('746706426931445771')
-          ).edit('```json\n' + JSON.stringify(papotins) + '\n```');
-          break;
-        } else continue;
-      }
-      if (epingle === 'lol')
+      if (epingle === undefined)
         return this.repondre(
           message,
           'Vous ne pouvez pas donner une épingle que vous ne possédez pas !'

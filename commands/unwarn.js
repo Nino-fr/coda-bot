@@ -26,15 +26,7 @@ class Désavertir extends Command {
         message.guild.members.cache.get(args.shift());
       let reason = args.slice(1).join(' ');
       if (!args[0]) reason = 'Aucun';
-      const warns = await JSON.parse(
-        (
-          await this.client.channels.cache
-            .get('748126259850248342')
-            .messages.fetch('748126670455570492')
-        ).content
-          .replace('```json\n', '')
-          .replace('\n```', '')
-      );
+
       if (
         !this.client.warns.get(member.id) ||
         this.client.warns.get(member.id, 'sanctions').length === 0
@@ -42,23 +34,10 @@ class Désavertir extends Command {
         return this.repondre(message, "Ce membre n'a reçu aucune sanction !");
       }
 
-      await warns[member.id].sanctions.splice(
-        warns[member.id].sanctions.length - 1
-      );
       await this.client.warns
         .get(member.id, 'sanctions')
         .splice(this.client.warns.get(member.id, 'sanctions').length - 1);
-      /* fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
-        if (err) throw err;
-      }); */
-      const save = async () => {
-        (
-          await this.client.channels.cache
-            .get('748126259850248342')
-            .messages.fetch('748126670455570492')
-        ).edit('```json\n' + JSON.stringify(this.client.warns) + '\n```');
-      };
-      save();
+
       return this.repondre(message, {
         embed: {
           title: `:white_check_mark: \`${

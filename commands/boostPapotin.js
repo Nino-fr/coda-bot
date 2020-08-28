@@ -1,6 +1,4 @@
 const Command = require('../base/Command.js'),
-  fs = require('fs'),
-  // papotins = JSON.parse(fs.readFileSync('./databases/papotins.json', 'utf8')),
   { Message } = require('discord.js');
 
 class boostPapotin extends Command {
@@ -21,16 +19,6 @@ class boostPapotin extends Command {
    */
   async run(message) {
     try {
-      const papotins = await JSON.parse(
-        (
-          await this.client.channels.cache
-            .get('746688731557265481')
-            .messages.fetch('746706426931445771')
-        ).content
-          .replace('```json', '')
-          .replace('```', '')
-      );
-
       let member = message.member;
       await this.client.papotins.ensure(message.author.id, {
         epingles: [],
@@ -48,19 +36,6 @@ class boostPapotin extends Command {
         );
       this.client.papotins.set(member.id, true, 'boost');
 
-      if (!papotins[member.id])
-        papotins[member.id] = {
-          epingles: [],
-          boost: false,
-        };
-
-      papotins[member.id].boost = true;
-
-      (
-        await this.client.channels.cache
-          .get('746688731557265481')
-          .messages.fetch('746706426931445771')
-      ).edit('```json\n' + JSON.stringify(papotins) + '\n```');
       await message.member.roles
         .remove('746710882200846336')
         .catch((err) =>
