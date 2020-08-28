@@ -74,7 +74,6 @@ class Papotin extends Command {
       }
 
       let epingle;
-      console.log(base);
       let names, randOne, randTwo, randThree, randFour, randFive, randSix, arr;
 
       switch (base) {
@@ -129,7 +128,6 @@ class Papotin extends Command {
               'Apyrodon',
               'Mastodonte',
             ].random();
-          console.log(epingle);
           break;
         case 2:
           names = ['Sasquatch', 'Banshee', 'Gremlin'];
@@ -156,11 +154,9 @@ class Papotin extends Command {
                 break;
               }
             } else matched = undefined;
-            console.log('Matched : ' + matched);
           }
           if (epingle === undefined || epingle === null)
             epingle = ['Sasquatch', 'Banshee', 'Gremlin'].random();
-          console.log(epingle);
 
           break;
         case 3:
@@ -176,7 +172,6 @@ class Papotin extends Command {
             let regex = new RegExp(', ' + names.indexOf(ii) + ',', 'g');
             let matched = (', ' + arr.join(', ') + ',').match(regex);
             let tomatch = ', ' + arr.join(', ') + ',';
-            console.log(tomatch);
             if (matched) {
               if (matched.length > 1) {
                 epingle = ii;
@@ -192,7 +187,6 @@ class Papotin extends Command {
               'Boobrie',
               'Alcyon',
             ].random();
-          console.log(epingle);
           break;
       }
 
