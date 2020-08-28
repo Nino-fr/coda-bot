@@ -1,8 +1,5 @@
 'use strict';
-/*
- * Convertir un nombre en millisecondes en jours, heures, minutes et secondes
- * @param { Number } ms Le nombre en millisecondes à convertir
- */
+
 function convertMS(ms) {
   let d, h, m, s;
   s = Math.floor(ms / 1000);
@@ -19,12 +16,7 @@ function convertMS(ms) {
     s: s,
   };
 }
-/*
- * @param { ObjectConstructor } obj L'object
- * @param { String } key La clé de la valeur
- * @param {*} val La valeur de la clé
- * @returns
- */
+
 function getObjects(obj, key, val) {
   let objects = [];
   for (let i in obj) {
@@ -44,11 +36,7 @@ function getObjects(obj, key, val) {
   }
   return objects;
 }
-/*
- * Returns an array of values that match on a certain key
- * @param { ObjectConstructor } obj L'objet
- * @param {String} key La clé
- */
+
 function getValues(obj, key) {
   let objects = [];
   for (let i in obj) {
@@ -61,11 +49,7 @@ function getValues(obj, key) {
   }
   return objects;
 }
-/*
- * Returns an array of keys that match on a certain value
- * @param { ObjectConstructor } obj
- * @param {*} val
- */
+
 function getKeys(obj, val) {
   let objects = [];
   for (let i in obj) {
