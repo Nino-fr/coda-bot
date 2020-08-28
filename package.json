@@ -1,0 +1,42 @@
+{
+  "name": "coda",
+  "version": "2.1.1",
+  "description": "Un bot privé et multifonctionnel",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "14"
+  },
+  "author": "Nino",
+  "contributors": [
+    "York (http://anidiots.guide)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "canvas": "^2.6.1",
+    "chalk": "^2.4.1",
+    "discord.js": "^12.1.1",
+    "enmap": "^5.6.1",
+    "klaw": "^2.1.1",
+    "moment": "^2.22.2",
+    "moment-duration-format": "^2.2.2",
+    "ms": "^2.1.2",
+    "readline-sync": "^1.4.9",
+    "updated-youtube-info": "^1.4.7",
+    "weather-js": "^2.0.0",
+    "ytdl-getinfo": "^1.1.0",
+    "better-sqlite3": "^7.1.0"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb-base": "^11.3.2",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.18.1",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0"
+  }
+}
