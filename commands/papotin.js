@@ -30,15 +30,6 @@ class Papotin extends Command {
       if (!message.member.roles.cache.has(papoRole.id))
         return this.repondre(message, "Vous n'avez acheté aucun papotin !");
 
-      const papotins = await JSON.parse(
-        (
-          await this.client.channels.cache
-            .get('746688731557265481')
-            .messages.fetch('746706426931445771')
-        ).content
-          .replace('```json', '')
-          .replace('```', '')
-      );
       function randomise() {
         var num = Math.random() * 100;
 
@@ -47,19 +38,7 @@ class Papotin extends Command {
         else return 3;
       }
       let base = randomise();
-      let member = message.member;
-      if (!papotins[member.id]) {
-        papotins[member.id] = {
-          epingles: [],
-          boost: false,
-        };
-      }
-      if (papotins[member.id].boost === 'boosted')
-        papotins[member.id].boost = false;
-      if (papotins[member.id].boost === true) {
-        base = 1;
-        papotins[member.id].boost = 'boosted';
-      }
+
       await this.client.papotins.ensure(message.author.id, {
         epingles: [],
         boost: false,
@@ -229,13 +208,7 @@ class Papotin extends Command {
       await this.client.papotins
         .get(message.author.id, 'epingles')
         .push(epingle);
-      await papotins[member.id].epingles.push(epingle);
 
-      (
-        await this.client.channels.cache
-          .get('746688731557265481')
-          .messages.fetch('746706426931445771')
-      ).edit('```json\n' + JSON.stringify(papotins) + '\n```');
       await message.member.roles
         .remove(papoRole.id)
         .catch((err) =>
