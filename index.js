@@ -300,22 +300,35 @@ client
   .on('error', (e) => client.logger.error(e))
   .on('warn', (info) => client.logger.warn(info));
 
-/* MISCELANEOUS NON-CRITICAL FUNCTIONS */
+// ÉTENDRE LES TYPES NATIFS EST UNE MAUVAISE PRATIQUE. Pourquoi ? Parce que si
+// cette extension est ajoutée plus tard officiellement en JavaScript, cela
+// créera des conflits avec le code natif. C'est pareil si une autre lib que
+// tu utilises fais ça, il y pourra aussi y avoir des conflits. IL FAUT
+// BIEN LE RETENIR.
 
-// EXTENDING NATIVE TYPES IS BAD PRACTICE. Why? Because if JavaScript adds this
-// later, this conflicts with native code. Also, if some other lib you use does
-// this, a conflict also occurs. KNOWING THIS however, the following methods
-// are, we feel, very useful in code. So let's just Carpe Diem.
-
-// <String>.toPropercase() returns a proper-cased string such as:
-// "Mary had a little lamb".toProperCase() returns "Mary Had A Little Lamb"
+/**
+ * <String>.toPropercase() retourne une version plus "propre" du string :
+ * @example
+ * "Mary had a little lamb".toProperCase()
+ * // retourne "Mary Had A Little Lamb"
+ */
 String.prototype.toProperCase = function () {
   return this.replace(/([^\W_]+[^\s-]*) */g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
   });
 };
-// <Array>.random() returns a single random element from an array
-// [1, 2, 3, 4, 5].random() can return 1, 2, 3, 4 or 5.
+
+/**
+ * Mettre la première lettre de chaque phrase en majuscule si les phrases sont séparées par des points
+ */
+String.prototype.correctCase = function () {
+  this.replace(/ *\. */g, function (txt) {
+    return txt.trim().charAt(0).toUpperCase() + ' ';
+  });
+};
+
+// <Array>.random() retourne un élément au hasard dans le tableau
+// [1, 2, 3, 4, 5].random() peut retourner n 1, 2, 3, 4 or 5.
 Array.prototype.random = function () {
   return this[Math.floor(Math.random() * this.length)];
 };
