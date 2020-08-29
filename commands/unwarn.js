@@ -25,7 +25,7 @@ class Désavertir extends Command {
         message.mentions.members.first() ||
         message.guild.members.cache.get(args.shift());
       let reason = args.slice(1).join(' ');
-      if (!args[0]) reason = 'Aucun';
+      if (reason) reason = 'Aucune';
 
       if (
         !this.client.warns.get(member.id) ||
@@ -47,7 +47,9 @@ class Désavertir extends Command {
           }\` a enlevé le dernier warn de \`${
             member.nickname ? member.nickname : member.user.username
           }\``,
-          description: `\`\`\`markdown\n# Raison #\n${reason}\n\`\`\``,
+          description: `\`\`\`markdown\n# Raison #\n${
+            reason ? reason : 'Aucune'
+          }\n\`\`\``,
           color: red_dark,
         },
       });
