@@ -30,6 +30,15 @@ class Papotin extends Command {
       if (!message.member.roles.cache.has(papoRole.id))
         return this.repondre(message, "Vous n'avez acheté aucun papotin !");
 
+      const papotins = await JSON.parse(
+        (
+          await this.client.channels.cache
+            .get('746688731557265481')
+            .messages.fetch('746706426931445771')
+        ).content
+          .replace('```json', '')
+          .replace('```', '')
+      );
       function randomise() {
         var num = Math.random() * 100;
 
@@ -38,7 +47,19 @@ class Papotin extends Command {
         else return 3;
       }
       let base = randomise();
-
+      let member = message.member;
+      if (!papotins[member.id]) {
+        papotins[member.id] = {
+          epingles: [],
+          boost: false,
+        };
+      }
+      if (papotins[member.id].boost === 'boosted')
+        papotins[member.id].boost = false;
+      if (papotins[member.id].boost === true) {
+        base = 1;
+        papotins[member.id].boost = 'boosted';
+      }
       await this.client.papotins.ensure(message.author.id, {
         epingles: [],
         boost: false,
@@ -53,7 +74,16 @@ class Papotin extends Command {
       }
 
       let epingle;
-      let names, randOne, randTwo, randThree, randFour, randFive, randSix, arr;
+      console.log(base);
+      let names,
+        randOne,
+        randTwo,
+        randThree,
+        randFour,
+        randFive,
+        randSix,
+        rand,
+        arr;
 
       switch (base) {
         case 1:
@@ -107,6 +137,7 @@ class Papotin extends Command {
               'Apyrodon',
               'Mastodonte',
             ].random();
+          console.log(epingle);
           break;
         case 2:
           names = ['Sasquatch', 'Banshee', 'Gremlin'];
@@ -133,9 +164,11 @@ class Papotin extends Command {
                 break;
               }
             } else matched = undefined;
+            console.log('Matched : ' + matched);
           }
           if (epingle === undefined || epingle === null)
             epingle = ['Sasquatch', 'Banshee', 'Gremlin'].random();
+          console.log(epingle);
 
           break;
         case 3:
@@ -150,6 +183,8 @@ class Papotin extends Command {
           for (let ii of names) {
             let regex = new RegExp(', ' + names.indexOf(ii) + ',', 'g');
             let matched = (', ' + arr.join(', ') + ',').match(regex);
+            let tomatch = ', ' + arr.join(', ') + ',';
+            console.log(tomatch);
             if (matched) {
               if (matched.length > 1) {
                 epingle = ii;
@@ -165,6 +200,7 @@ class Papotin extends Command {
               'Boobrie',
               'Alcyon',
             ].random();
+          console.log(epingle);
           break;
       }
 
@@ -193,7 +229,13 @@ class Papotin extends Command {
       await this.client.papotins
         .get(message.author.id, 'epingles')
         .push(epingle);
+      await papotins[member.id].epingles.push(epingle);
 
+      (
+        await this.client.channels.cache
+          .get('746688731557265481')
+          .messages.fetch('746706426931445771')
+      ).edit('```json\n' + JSON.stringify(papotins) + '\n```');
       await message.member.roles
         .remove(papoRole.id)
         .catch((err) =>
@@ -219,7 +261,7 @@ class Papotin extends Command {
           break;
         case 'Verminion':
           message.channel.send(
-            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n*${user} ouvre la boîte*\n\nC'est...\n\n\n\n\n\nUn Verminion ! nUn Verminion est un animal qui ressemble beaucoup à un hamster de la taille d’un rottweiler à la fourrure violette. Ils possèdent des yeux noirs vitreux et de grosses joues rebondies. Comme tout les rongeurs, ils possèdent aussi des dents de devants assez longues mais contrairement à ceux des lapins ou des hamsters, les leurs sont pointues comme des crocs. Ces êtres sont carnivores et se nourrissent de petits animaux tels que des écureuils ou des rats ou encore des lutins. C’est une espèce inconnue aux yeux des humains et Grady et Edaline font de leurs mieux pour les faire adapter au régime végétarien. \nUn Verminion est une bête qui a un très fort caractère. Ils sont désobéissants et grognent souvent lorsqu’ils sont approchés de trop près. Ils n’ont pas peur des elfes.\n\nLe Verminion n'est pas très rare : il y a 98 épingles comme cela dans le monde.\nAccroche ton épingle où tu veux !`,
+            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n*${user} ouvre la boîte*\n\nC'est...\n\n\n\n\n\nUn Verminion ! \nUn Verminion est un animal qui ressemble beaucoup à un hamster de la taille d’un rottweiler à la fourrure violette. Ils possèdent des yeux noirs vitreux et de grosses joues rebondies. Comme tout les rongeurs, ils possèdent aussi des dents de devants assez longues mais contrairement à ceux des lapins ou des hamsters, les leurs sont pointues comme des crocs. Ces êtres sont carnivores et se nourrissent de petits animaux tels que des écureuils ou des rats ou encore des lutins. C’est une espèce inconnue aux yeux des humains et Grady et Edaline font de leurs mieux pour les faire adapter au régime végétarien. \nUn Verminion est une bête qui a un très fort caractère. Ils sont désobéissants et grognent souvent lorsqu’ils sont approchés de trop près. Ils n’ont pas peur des elfes.\n\nLe Verminion n'est pas très rare : il y a 98 épingles comme cela dans le monde.\nAccroche ton épingle où tu veux !`,
             {
               files: [
                 {
@@ -233,7 +275,7 @@ class Papotin extends Command {
           break;
         case 'Licorne':
           message.channel.send(
-            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n${user} ouvre la boîte*\n\nC'est...\n\n\n\n:licorne: Une licorne ! :licorne:\n\nLes licornes sont des chevaux argentés ou blancs. La famille Heks s'est occupée de plusieurs générations de licornes. Contrairement aux alicornes, elles n'ont pas d'ailes. Cependant, comme ces dernières et la plupart des équidés, elles ne survivent pas aux naissances multiples. Leur particularité est la corne torsadée qui surmonte leur front.\n\nElles sont extrêmement rares. Il y en a 34 en tout dans le monde entier.\n\nAccroche ton épingle où tu veux !`,
+            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n${user} ouvre la boîte*\n\nC'est...\n\n\n\n<:licorne:604247929351438336> Une licorne ! <:licorne:604247929351438336>\n\nLes licornes sont des chevaux argentés ou blancs. La famille Heks s'est occupée de plusieurs générations de licornes. Contrairement aux alicornes, elles n'ont pas d'ailes. Cependant, comme ces dernières et la plupart des équidés, elles ne survivent pas aux naissances multiples. Leur particularité est la corne torsadée qui surmonte leur front.\n\nElles sont extrêmement rares. Il y en a 34 en tout dans le monde entier.\n\nAccroche ton épingle où tu veux !`,
             {
               files: [
                 {
