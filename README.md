@@ -19,7 +19,8 @@
 Salut ! <br />
 Tu es actuellement dans le code source du bot Discord privé et open source **Coda** créé par **Nino** (`Nino#3670` sur Discord).<br /><br />
 
-Ici, tu trouveras tout le code de toutes les commandes et les fonctionnalités de ce bot. La seule chose que tu ne trouveras pas, ce sont les bases de données contenant par exemple les papotins.
+Ici, tu trouveras tout le code de toutes les commandes et les fonctionnalités de ce bot. La seule chose que tu ne trouveras pas, ce sont les bases de données contenant par exemple les papotins.<br />
+Tu peux également trouver un tableau de bord des choses à faire sur Coda, des choses en cours et des choses faites **[ici](https://github.com/Nino-fr/coda-bot/projects/1)**
 
 Tu auras le code de la première version dans la branche [`v1`](https://github.com/Nino-fr/coda-bot/tree/v1) et le code de la seconde version dans la branche [`v2`](https://github.com/Nino-fr/coda-bot/tree/v2).
 
