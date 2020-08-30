@@ -19,18 +19,7 @@ class Mute extends Command {
     try {
       message.delete();
       const newThis = this;
-      /* let modo =
-        message.guild.roles.cache.find((r) => r.name === "Émissaire") ||
-        message.guild.roles.cache.find((r) =>
-          r.name.toLowerCase().includes("modérateur")
-        );
-      if (
-        !message.member.permissions.has("ADMINISTRATOR") &&
-        !message.guild.owner &&
-        !message.member.roles.cache.has(modo.id)
-      )
-        return this.repondre(message, "Vous ne pouvez pas utiliser cette commande !"); */
-
+     
       let mutee =
         message.mentions.members.first() ||
         message.guild.members.cache.get(args[0]);
@@ -92,12 +81,11 @@ class Mute extends Command {
         },
       });
 
-      if (mutetime !== 'Indéterminé') {
-        setTimeout(function () {
-          mutee.roles.remove(muterole.id);
-          newThis.repondre(message, `<@${mutee.id}> a bien été unmute`);
-        }, ms(mutetime));
-      }
+      if (mutetime === 'Indéterminé') return;
+      setTimeout(function () {
+        await mutee.roles.remove(muterole.id);
+        newThis.repondre(message, `<@${mutee.id}> a bien été unmute`);
+      }, ms(mutetime));
     } catch (err) {
       this.client.utils.get('error').run(err, message, this.client);
     }
