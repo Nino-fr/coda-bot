@@ -52,8 +52,29 @@ Voici le serveur principal du bot. Il est sur la série littéraire _Gardiens de
 
 ## Modules requis
 
-Vous vous en doutez, pour utiliser ce code, il faut installer plusieurs modules. En voici la liste :
+Vous vous en doutez, pour utiliser ce code, il faut installer plusieurs modules. En voici la liste pour la v1 :
 
+<ul>
+  <li>
+    <a href="https://www.npmjs.com/package/axios">axios</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/canvas">canvas</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/discord.js">discord.js</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/moment">moment</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/ms">ms</a>
+  </li>
+  <li>
+    <a href="https://www.npmjs.com/package/weather-js">weather-js</a>
+  </li>
+</ul>
+<p>Liste pour la v2 :</p>
 <ul>
   <li>
     <a href="https://www.npmjs.com/package/axios">axios</a>
