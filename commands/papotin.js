@@ -146,7 +146,14 @@ class Papotin extends Command {
             console.log('Matched : ' + matched);
           }
           if (epingle === undefined || epingle === null)
-            epingle = ['Sasquatch', 'Banshee', 'Gremlin'].random();
+            epingle = [
+              'Banshee',
+              'Gremlin',
+              'Lutin',
+              'Verminion',
+              'Jaculus',
+              'Alcyon',
+            ].random();
           console.log(epingle);
 
           break;
@@ -234,7 +241,7 @@ class Papotin extends Command {
           break;
         case 'Verminion':
           message.channel.send(
-            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n*${user} ouvre la boîte*\n\nC'est...\n\n\n\n\n\nUn Verminion ! \nUn Verminion est un animal qui ressemble beaucoup à un hamster de la taille d’un rottweiler à la fourrure violette. Ils possèdent des yeux noirs vitreux et de grosses joues rebondies. Comme tout les rongeurs, ils possèdent aussi des dents de devants assez longues mais contrairement à ceux des lapins ou des hamsters, les leurs sont pointues comme des crocs. Ces êtres sont carnivores et se nourrissent de petits animaux tels que des écureuils ou des rats ou encore des lutins. C’est une espèce inconnue aux yeux des humains et Grady et Edaline font de leurs mieux pour les faire adapter au régime végétarien. \nUn Verminion est une bête qui a un très fort caractère. Ils sont désobéissants et grognent souvent lorsqu’ils sont approchés de trop près. Ils n’ont pas peur des elfes.\n\nLe Verminion n'est pas très rare : il y a 98 épingles comme cela dans le monde.\nAccroche ton épingle où tu veux !`,
+            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n*${user} ouvre la boîte*\n\nC'est...\n\n\n\n\n\nUn Verminion ! \nUn Verminion est un animal qui ressemble beaucoup à un hamster de la taille d’un rottweiler à la fourrure violette. Ils possèdent des yeux noirs vitreux et de grosses joues rebondies. Comme tout les rongeurs, ils possèdent aussi des dents de devants assez longues mais contrairement à ceux des lapins ou des hamsters, les leurs sont pointues comme des crocs. Ces êtres sont carnivores et se nourrissent de petits animaux tels que des écureuils ou des rats ou encore des lutins. C’est une espèce inconnue aux yeux des humains et Grady et Edaline font de leurs mieux pour les faire adapter au régime végétarien. \nUn Verminion est une bête qui a un très fort caractère. Ils sont désobéissants et grognent souvent lorsqu’ils sont approchés de trop près. Ils n’ont pas peur des elfes.\n\nLe Verminion n'est pas très rare : il y a 102 épingles comme cela dans le monde.\nAccroche ton épingle où tu veux !`,
             {
               files: [
                 {
@@ -280,7 +287,7 @@ C'est...
 
 Les Apyrodons sont des créatures ressemblant à des ptérodactyles de la taille d'un aigle. Ils ont une fourrure dorée résistante au feu et sont assez rare. Ils vivent souvent proche des volcans car ils ont besoin de feu pour maintenir une température corporelle normale, ce qui représente pour les elfes une température extrêmement élevée. Si leur température corporelle est trop basse, il risquent de mourir rapidement. C'est aussi la mascotte du niveau 7 de Foxfire.
 
-Les apyrodons sont assez rares ! Il y en a 56 dans le monde
+Les apyrodons sont assez rares ! Il y en a 58 dans le monde
 Accroche ton épingle où tu veux !`,
             {
               files: [
@@ -356,7 +363,7 @@ C'est...
 
 Le Kraken est une énorme bête aquatique verte. Ils ressemblent à un mélange entre une pieuvre, un éléphant et un lion. Ces créatures ont six crocs, un nez tentaculaire en forme de trompe et un corps visqueux. Ils sont référencés et il est révélé qu'ils vivent dans des eaux plus froides.
 
-Les Krakens sont hyper rares. Il n'y a que 10 épingles comme celle-ci dans le monde.
+Les Krakens sont hyper rares. Il n'y a que 12 épingles comme celle-ci dans le monde.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Kelpie':
@@ -379,7 +386,7 @@ C'est...
 Le Kelpie est un animal vivant dans la *Vallée Crépusculaire*, près de Rimeshire (chez les Dizznee). C'est un endroit que certains décrivent comme le plus froid des Cités Perdues.
 On peut donc en déduire que le Kelpie est un animal qui apprécie le froid.
 
-Les Kelpies sont rares. Il n'y a que 21 épingles comme celle-ci dans le monde.
+Les Kelpies sont rares. Il n'y a que 27 épingles comme celle-ci dans le monde.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Jaculus':
@@ -424,7 +431,7 @@ C'est...
 
 Les sasquatches sont de grandes créatures vertes, poilues, aux yeux pétillants et aux plumes vert vif. Ils ont le nez en forme de bec et, grâce à une caractéristique sur leurs mains et leurs pieds, ils sont capables de grimper aux arbres (en laissant des traces de rayures). Ils sont également capables de se balancer sur les vignes.
 
-Les sasquatches sont rares. Cette épingle a 52 sœurs.
+Les sasquatches sont assez rares. Cette épingle a 69 sœurs.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Argentavis':
@@ -446,7 +453,7 @@ Un Argentavis ! 🎉
 
 Les Argentavis sont de gigantesques oiseaux bleus argentés. Charognards de nature, ils peuvent devenir végétariens une fois apprivoisés. Ils ont aussi la capacité de voler très haut : d'après Sophie, il vole "parmi les étoiles scintillantes". Grady et Edaline en ont apprivoisé un.
 
-Ils sont très rares : il n'y en a plus que 25 dans le monde !
+Ils sont très rares : il n'y en a plus que 29 dans le monde !
 Accroche ton épingle où tu veux !`);
           break;
         case 'Banshee':
@@ -490,7 +497,7 @@ C'est...
 
 Il n'y a pas besoin de préciser ce qu'est un mastodonte !
 
-Ils sont très rares : il y en a  26 répertoriés.
+Ils sont très rares : il y en a  33 répertoriés.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Méganeura':
@@ -513,7 +520,7 @@ C'est...
 
 Les méganeuras sont d’imposantes créatures aux ailes souvent assez jolies. Elles ressemblent à des libellules géantes.
 
-Elles sont très rares : 22 méganeuras sont répertoriées à ce jour.
+Elles sont très rares : 28 méganeuras sont répertoriées à ce jour.
 Accroche ton épingle où tu veux !`,
             {
               files: [
@@ -547,7 +554,7 @@ Les Selkies sont des créatures très imposantes à mi chemin entre les otaries 
 
 Leur peau congelée à différents usages : les elfes s'en servent comme un médicament ou pour attirer des escalurgeons qui trouvent cette odeur irrésistible.
 
-Cette épingle est très rare : il n'existe que 19 selkies.
+Cette épingle est très rare : il n'existe que 21 selkies.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Gremlin':
@@ -654,7 +661,7 @@ Félicitations ! Tu as obtenu Luna, la jeune alicorne fille de Silveny et Greyfe
 
 Je n'ai pas besoin de t'expliquer ce qu'est une alicorne. Tu le sais très bien. 
 
-Cette épingle fait partie des plus rares du monde : seulement 4 Alicornes existent dans le monde !.
+Cette épingle fait partie des plus rares du monde : seulement 4 Alicornes existent !.
 Accroche ton épingle où tu veux !`,
             {
               files: [
