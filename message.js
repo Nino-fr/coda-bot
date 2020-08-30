@@ -1479,7 +1479,9 @@ module.exports = class {
         message.mentions.members.first() ||
         message.guild.members.cache.get(args[0]) ||
         message.guild.members.cache.find((mem) =>
-          mem.nickname ? mem.nickname : mem.user.username
+          mem.nickname
+            ? mem.nickname === args.join(' ')
+            : mem.user.username === args.join(' ')
         );
       const dirlo = message.guild.roles.cache.get('602823657814753290');
       const heraut = message.guild.roles.cache.find(
