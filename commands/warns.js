@@ -25,7 +25,8 @@ class Sanctions extends Command {
           mem.nickname
             ? mem.nickname.toLowerCase() === args.join(' ').toLowerCase()
             : mem.user.username.toLowerCase() === args.join(' ').toLowerCase()
-        );
+        ) ||
+        message.member;
 
       if (
         !this.client.warns.get(member.id) ||

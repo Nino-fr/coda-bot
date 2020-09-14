@@ -38,8 +38,7 @@ exports.run = (err, message, client) => {
       .setDescription(
         `🔺 **Il y a eu une erreur avec le bot ! \nFichier et ligne : ${
           '```cs\n# ' + only_at + '```'
-        }\n\n` +
-          ' **Nino, le créateur du bot a été prévenu du problème, il est inutile de le signaler.**'
+        }\n\n**Nino, le créateur du bot a été prévenu du problème, il est inutile de le signaler.**`
       );
 
     message.channel.send(error_embed_channel);
