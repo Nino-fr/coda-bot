@@ -1,6 +1,6 @@
 const config = {
   ownerID: '428582719044452352',
-  version: '2.1.0',
+  version: '2.1.4',
 
   // Bot Admins. Tableau des ID des administrateurs du bot
   admins: [

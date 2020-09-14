@@ -193,7 +193,7 @@ class News extends Command {
         }
       });
     } catch (err) {
-      this.client.utils.get('error').run(err, message, this.client);
+      message.repondre('Une erreur est survenue, veuillez réessayer.');
     }
   }
 }

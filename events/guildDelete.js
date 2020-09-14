@@ -1,20 +1,15 @@
-// Cet événement a lieu quand le bot quitte un serveur.
-
-const { client } = require('../index.js'), { Guild } = require('discord.js');
+// This event executes when a new guild (server) is left.
 
 module.exports = class {
-  constructor() {
+  constructor (client) {
     this.client = client;
   }
 
-  /**
-   * Supprimons le serveur quitté des réglages du bot et mettons un message en console.
-   * @param {Guild} guild Le serveur quitté
-   */
-  async run(guild) {
+  async run (guild) {
+
+    this.client.user.setActivity(`${this.client.settings.get("default").prefix}help | ${this.client.guilds.cache.size} serveurs`);
+    // Well they're gone. Let's remove them from the settings and log it!
     this.client.settings.delete(guild.id);
-    this.client.logger.log(
-      `J'ai quitté le serveur ${guild.name} (${guild.id}) qui comportait ${guild.memberCount} membres`
-    );
+    this.client.logger.log(`J'ai quitté le serveur ${guild.name} (${guild.id}) qui comportait ${guild.memberCount} membres`);
   }
 };

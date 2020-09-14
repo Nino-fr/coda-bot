@@ -1,10 +1,11 @@
-// Cet événement a lieu quand une invitation est créée dans un serveur.
-
-const { Invite } = require('discord.js'),
-  moment = require('moment');
+const { Invite } = require('discord.js');
+const { client } = require('../index.js');
+const moment = require('moment');
 
 module.exports = class {
-  constructor() {}
+  constructor() {
+    this.client = client;
+  }
   /**
    * A lieu quand une invitation a été créée
    * @param { Invite } lien L'invitation créée

@@ -74,7 +74,7 @@ class UserInfo extends Command {
                 ? `${x
                     .join(', ')
                     .replace('Custom Status', 'Statut personnalisé')}`
-                : 'Aucun jeu D:'
+                : 'Aucun jeu'
             }`,
           },
           {

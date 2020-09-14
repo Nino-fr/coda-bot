@@ -74,9 +74,7 @@ class Addrole extends Command {
         )
         .addField(
           'Modérateur :',
-          message.member.nickname
-            ? message.member.nickname
-            : message.member.user.username
+          message.member.nickname ? rMember.nickname : rMember.user.username
         )
         .addField('Date :', moment.utc(message.createdAt).format('LLL'))
         .addField('Rôle :', role.name);

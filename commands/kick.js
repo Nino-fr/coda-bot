@@ -32,7 +32,7 @@ class Kick extends Command {
       if (!message.guild.me.permissions.has('KICK_MEMBERS'))
         return this.repondre(message, "Je n'ai pas la permission de faire ça.");
       kickMember.kick();
-      this.repondre({
+      this.repondre(message, {
         embed: {
           title: `:ballot_box_with_check: \`${
             message.member.nickname

@@ -1,16 +1,14 @@
-// Cet événement a lieu quand un membre quitte le serveur.
-
-const { client } = require('../index.js');
+// This event executes when a member leaves a server.
 
 module.exports = class {
-  constructor() {
+  constructor(client) {
     this.client = client;
   }
 
   async run(user) {
     let wChannel =
-      user.guild.channels.cache.find((ch) => ch.name.includes('errants')) ||
-      user.guild.channels.cache.find((ch) => ch.name.includes('bienvenue'));
+      user.guild.channels.cache.find((ch) => ch.name.includes("errants")) ||
+      user.guild.channels.cache.find((ch) => ch.name.includes("bienvenue"));
     wChannel.send(`Oh non ! ${user} a quitté le serveur...`);
   }
 };

@@ -318,19 +318,24 @@ String.prototype.toProperCase = function () {
   });
 };
 
-/**
- * Mettre la première lettre de chaque phrase en majuscule si les phrases sont séparées par des points
- */
-String.prototype.correctCase = function () {
-  this.replace(/ *\. */g, function (txt) {
-    return txt.trim().charAt(0).toUpperCase() + ' ';
-  });
-};
-
 // <Array>.random() retourne un élément au hasard dans le tableau
 // [1, 2, 3, 4, 5].random() peut retourner n 1, 2, 3, 4 or 5.
 Array.prototype.random = function () {
   return this[Math.floor(Math.random() * this.length)];
+};
+
+Message.prototype.repondre = function (msg) {
+  this.channel.send(msg);
+};
+/**
+ * Mettre la première lettre de chaque phrase en majuscule si les phrases sont séparées par des points
+ */
+String.prototype.correctCase = function () {
+  if (!this.includes('.'))
+    return this.trim().charAt(0).toUpperCase() + this.slice(1);
+  return this.replace(/ *\. */g, function (txt) {
+    return '. ' + txt.replace('.', '').trim().charAt(0).toUpperCase() + ' ';
+  });
 };
 
 // Ces trois méthodes vont catch la plupart des erreurs et donner plus de détails à leur propos.

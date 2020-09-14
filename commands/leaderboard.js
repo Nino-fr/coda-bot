@@ -14,7 +14,7 @@ class Leaderboard extends Command {
   }
   /**
    *
-   * @param {Message} message La commande
+   * @param { Message } message La commande
    */
   async run(message) {
     try {

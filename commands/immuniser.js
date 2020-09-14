@@ -36,6 +36,9 @@ class Immuniser extends Command {
             : mem.user.username.toLowerCase() === args.join(' ').toLowerCase()
         );
 
+      if (!member)
+        return this.repondre(message, 'Veuillez préciser un membre correct');
+
       await this.client.warns.ensure(member.id, {
         sanctions: [],
         immunisation: false,
@@ -46,7 +49,9 @@ class Immuniser extends Command {
         return this.repondre(message, "Ce membre possède déjà l'immunité !");
       }
       this.client.warns.set(member.id, true, 'immunisation');
-
+      /* fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
+        if (err) throw err;
+      }); */
       return this.repondre(
         message,
         `<:check:708245371792523317> \`${

@@ -33,7 +33,7 @@ module.exports = class {
     const prefixMention = new RegExp(`^<@!?${this.client.user.id}> ?$`);
     if (message.content.match(prefixMention)) {
       return message.channel.send(
-        `Mon prefix est \`${settings.prefix}\` Écris \`&help\` pour la liste des commandes.`
+        `Sur ce serveur, mon prefix est \`${settings.prefix}\``
       );
     }
 

@@ -91,7 +91,6 @@ module.exports = class {
         let lien = mmm;
         await salon.messages.fetch(messageid).then((m) => {
           if (m.embeds.length !== 0) {
-            //Ce message contenait un embed. En voici une représentation ci-dessous.
             client.repondre(
               message,
               'Ce message contenait un embed. En voici une représentation ci-dessous.'
@@ -272,6 +271,7 @@ module.exports = class {
         .toString()
         .match(/(?<=https:\/\/www.youtube.com\/watch\?v=)[\w\d\-]+/)
         .toString();
+      // const fetch = require('node-fetch');
       const axios = require('axios');
       let ytdvideo = await axios.default.get(
         `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
@@ -752,6 +752,7 @@ module.exports = class {
             let userAvatarURL = await res.data.match(
               /(?<="avatar":")(?:.(?!,"is))+/
             );
+            // let regAvatar = /(?<="avatar":")(?:.(?!,"is))+/;
             let pseudo = await res.data
               .match(/(?<=<title>)(?:.(?!\/title))+/)
               .toString()
@@ -895,6 +896,30 @@ module.exports = class {
         }
       });
     }
+
+    // if (message.content.includes("tu es passé level 7 ! Et tu as aussi gagné")) {
+    //   if (message.author.id === "628944382162370571") {
+    //     /*let messagecontent = (await message.channel.messages.fetch())
+    //       .array()
+    //       .slice((await message.channel.messages.fetch()).size - 1)
+    //       .pop();
+    //     let msg = (await message.channel.messages.fetch()).find(
+    //       (m) => m.content === messagecontent
+    //     );
+    //     let mem = msg.member;
+    //     */
+    //     let mem = message.mentions.members.first();
+    //     let noble = message.guild.roles.cache.find(
+    //       (r) => r.name === "Membre de la noblesse"
+    //     );
+    //     let prodige = message.guild.roles.cache.find((r) => r.name === "Prodige");
+    //     if (!prodige) return repondre("Une erreur est survenue.");
+    //     if (!noble) return repondre("Une erreur est survenue.");
+    //     mem.roles.add(noble.id);
+    //     mem.roles.remove(prodige.id);
+    //     repondre(`Bravo ${mem} !`);
+    //   }
+    // }
 
     // Créer une prévisualisation des liens Wattpad vers une histoire.
     let storyURL = message.content.match(
@@ -1132,6 +1157,7 @@ module.exports = class {
         let userAvatarURL = await res.data.match(
           /(?<="avatar":")(?:.(?!,"is))+/
         );
+        // let regAvatar = /(?<="avatar":")(?:.(?!,"is))+/;
         let pseudo = await res.data
           .match(/(?<=<title>)(?:.(?!\/title))+/)
           .toString()
@@ -1281,12 +1307,18 @@ module.exports = class {
         message.member.permissions.has('ADMINISTRATOR')
       )
         return;
-      repondre('Non mais oh ! Du calme sur les mentions ! ');
+      repondre(
+        'Non mais oh ! Du calme sur les mentions ! ' // Ajouter peut-être "Je te mets un warn, ça t'apprendra."
+      );
+      //   warnMember(message.member, 'Plus de cinq mentions dans un seul message.');
     }
 
     // Censurer les insultes/mots grossiers.
     let bdw = /(?:(?:conna(?:r|s)(?:s|d|e))|(?:(?:s+a+l+o+p+e+)(?!t+e*))|(?:e+ncu+l[ée]*)|(?:(?<!\w)pu+t+e+s*)|(?:fd+p+))/gi;
     if (bdw.test(message.content)) {
+      // if (message.member.roles.cache.has(modo.id)) return;
+      /* repondre("Surveille ton langage ! Pour la peine, je te mets un warn !");
+      warnMember(message.member, "Grossier personnage"); */
       let nom = message.member.nickname
         ? message.member.nickname
         : message.author.username;

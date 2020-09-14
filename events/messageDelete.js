@@ -1,7 +1,5 @@
-// Cet événement a lieu quand un message est supprimé.
-
-const { Message, MessageEmbed } = require('discord.js'),
-  { client } = require('../index.js');
+const { Message, MessageEmbed } = require('discord.js');
+const { client } = require('../index.js');
 
 module.exports = class {
   constructor() {

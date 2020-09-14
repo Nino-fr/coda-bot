@@ -1,60 +1,52 @@
-// Cet événement a lieu quand un utilisateur rejoint un serveur.
-
-const { client } = require('../index.js'),
-  Canvas = require('canvas'),
-  { GuildMember } = require('discord.js');
+const Canvas = require("canvas");
 
 module.exports = class {
-  constructor() {
+  constructor(client) {
     this.client = client;
   }
 
-  /**
-   * Afficher un message et une image de bienvenue à l'arrivée d'un membre. Vérifier si son pseudo est correct
-   * @param {GuildMember} member Le membre qui a rejoint
-   */
   async run(member) {
     const verify = async () => {
-      if (member.guild.id !== '574626014664327178') return;
+      if (member.guild.id !== "574626014664327178") return;
       let username = member.user.username;
       if (/[^A-Za-z\s\p{L}]/gu.test(member.user.username)) {
         let newNickname = username.replace(/[^A-Za-z\s\p{L}]/gu, '');
         if (newNickname.length === 0) newNickname = 'Pseudo à changer';
         await member.setNickname(newNickname);
         await member.guild.channels.cache
-          .find((ch) => ch.name === 'logs')
-          .send(
-            `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
-          );
+            .find((ch) => ch.name === 'logs')
+            .send(
+                `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+            );
       }
-      let regGDCP = /(?:(?:f+i+t+z+)|(?:k+e+f+e+)|(?:s+[yi]+l+v+e+n+[iy]+)|(?:g+r+a+d+y+)|(?:e+d+a+l+i+n+e+)|(?:d+e+l+l+a+)|(?:a+l+d+e+n+)|(?:h+i+t+l+e+r+))/gi;
+      let regGDCP = /(?:(?:f+i+t+z+)|(?:k+e+f+e+)|(?:s+[yi]+l+v+e+n+[iy]+)|(?:g+r+a+d+y+)|(?:e+d+a+l+i+n+e+)|(?:d+e+l+l+a+)|(?:a+l+d+e+n+))/gi;
       if (regGDCP.test(member.user.username)) {
-        let newNickname = 'Pseudo à changer';
+        let newNickname = "Pseudo à changer";
         await member.setNickname(newNickname);
         await member.guild.channels.cache
-          .find((ch) => ch.name === 'logs')
-          .send(
-            `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
-          );
+            .find((ch) => ch.name === 'logs')
+            .send(
+                `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+            );
       }
-    };
+    }
     await verify();
     // Load the guild's settings
     const settings = this.client.getSettings(member.guild);
 
     // If welcome is off, don't proceed (don't welcome the user)
-    if (settings.welcomeEnabled !== 'true') return;
+    if (settings.welcomeEnabled !== "true") return;
 
     // Replace the placeholders in the welcome message with actual data
     const welcomeMessage = settings.welcomeMessage.replace(
-      '{{user}}',
+      "{{user}}",
       member.user
     );
 
     // Send the welcome message to the welcome channel
     // There's a place for more configs here.
     member.guild.channels.cache
-      .find((c) => c.name.includes('bienvenue'))
+      .find((c) => c.name.includes("bienvenue"))
       .send(welcomeMessage)
       .catch(console.error);
 
@@ -65,7 +57,7 @@ module.exports = class {
      */
     const applyText = (canvas, text) => {
       try {
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext("2d");
 
         // Declare a base size of the font
         let fontSize = 70;
@@ -79,33 +71,34 @@ module.exports = class {
         // Return the result to use in the actual canvas
         return ctx.font;
       } catch (err) {
-        this.client.utils.get('error').run(err, message, this.client);
+        this.client.utils.get("error").run(err, message, this.client);
       }
     };
     let wChannel = await member.guild.channels.cache.find((ch) =>
-      ch.name.includes('bienvenue')
+      ch.name.includes("bienvenue")
     );
 
     const canvas = Canvas.createCanvas(700, 250);
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
 
-    const background = await Canvas.loadImage('./wallpaper.png');
+    const background = await Canvas.loadImage("./wallpaper.png");
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
 
-    ctx.strokeStyle = '#74037b';
+    ctx.strokeStyle = "#74037b";
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
     // Slightly smaller text placed above the member's display name
-    ctx.font = '28px sans-serif';
-    ctx.fillStyle = '#ffffff';
+    ctx.font = "28px sans-serif";
+    ctx.fillStyle = "#ffffff";
     ctx.fillText(
-      'Bienvenue dans ce serveur,',
+      "Bienvenue dans ce serveur,",
       canvas.width / 2.5,
       canvas.height / 3.5
     );
 
+    // Add an exclamation point here and below
     ctx.font = applyText(canvas, `${member.displayName}!`);
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = "#ffffff";
     ctx.fillText(
       `${member.displayName}`,
       canvas.width / 2.5,
@@ -118,15 +111,15 @@ module.exports = class {
     ctx.clip();
 
     const avatar = await Canvas.loadImage(
-      member.user.displayAvatarURL({ format: 'png' })
+      member.user.displayAvatarURL({ format: "png" })
     );
     ctx.drawImage(avatar, 25, 25, 200, 200);
 
     await wChannel.send({
       files: [
         {
-          attachment: canvas.toBuffer('image/png', 'image/png'),
-          name: 'welcome.png',
+          attachment: canvas.toBuffer("image/png", "image/png"),
+          name: "welcome.png",
         },
       ],
     });

@@ -38,7 +38,7 @@ class GiveEpingle extends Command {
       )
         return this.repondre(message, "Vous n'avez aucune épingle à donner");
 
-      let epingle = undefined;
+      let epingle = 'lol';
       let epingles = this.client.papotins.get(member.id, 'epingles');
 
       await this.client.papotins.ensure(destinataire.id, {
@@ -71,7 +71,7 @@ class GiveEpingle extends Command {
         } else continue;
       }
 
-      if (epingle === undefined)
+      if (epingle === 'lol')
         return this.repondre(
           message,
           'Vous ne pouvez pas donner une épingle que vous ne possédez pas !'

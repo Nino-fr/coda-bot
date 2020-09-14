@@ -38,8 +38,8 @@ class Papotins extends Command {
         return message.channel.send(
           'Aucune épingle de papotin trouvée pour ce membre.'
         );
-
       let epingles = this.client.papotins.get(lemembre.id, 'epingles');
+
       let msgboost =
         this.client.papotins.get(lemembre.id, 'boost') === true
           ? 'Épingle rare **garantie** dans le prochain papotin.'

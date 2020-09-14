@@ -24,7 +24,12 @@ class Désavertir extends Command {
       const member =
         message.mentions.members.first() ||
         message.guild.members.cache.get(args.shift());
-      let reason = args.slice(1).join(' ');
+      if (!member)
+        return this.repondre(
+          message,
+          'Veuillez spécifier un membre à warn dans la commande.'
+        );
+      let reason = args.join(' ');
       if (reason) reason = 'Aucune';
 
       if (
@@ -37,6 +42,9 @@ class Désavertir extends Command {
       await this.client.warns
         .get(member.id, 'sanctions')
         .splice(this.client.warns.get(member.id, 'sanctions').length - 1);
+      /* fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
+        if (err) throw err;
+      }); */
 
       return this.repondre(message, {
         embed: {

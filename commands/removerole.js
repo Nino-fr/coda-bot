@@ -1,6 +1,7 @@
 const Command = require('../base/Command.js');
 const { Message, MessageEmbed } = require('discord.js');
 const colours = require('../colours.json');
+const moment = require('moment');
 
 class RemoveRole extends Command {
   constructor() {
@@ -62,7 +63,7 @@ class RemoveRole extends Command {
           }.`
         );
       }
-
+      moment.locale('fr');
       let embed = new MessageEmbed()
         .setColor(colours.red_light)
         .setAuthor(`Log de modération`, this.client.user.avatarURL())

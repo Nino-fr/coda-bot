@@ -1,6 +1,3 @@
-/**
- * Convertir des millisecondes en un objet contenant les jours, heures, minutes et secondes
- */
 function convertMS(ms: number): { d: number; h: number; m: number; s: number } {
   let d: number, h: number, m: number, s: number;
   s = Math.floor(ms / 1000);
@@ -18,7 +15,7 @@ function convertMS(ms: number): { d: number; h: number; m: number; s: number } {
   };
 }
 
-function getObjects(obj: object, key: string, val: string): object[] {
+function getObjects(obj, key: string, val: string): object[] {
   let objects = [];
   for (let i in obj) {
     if (!obj.hasOwnProperty(i)) continue;
@@ -39,10 +36,8 @@ function getObjects(obj: object, key: string, val: string): object[] {
   return objects;
 }
 
-/**
- * Returns an array of values that match on a certain key
- */
-function getValues(obj: object, key: string): string[] {
+//return an array of values that match on a certain key
+function getValues(obj, key: string): string[] {
   let objects = [];
   for (let i in obj) {
     if (!obj.hasOwnProperty(i)) continue;
@@ -55,9 +50,7 @@ function getValues(obj: object, key: string): string[] {
   return objects;
 }
 
-/**
- * Returns an array of keys that match on a certain value
- */
+//return an array of keys that match on a certain value
 function getKeys(obj: object, val: string): string[] {
   let objects = [];
   for (let i in obj) {

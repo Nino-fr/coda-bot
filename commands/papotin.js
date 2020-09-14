@@ -119,7 +119,7 @@ class Papotin extends Command {
           console.log(epingle);
           break;
         case 2:
-          names = ['Sasquatch', 'Banshee', 'Gremlin'];
+          names = ['Sasquatch', 'Banshee', 'Gremlin', 'Gremlin'];
           randOne = Math.floor(Math.random() * names.length);
           randTwo = Math.floor(Math.random() * names.length);
           randThree = Math.floor(Math.random() * names.length);
@@ -201,7 +201,6 @@ class Papotin extends Command {
           'Gorgonops',
           'Apyrodon',
           'Mastodonte',
-          'Sasquatch',
           'Banshee',
           'Gremlin',
           'Verminion',
@@ -227,7 +226,7 @@ class Papotin extends Command {
           message.channel.send(
             '*Te tend un papotin.*\nTiens ' +
               user.toString() +
-              ` : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n*${user} termine de manger son papotin*\n\n*${user} ouvre la boîte*\n\nC'est...\n\n\n\n\n\n<:Iggy:610877650508054569> Un lutin ! <:Iggy:610877650508054569>\nLe lutin n'est pas rare. C'est une épingle commune.\nIl y en a 287 dans le monde.\n\nAccroche ton épingle où tu veux !`,
+              ` : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n*${user} termine de manger son papotin*\n\n*${user} ouvre la boîte*\n\nC'est...\n\n\n\n\n\n<:Iggy:610877650508054569> Un lutin ! <:Iggy:610877650508054569>\nLe lutin n'est pas rare. C'est une épingle commune.\nIl y en a 321 dans le monde.\n\nAccroche ton épingle où tu veux !`,
             {
               files: [
                 {
@@ -241,7 +240,7 @@ class Papotin extends Command {
           break;
         case 'Verminion':
           message.channel.send(
-            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n*${user} ouvre la boîte*\n\nC'est...\n\n\n\n\n\nUn Verminion ! \nUn Verminion est un animal qui ressemble beaucoup à un hamster de la taille d’un rottweiler à la fourrure violette. Ils possèdent des yeux noirs vitreux et de grosses joues rebondies. Comme tout les rongeurs, ils possèdent aussi des dents de devants assez longues mais contrairement à ceux des lapins ou des hamsters, les leurs sont pointues comme des crocs. Ces êtres sont carnivores et se nourrissent de petits animaux tels que des écureuils ou des rats ou encore des lutins. C’est une espèce inconnue aux yeux des humains et Grady et Edaline font de leurs mieux pour les faire adapter au régime végétarien. \nUn Verminion est une bête qui a un très fort caractère. Ils sont désobéissants et grognent souvent lorsqu’ils sont approchés de trop près. Ils n’ont pas peur des elfes.\n\nLe Verminion n'est pas très rare : il y a 102 épingles comme cela dans le monde.\nAccroche ton épingle où tu veux !`,
+            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n*${user} ouvre la boîte*\n\nC'est...\n\n\n\n\n\nUn Verminion ! \nUn Verminion est un animal qui ressemble beaucoup à un hamster de la taille d’un rottweiler à la fourrure violette. Ils possèdent des yeux noirs vitreux et de grosses joues rebondies. Comme tout les rongeurs, ils possèdent aussi des dents de devants assez longues mais contrairement à ceux des lapins ou des hamsters, les leurs sont pointues comme des crocs. Ces êtres sont carnivores et se nourrissent de petits animaux tels que des écureuils ou des rats ou encore des lutins. C’est une espèce inconnue aux yeux des humains et Grady et Edaline font de leurs mieux pour les faire adapter au régime végétarien. \nUn Verminion est une bête qui a un très fort caractère. Ils sont désobéissants et grognent souvent lorsqu’ils sont approchés de trop près. Ils n’ont pas peur des elfes.\n\nLe Verminion n'est pas très rare : il y a 159 épingles comme cela dans le monde.\nAccroche ton épingle où tu veux !`,
             {
               files: [
                 {
@@ -255,7 +254,7 @@ class Papotin extends Command {
           break;
         case 'Licorne':
           message.channel.send(
-            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n${user} ouvre la boîte*\n\nC'est...\n\n\n\n<:licorne:604247929351438336> Une licorne ! <:licorne:604247929351438336>\n\nLes licornes sont des chevaux argentés ou blancs. La famille Heks s'est occupée de plusieurs générations de licornes. Contrairement aux alicornes, elles n'ont pas d'ailes. Cependant, comme ces dernières et la plupart des équidés, elles ne survivent pas aux naissances multiples. Leur particularité est la corne torsadée qui surmonte leur front.\n\nElles sont extrêmement rares. Il y en a 34 en tout dans le monde entier.\n\nAccroche ton épingle où tu veux !`,
+            `*Te tend un papotin.*\nTiens ${user} : Voici un papotin. C'est un bonbon à mâcher au caramel. Il est décrit comme ayant un goût de caramel mélangé avec du beurre de cacahuète avec une crème centrale. Chaque bonbon est dans une boîte carrée en argent avec une épingle de créature à collectionner dans une petite pochette en velours.\nBon appétit, et bonne chance !\n\n\n*${user} termine de manger son papotin*\n\n${user} ouvre la boîte*\n\nC'est...\n\n\n\n<:licorne:604247929351438336> Une licorne ! <:licorne:604247929351438336>\n\nLes licornes sont des chevaux argentés ou blancs. La famille Heks s'est occupée de plusieurs générations de licornes. Contrairement aux alicornes, elles n'ont pas d'ailes. Cependant, comme ces dernières et la plupart des équidés, elles ne survivent pas aux naissances multiples. Leur particularité est la corne torsadée qui surmonte leur front.\n\nElles sont extrêmement rares. Il y en a 43 en tout dans le monde entier.\n\nAccroche ton épingle où tu veux !`,
             {
               files: [
                 {
@@ -341,7 +340,7 @@ C'est...
 
 Les Gorgonops sont des créatures en voie d'extinction. Il ressemble à une sorte de croisements étranges entre un tigre à dent de sable, un hippopotame et un rat géant ; ils sont très laids et carnivores. Ils sont présents dans une zone à l'écart interdit aux visiteurs dans le sanctuaire.
 
-Les Gorgonops sont en voie d'extinction. Il n'y a que 24 épingles comme celle-là dans le monde.
+Comme les Gorgonops sont en voie d'extinction, il n'y a que 24 épingles comme celle-là dans le monde.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Kraken':
@@ -386,7 +385,7 @@ C'est...
 Le Kelpie est un animal vivant dans la *Vallée Crépusculaire*, près de Rimeshire (chez les Dizznee). C'est un endroit que certains décrivent comme le plus froid des Cités Perdues.
 On peut donc en déduire que le Kelpie est un animal qui apprécie le froid.
 
-Les Kelpies sont rares. Il n'y a que 27 épingles comme celle-ci dans le monde.
+Les Kelpies sont très rares. Il n'y a que 31 épingles comme celle-ci dans le monde.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Jaculus':
@@ -409,7 +408,7 @@ C'est...
 Le jaculus est un petit animal (on peut le tenir en main) qui ressemble à un serpent avec des ailes. 
 Son régime alimentaire est constitué de sang. Il suce le sang d'animaux, ce qui montre qu'il s'agit d'un carnivore ou peut-être d'un omnivore. Son venin est très précieux en Médecine. Il y en a chez Slurps & Burps.
 
-Le jaculus n'est pas rare : il y en a 223 dans le monde.
+Le jaculus n'est pas rare : il y en a 375 dans le monde.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Sasquatch':
@@ -431,7 +430,7 @@ C'est...
 
 Les sasquatches sont de grandes créatures vertes, poilues, aux yeux pétillants et aux plumes vert vif. Ils ont le nez en forme de bec et, grâce à une caractéristique sur leurs mains et leurs pieds, ils sont capables de grimper aux arbres (en laissant des traces de rayures). Ils sont également capables de se balancer sur les vignes.
 
-Les sasquatches sont assez rares. Cette épingle a 69 sœurs.
+Les sasquatches sont assez rares. Cette épingle a 142 sœurs.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Argentavis':
@@ -453,7 +452,7 @@ Un Argentavis ! 🎉
 
 Les Argentavis sont de gigantesques oiseaux bleus argentés. Charognards de nature, ils peuvent devenir végétariens une fois apprivoisés. Ils ont aussi la capacité de voler très haut : d'après Sophie, il vole "parmi les étoiles scintillantes". Grady et Edaline en ont apprivoisé un.
 
-Ils sont très rares : il n'y en a plus que 29 dans le monde !
+Ils sont très rares : il n'y en a plus que 76 dans le monde !
 Accroche ton épingle où tu veux !`);
           break;
         case 'Banshee':
@@ -475,7 +474,7 @@ C'est...
 
 Les banshees sont des créatures ressemblant à des furets et qui peuvent sentir quand quelqu'un est en danger. Ils crient quand les maladies de quelqu'un sont mortelles et se posent à côté d'eux quand ils meurent et sont sur leurs dernières respirations. Parfois, ils vont s'allonger à côté de quelqu'un, mais il survivra miraculeusement, mais c'est rare et n'arrive généralement pas. Bullhorn a fait cela pendant 2 semaines quand Sophie Foster s'est évanouie après l'enlèvement.
 
-Ils sont rares : il y en a 57 dans le monde.
+Ils sont rares : il y en a 136 dans le monde.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Mastodonte':
@@ -497,7 +496,7 @@ C'est...
 
 Il n'y a pas besoin de préciser ce qu'est un mastodonte !
 
-Ils sont très rares : il y en a  33 répertoriés.
+Ils sont très rares : il y en a  50 répertoriés.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Méganeura':
@@ -520,7 +519,7 @@ C'est...
 
 Les méganeuras sont d’imposantes créatures aux ailes souvent assez jolies. Elles ressemblent à des libellules géantes.
 
-Elles sont très rares : 28 méganeuras sont répertoriées à ce jour.
+Elles sont très rares : 54 méganeuras sont répertoriées à ce jour.
 Accroche ton épingle où tu veux !`,
             {
               files: [
@@ -607,7 +606,7 @@ C'est...
 
 Les colibris lunaires, ou "Suldreen" dans la langue des lumières, sont des oiseaux très rares. Ils sont parés des plumes argentées ou bleues disposées en roue comme le paon, de longues jambes comme une grue et un cou semblable à celui d'un cygne. Ces oiseaux pondent leurs œufs dans l'océan et permettent à la marée de les emporter, laissant le bébé se débrouiller seul.
 
-Ils sont très rares : il y en a 16 dans le monde.
+Ils sont très rares : il y en a 87 dans le monde.
 Accroche ton épingle où tu veux !`,
             {
               files: [

@@ -24,7 +24,7 @@ class Avertir extends Command {
       const member =
         message.mentions.members.first() ||
         message.guild.members.cache.get(args.shift());
-      let reason = args.slice(1).join(' ');
+      let reason = args.join(' ');
       if (!args[0]) reason = 'Aucune';
 
       await this.client.warns.ensure(member.id, {
@@ -43,7 +43,9 @@ class Avertir extends Command {
       await this.client.warns
         .get(member.id, 'sanctions')
         .push(reason ? reason : 'Aucune raison');
-
+      /* fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
+        if (err) throw err;
+      }); */
       message.delete();
       return this.repondre(message, {
         embed: {

@@ -8,7 +8,7 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": "12.8.3"
+    "node": ">=12"
   },
   "author": "Nino",
   "contributors": [
