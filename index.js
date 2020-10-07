@@ -14,8 +14,7 @@ const {
   { promisify } = require('util'),
   readdir = promisify(require('fs').readdir),
   klaw = require('klaw'),
-  path = require('path'),
-  Enmap = require('enmap');
+  path = require('path');
 
 class Coda extends Client {
   constructor(options) {
@@ -28,8 +27,9 @@ class Coda extends Client {
 
     this.settings = new Collection();
     this.utils = new Collection();
-    this.papotins = new Enmap({ name: 'papotins' });
-    this.warns = new Enmap({ name: 'warns' });
+
+    this.papotins = new Map();
+    this.boosts = new Map();
 
     this.logger = require('./modules/Logger');
 
@@ -425,8 +425,9 @@ assistance.on('message', async (message) => {
         let ID = args.shift();
         let destinataire = assistance.users.cache.get(ID);
         if (!destinataire) {
-          repondre("L'ID est incorrect, je vous donne le bon ID :");
-          return repondre(ID);
+          return repondre(
+            "L'ID est incorrect, veuillez réessayer avec le bon ID."
+          );
         }
         let toSend = args.join(' ');
         destinataire.send(
@@ -606,6 +607,19 @@ for (let i = 0; i < dependencies.length; i++) {
   result += dependency + ' - ' + packages['dependencies'][dependency] + '\n';
 }
 console.log(result);
+
+setTimeout(() => {
+  function initDatabases() {
+    for (const [key, value] of Object.entries(
+      require('./databases/papotins.json')
+    )) {
+      client.papotins.set(key, value.epingles);
+      client.boosts.set(key, value.boost);
+    }
+    client.logger.log('Bases de données initialisées');
+  }
+  initDatabases();
+}, 20000);
 
 // Exportons le client.
 module.exports = { client };
