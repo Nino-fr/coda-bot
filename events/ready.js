@@ -57,23 +57,5 @@ module.exports = class {
             );
         }
       });
-    const initDatabases = async () => {
-      const fs = require('fs');
-      const papotins = await JSON.parse(
-        fs.readFileSync('./databases/papotins.json')
-      );
-      console.log(papotins);
-      for (const [key, value] of Object.entries(papotins)) {
-        client.papotins.set(key, {
-          epingles: value.epingles,
-          boost: value.boost,
-          lastUpdate: new Date(),
-        });
-      }
-
-      console.log(client.papotins);
-    };
-    initDatabases();
-    this.client.logger.log(`Bases de données initialisées !`);
   }
 };
