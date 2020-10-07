@@ -602,7 +602,7 @@ module.exports = class {
         let regStory = /getElementById\("l"\).src\s*=\s*validate\("nullstory\/((?:.(?!\(;\s*))+)"\);\s*window.setTimeout\(function\(\)\s*\{\s*\s*if\s*\(!hasURI\)\s*\{\s*\s*window.top.location\s*=\s*validate\("((?:.(?!\(;\s*))+)"\);\s*\s*}\s*\s*intervalExecuted\s*=\s*true;\s*},\s*\d+\);\s*};\s*window.onblur\s*=\s*function\(\)\s*\{\s*hasURI\s*=\s*true;\s*};\s*window.onfocus\s*=\s*function\(\)\s*\{\s*if\s*\(hasURI\)\s*\{\s*\s*window.top.location\s*=\s*validate\("((?:.(?!\(;\s*))+)"\);\s*}\s*else\s*if\(intervalExecuted\)\s*\{\s*\s*window.top.location\s*=\s*validate\("((?:.(?!\(;\s*))+)"\);\s*}\s*}\s*<\/script/;
         let regUser = /getElementById\("l"\).src\s*=\s*validate\("nulluser\/((?:.(?!\(;\s*))+)"\);\s*window.setTimeout\(function\(\)\s*\{\s*\s*if\s*\(!hasURI\)\s*\{\s*\s*window.top.location\s*=\s*validate\("https:\/\/www.wattpad.com\/user\/((?:.(?!\(;\s*))+)"\);\s*\s*}\s*\s*intervalExecuted\s*=\s*true;\s*},\s*\d+\);\s*};\s*window.onblur\s*=\s*function\(\)\s*\{\s*hasURI\s*=\s*true;\s*};\s*window.onfocus\s*=\s*function\(\)\s*\{\s*if\s*\(hasURI\)\s*\{\s*\s*window.top.location\s*=\s*validate\("((?:.(?!\(;\s*))+)"\);\s*}\s*else\s*if\(intervalExecuted\)\s*\{\s*\s*window.top.location\s*=\s*validate\("((?:.(?!\(;\s*))+)"\);\s*}\s*}\s*<\/script/;
         if (regStory.test(result.data)) {
-          let lienOrdi = await result.data.match(regStory)[3];
+          let lienOrdi = result.data.match(regStory)[3];
           await axios.default.get(lienOrdi).then(async (ress) => {
             await axios.default
               .get(
@@ -611,28 +611,28 @@ module.exports = class {
                 )[1]
               )
               .then(async (res) => {
-                let alles = await res.data.match(
+                let alles = res.data.match(
                   /<img src="(https:\/\/a\.wattpad\.com\/cover\/[\d\w]+\-[\d\w]+\-[\d\w]+\.jpg)" height="\d+" width="\d+" alt="(?:.(?!><))+">\s?<\/div>\s?<h1>\s?((?:.(?!\/h1>))+)\s?<\/h1>/
                 );
                 let nameOfStory = alles[2];
                 let ascii = /&#x(\d+);/g;
                 if (ascii.test(nameOfStory)) {
-                  let pesto = await nameOfStory.match(ascii);
+                  let pesto = nameOfStory.match(ascii);
 
                   let authorName = res.data.match(
                     /<a href="\/user\/((?:.(?! ))+)" class="(?:.(?!>))+">\s?<img src="(https:\/\/a\.wattpad\.com\/useravatar\/(?:.(?!\d+\.\d+))+\.\d+\.\d+\.jpg)" width="\d+" height="\d+" alt="((?:.(?! \/))+)" \/>\s?<\/a>/
                   );
                   let reginfo = /<span data-toggle="tooltip"\s?data-placement="bottom"\s?title="((?:[\dKk,\. ](?!Reads))+)\s?Reads">\s?((?:[\dKk,\. ](?!Reads))+)\s?Reads<\/span>\s?<span\s?data-toggle="tooltip"\s?data-placement="bottom"\s?title="((?:[\dKk,\. ](?!Votes))+)\s?Votes">\s?((?:[\dKk,\. ](?!Votes))+)\s?Votes<\/span>\s?<span>([\d]+)\s?Part\s?Story<\/span>\s?<\/div>\s?<div\s?class="promotion-description-story-details">\s<\/div>/i;
-                  let infosStory = await res.data.match(reginfo);
+                  let infosStory = res.data.match(reginfo);
                   loguer(reginfo.test(res.data));
-                  let coverURL = await alles[1];
-                  let viewCount = await infosStory[2];
-                  let viewCountPlus = await infosStory[1];
-                  let voteCountPlus = await infosStory[3];
-                  let voteCount = await infosStory[4];
-                  let chapterCount = await infosStory[5];
+                  let coverURL = alles[1];
+                  let viewCount = infosStory[2];
+                  let viewCountPlus = infosStory[1];
+                  let voteCountPlus = infosStory[3];
+                  let voteCount = infosStory[4];
+                  let chapterCount = infosStory[5];
                   for (let i of pesto) {
-                    nameOfStory = await nameOfStory.replace(
+                    nameOfStory = nameOfStory.replace(
                       ascii,
                       String.fromCharCode(
                         getValues(asc, i.match(/\d+/).toString())
@@ -660,11 +660,19 @@ module.exports = class {
                         },
                         {
                           name: 'Lectures',
-                          value: `${viewCount} (${viewCountPlus})`,
+                          value: `${viewCount}${
+                            viewCount !== viewCountPlus
+                              ? ` (${viewCountPlus})`
+                              : ''
+                          }`,
                         },
                         {
                           name: 'Votes',
-                          value: `${voteCount} (${voteCountPlus})`,
+                          value: `${voteCount} ${
+                            voteCount !== voteCountPlus
+                              ? `(${voteCountPlus})`
+                              : ''
+                          }`,
                         },
                         {
                           name: 'Chapitres',
@@ -682,14 +690,14 @@ module.exports = class {
                     /<a href="\/user\/((?:.(?! ))+)" class="(?:.(?!>))+">\s?<img src="(https:\/\/a\.wattpad\.com\/useravatar\/(?:.(?!\d+\.\d+))+\.\d+\.\d+\.jpg)" width="\d+" height="\d+" alt="((?:.(?! \/))+)" \/>\s?<\/a>/
                   );
                   let reginfo = /<span data-toggle="tooltip"\s?data-placement="bottom"\s?title="((?:[\dKk,\. ](?!Reads))+)\s?Reads">\s?((?:[\dKk,\. ](?!Reads))+)\s?Reads<\/span>\s?<span\s?data-toggle="tooltip"\s?data-placement="bottom"\s?title="((?:[\dKk,\. ](?!Votes))+)\s?Votes">\s?((?:[\dKk,\. ](?!Votes))+)\s?Votes<\/span>\s?<span>([\d]+)\s?Part\s?Story<\/span>\s?<\/div>\s?<div\s?class="promotion-description-story-details">\s<\/div>/i;
-                  let infosStory = await res.data.match(reginfo);
+                  let infosStory = res.data.match(reginfo);
                   loguer(reginfo.test(res.data));
-                  let coverURL = await alles[1];
-                  let viewCount = await infosStory[2];
-                  let voteCount = await infosStory[4];
-                  let chapterCount = await infosStory[5];
-                  let viewCountPlus = await infosStory[1];
-                  let voteCountPlus = await infosStory[3];
+                  let coverURL = alles[1];
+                  let viewCount = infosStory[2];
+                  let voteCount = infosStory[4];
+                  let chapterCount = infosStory[5];
+                  let viewCountPlus = infosStory[1];
+                  let voteCountPlus = infosStory[3];
                   repondre({
                     embed: {
                       description: `**Informations sur l'histoire [${nameOfStory}](${lienOrdi})**\n\n`,
@@ -705,11 +713,19 @@ module.exports = class {
                         },
                         {
                           name: 'Lectures',
-                          value: `${viewCount} (${viewCountPlus})`,
+                          value: `${viewCount}${
+                            viewCount !== viewCountPlus
+                              ? ` (${viewCountPlus})`
+                              : ''
+                          }`,
                         },
                         {
                           name: 'Votes',
-                          value: `${voteCount} (${voteCountPlus})`,
+                          value: `${voteCount}${
+                            voteCount !== voteCountPlus
+                              ? ` (${voteCountPlus})`
+                              : ''
+                          }`,
                         },
                         {
                           name: 'Chapitres',
@@ -726,18 +742,14 @@ module.exports = class {
               });
           });
         } else if (regUser.test(result.data)) {
-          let urlwatt = await result.data.match(regUser)[3];
+          let urlwatt = result.data.match(regUser)[3];
           await axios.default.get(urlwatt).then(async (res) => {
-            let username = await res.data.match(
+            let username = res.data.match(
               /https:\/\/www.wattpad.com\/user\/((?:.(?! \/>))+)/
             )[1];
-            let followersCount = await res.data.match(
-              /(?<="numFollowers":)\d+K?/
-            );
-            let followingCount = await res.data.match(
-              /(?<="numFollowing":)\d+K?/
-            );
-            let gender = await res.data
+            let followersCount = res.data.match(/(?<="numFollowers":)\d+K?/);
+            let followingCount = res.data.match(/(?<="numFollowing":)\d+K?/);
+            let gender = res.data
               .match(/(?<="gender":")(?:\w+)/)
               .toString()
               .replace(/she/i, 'Femme')
@@ -746,20 +758,18 @@ module.exports = class {
               .replace(/he/i, 'Homme')
               .replace(/they/i, 'Eux')
               .replace(/unknown/i, 'Inconnu');
-            let storyCount = await res.data.match(
+            let storyCount = res.data.match(
               /data\-id\="profile\-works"\>\n\<p\>(\d+)\<\/p\>\n\<p\>Works\<\/p\>\n\<\/div\>/
             )[1];
-            let userAvatarURL = await res.data.match(
-              /(?<="avatar":")(?:.(?!,"is))+/
-            );
+            let userAvatarURL = res.data.match(/(?<="avatar":")(?:.(?!,"is))+/);
             // let regAvatar = /(?<="avatar":")(?:.(?!,"is))+/;
-            let pseudo = await res.data
+            let pseudo = res.data
               .match(/(?<=<title>)(?:.(?!\/title))+/)
               .toString()
               .match(/(?:.(?! Wattpad))+/)
               .toString();
             let regcreatedat = /(?<="createDate":")(\d+)\-(\d+)\-(\d+)T(\d+):(\d+):(\d+)Z/;
-            let resultCreatedAt = await res.data.match(regcreatedat);
+            let resultCreatedAt = res.data.match(regcreatedat);
             let createdat = {
               year: resultCreatedAt[1].toString(),
               month: resultCreatedAt[2].toString(),
@@ -787,7 +797,7 @@ module.exports = class {
             } */
             if (ascii.test(pseudo)) {
               let pesdo = pseudo.match(ascii)[1];
-              await message.channel.send({
+              message.channel.send({
                 embed: {
                   author: {
                     name: 'Wattpad',
@@ -842,7 +852,7 @@ module.exports = class {
                 },
               });
             } else {
-              await message.channel.send({
+              message.channel.send({
                 embed: {
                   author: {
                     name: 'Wattpad',
@@ -927,7 +937,7 @@ module.exports = class {
     );
     if (storyURL) {
       axios.default.get(storyURL.toString()).then(async (res) => {
-        let alles = await res.data.match(
+        let alles = res.data.match(
           /<img src="(https:\/\/a\.wattpad\.com\/cover\/[\d\w]+\-[\d\w]+\-[\d\w]+\.jpg)" height="\d+" width="\d+" alt="(?:.(?!><))+">\s?<\/div>\s?<h1>\s?((?:.(?!\/h1>))+)\s?<\/h1>/
         );
         let nameOfStory = alles[2];
@@ -937,16 +947,16 @@ module.exports = class {
             /<a href="\/user\/((?:.(?! ))+)" class="(?:.(?!>))+">\s?<img src="(https:\/\/a\.wattpad\.com\/useravatar\/(?:.(?!\d+\.\d+))+\.\d+\.\d+\.jpg)" width="\d+" height="\d+" alt="((?:.(?! \/))+)" \/>\s?<\/a>/
           );
           let reginfo = /<span data-toggle="tooltip"\s?data-placement="bottom"\s?title="((?:[\dKk,\. ](?!Reads))+)\s?Reads">\s?((?:[\dKk,\. ](?!Reads))+)\s?Reads<\/span>\s?<span\s?data-toggle="tooltip"\s?data-placement="bottom"\s?title="((?:[\dKk,\. ](?!Votes))+)\s?Votes">\s?((?:[\dKk,\. ](?!Votes))+)\s?Votes<\/span>\s?<span>([\d]+)\s?Part\s?Story<\/span>\s?<\/div>\s?<div\s?class="promotion-description-story-details">\s<\/div>/i;
-          let infosStory = await res.data.match(reginfo);
+          let infosStory = res.data.match(reginfo);
           loguer(reginfo.test(res.data));
-          let coverURL = await alles[1];
-          let viewCount = await infosStory[2];
-          let viewCountPlus = await infosStory[1];
-          let voteCountPlus = await infosStory[3];
-          let voteCount = await infosStory[4];
-          let chapterCount = await infosStory[5];
+          let coverURL = alles[1];
+          let viewCount = infosStory[2];
+          let viewCountPlus = infosStory[1];
+          let voteCountPlus = infosStory[3];
+          let voteCount = infosStory[4];
+          let chapterCount = infosStory[5];
           for (let i of nameOfStory.match(ascii)) {
-            nameOfStory = await nameOfStory.replace(
+            nameOfStory = nameOfStory.replace(
               ascii,
               String.fromCharCode(getValues(asc, i.match(/\d+/).toString()))
             );
@@ -960,6 +970,7 @@ module.exports = class {
               author: {
                 name: `@${authorName[1]}`,
                 icon_url: authorName[2],
+                url: 'https://www.wattpad.com/user/' + authorName[1],
               },
               fields: [
                 {
@@ -968,11 +979,15 @@ module.exports = class {
                 },
                 {
                   name: 'Lectures',
-                  value: `${viewCount} (${viewCountPlus})`,
+                  value: `${viewCount}${
+                    viewCount !== viewCountPlus ? ` (${viewCountPlus})` : ''
+                  }`,
                 },
                 {
                   name: 'Votes',
-                  value: `${voteCount} (${voteCountPlus})`,
+                  value: `${voteCount}${
+                    voteCount !== voteCountPlus ? ` (${voteCountPlus})` : ''
+                  }`,
                 },
                 {
                   name: 'Chapitres',
@@ -990,14 +1005,14 @@ module.exports = class {
             /<a href="\/user\/((?:.(?! ))+)" class="(?:.(?!>))+">\s?<img src="(https:\/\/a\.wattpad\.com\/useravatar\/(?:.(?!\d+\.\d+))+\.\d+\.\d+\.jpg)" width="\d+" height="\d+" alt="((?:.(?! \/))+)" \/>\s?<\/a>/
           );
           let reginfo = /<span data-toggle="tooltip"\s?data-placement="bottom"\s?title="((?:[\dKk,\. ](?!Reads))+)\s?Reads">\s?((?:[\dKk,\. ](?!Reads))+)\s?Reads<\/span>\s?<span\s?data-toggle="tooltip"\s?data-placement="bottom"\s?title="((?:[\dKk,\. ](?!Votes))+)\s?Votes">\s?((?:[\dKk,\. ](?!Votes))+)\s?Votes<\/span>\s?<span>([\d]+)\s?Part\s?Story<\/span>\s?<\/div>\s?<div\s?class="promotion-description-story-details">\s<\/div>/i;
-          let infosStory = await res.data.match(reginfo);
+          let infosStory = res.data.match(reginfo);
           loguer(reginfo.test(res.data));
-          let coverURL = await alles[1];
-          let viewCount = await infosStory[2];
-          let voteCount = await infosStory[4];
-          let chapterCount = await infosStory[5];
-          let viewCountPlus = await infosStory[1];
-          let voteCountPlus = await infosStory[3];
+          let coverURL = alles[1];
+          let viewCount = infosStory[2];
+          let voteCount = infosStory[4];
+          let chapterCount = infosStory[5];
+          let viewCountPlus = infosStory[1];
+          let voteCountPlus = infosStory[3];
           repondre({
             embed: {
               description: `**Informations sur l'histoire [${nameOfStory}](${storyURL})**\n\n`,
@@ -1005,6 +1020,7 @@ module.exports = class {
               author: {
                 name: `@${authorName[1]}`,
                 icon_url: authorName[2],
+                url: 'https://www.wattpad.com/user/' + authorName[1],
               },
               fields: [
                 {
@@ -1013,11 +1029,15 @@ module.exports = class {
                 },
                 {
                   name: 'Lectures',
-                  value: `${viewCount} (${viewCountPlus})`,
+                  value: `${viewCount}${
+                    viewCount !== viewCountPlus ? ` (${viewCountPlus})` : ''
+                  }`,
                 },
                 {
                   name: 'Votes',
-                  value: `${voteCount} (${voteCountPlus})`,
+                  value: `${voteCount}${
+                    voteCount !== voteCountPlus ? ` (${voteCountPlus})` : ''
+                  }`,
                 },
                 {
                   name: 'Chapitres',
