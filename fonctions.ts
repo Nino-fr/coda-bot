@@ -15,7 +15,7 @@ function convertMS(ms: number): { d: number; h: number; m: number; s: number } {
   };
 }
 
-function getObjects(obj, key: string, val: string): object[] {
+function getObjects(obj: {}, key: string, val: string): object[] {
   let objects = [];
   for (let i in obj) {
     if (!obj.hasOwnProperty(i)) continue;
@@ -37,7 +37,7 @@ function getObjects(obj, key: string, val: string): object[] {
 }
 
 //return an array of values that match on a certain key
-function getValues(obj, key: string): string[] {
+function getValues(obj: {}, key: string): string[] {
   let objects = [];
   for (let i in obj) {
     if (!obj.hasOwnProperty(i)) continue;
