@@ -89,9 +89,6 @@ Vous vous en doutez, pour utiliser ce code, il faut installer plusieurs modules.
     <a href="https://www.npmjs.com/package/discord.js">discord.js</a>
   </li>
   <li>
-    <a href="https://www.npmjs.com/package/enmap">enmap</a>
-  </li>
-  <li>
     <a href="https://www.npmjs.com/package/klaw">klaw</a>
   </li>
   <li>
@@ -114,8 +111,5 @@ Vous vous en doutez, pour utiliser ce code, il faut installer plusieurs modules.
   </li>
   <li>
     <a href="https://www.npmjs.com/package/ytdl-getinfo">ytdl-getinfo</a>
-  </li>
-  <li>
-    <a href="https://www.npmjs.com/package/better-sqlite3">better-sqlite3</a>
   </li>
 </ul>
