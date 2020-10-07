@@ -1,6 +1,8 @@
 const Command = require('../base/Command.js');
 const { Message } = require('discord.js');
-const { red_dark } = require('../colours.json');
+const { red_dark } = require('../colours.json'),
+  fs = require('fs'),
+  warns = JSON.parse(JSON.stringify(require('../databases/warns.json')));
 
 class Avertir extends Command {
   constructor() {
@@ -28,23 +30,23 @@ class Avertir extends Command {
       let reason = args.join(' ');
       if (!args[0]) reason = 'Aucune';
 
-      await this.client.warns.ensure(member.id, {
-        sanctions: [],
-        immunisation: false,
-        lastUpdate: new Date(),
-      });
+      if (!warns[member.id])
+        warns[member.id] = {
+          sanctions: [],
+          immunisation: false,
+        };
 
-      if (this.client.warns.get(member.id, 'immunisation') === true) {
-        this.client.warns.set(member.id, false, 'immunisation');
+      if (warns[member.id].immunisation === true) {
+        warns[member.id].immunisation = false;
         return this.repondre(
           message,
           `Ce membre est immunisé contre tout type de warn. Ce warn n'est donc pas pris en compte mais son immunité lui est retirée.`
         );
       }
-      await this.client.warns
-        .get(member.id, 'sanctions')
-        .push(reason ? reason : 'Aucune raison');
-
+      warns[member.id].sanctions.push(reason ? reason : 'Aucune raison');
+      fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
+        if (err) throw err;
+      });
       message.delete();
       return this.repondre(message, {
         embed: {

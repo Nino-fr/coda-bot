@@ -1,6 +1,7 @@
 const Command = require('../base/Command.js');
 const { Message } = require('discord.js');
-const { red_dark } = require('../colours.json');
+const fs = require('fs'),
+  warns = JSON.parse(JSON.stringify(require('../databases/warns.json')));
 
 class Immuniser extends Command {
   constructor() {
@@ -39,19 +40,19 @@ class Immuniser extends Command {
       if (!member)
         return this.repondre(message, 'Veuillez préciser un membre correct');
 
-      await this.client.warns.ensure(member.id, {
-        sanctions: [],
-        immunisation: false,
-        lastUpdate: new Date(),
-      });
-
-      if (this.client.warns.get(member.id, 'immunisation') === true) {
+      if (!warns[member.id])
+        warns[member.id] = {
+          sanctions: [],
+          immunisation: false,
+        };
+      if (warns[member.id].immunisation === true) {
         return this.repondre(message, "Ce membre possède déjà l'immunité !");
       }
-      this.client.warns.set(member.id, true, 'immunisation');
-      /* fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
+      warns[member.id].immunisation = true;
+
+      fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
         if (err) throw err;
-      }); */
+      });
       return this.repondre(
         message,
         `<:check:708245371792523317> \`${

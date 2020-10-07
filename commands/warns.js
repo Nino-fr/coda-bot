@@ -1,5 +1,6 @@
 const Command = require('../base/Command.js');
-const { Message } = require('discord.js');
+const { Message } = require('discord.js'),
+  warns = JSON.parse(JSON.stringify(require('../databases/warns.json')));
 
 class Sanctions extends Command {
   constructor() {
@@ -28,15 +29,16 @@ class Sanctions extends Command {
         ) ||
         message.member;
 
-      if (
-        !this.client.warns.get(member.id) ||
-        this.client.warns.get(member.id, 'sanctions').length === 0
-      )
+      if (!warns[member.id] || warns[member.id].sanctions.length === 0) {
         return this.repondre(message, "Ce membre n'a reçu aucune sanction");
-      let sanctions = this.client.warns.get(member.id).sanctions;
-      let immunite = this.client.warns.get(member.id).immunisation
-        ? "**Ce membre dispose d'un joker lui permettant d'esquiver la prochaine sanction.**"
-        : '';
+      }
+
+      let sanctions = warns[member.id].sanctions;
+      let immunite =
+        warns[member.id].immunisation === true
+          ? "**Ce membre dispose d'un joker lui permettant d'esquiver la prochaine sanction.**"
+          : '';
+
       return message.channel.send({
         embed: {
           title: `Liste des avertissements de \`${
