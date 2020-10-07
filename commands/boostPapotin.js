@@ -1,5 +1,7 @@
 const Command = require('../base/Command.js'),
-  { Message } = require('discord.js');
+  { Message } = require('discord.js'),
+  fs = require('fs'),
+  papotins = JSON.parse(JSON.stringify(require('../databases/papotins.json')));
 
 class boostPapotin extends Command {
   constructor() {
@@ -20,27 +22,44 @@ class boostPapotin extends Command {
   async run(message) {
     try {
       let member = message.member;
-      await this.client.papotins.ensure(message.author.id, {
-        epingles: [],
-        boost: false,
-        lastUpdate: new Date(),
-      });
+      if (!papotins[member.id])
+        papotins[member.id] = { epingles: [], boost: false };
 
-      if (this.client.papotins.get(member.id).boost === true)
-        return this.repondre(message, 'Vous possédez déjà un boost !');
+      if (papotins[member.id].boost === undefined)
+        papotins[member.id].boost = false;
+      if (papotins[member.id].boost === true)
+        return this.repondre(message, 'Vous possédez déjà un boost');
 
       if (!member.roles.cache.has('746710882200846336'))
         return this.repondre(
           message,
           "Vous n'avez pas acheté d'autorisation de boost. Rendez-vous dans la <#604743595777458176> et faites la commande `;buy 10` pour l'acheter pour 75 coins."
         );
-      this.client.papotins.set(member.id, true, 'boost');
+
+      papotins[member.id].boost = true;
 
       await message.member.roles
         .remove('746710882200846336')
         .catch((err) =>
           this.client.channels.cache.get('746688731557265481').send(err)
         );
+      fs.writeFile(
+        './databases/papotins.json',
+        JSON.stringify(papotins),
+        (err) => {
+          if (err) throw err;
+        }
+      );
+
+      if (
+        !this.client.boosts.get(member.id) ||
+        this.client.boosts.get(member.id) === undefined
+      )
+        this.client.boosts.set(member.id, false);
+
+      if (this.client.boosts.get(member.id) === false)
+        this.client.boosts.set(member.id, true);
+
       return this.repondre(
         message,
         'Félicitations <@' +

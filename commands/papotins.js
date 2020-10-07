@@ -31,17 +31,19 @@ class Papotins extends Command {
       const member = lemembre.nickname
         ? lemembre.nickname
         : lemembre.user.username;
+
       if (
         !this.client.papotins.get(lemembre.id) ||
-        this.client.papotins.get(lemembre.id).epingles.length === 0
+        this.client.papotins.get(lemembre.id).length === 0
       )
         return message.channel.send(
           'Aucune épingle de papotin trouvée pour ce membre.'
         );
-      let epingles = this.client.papotins.get(lemembre.id, 'epingles');
 
-      let msgboost =
-        this.client.papotins.get(lemembre.id, 'boost') === true
+      let pins = this.client.papotins.get(lemembre.id);
+
+      let mBoost =
+        this.client.boosts.get(lemembre.id) === true
           ? 'Épingle rare **garantie** dans le prochain papotin.'
           : 'Aucun boost.';
 
@@ -51,11 +53,11 @@ class Papotins extends Command {
           color: 0xe74c3c,
           description:
             "**Nombre d'épingles :** " +
-            epingles.length +
+            pins.length +
             '\n\n- ' +
-            epingles.join('\n- ') +
+            pins.join('\n- ') +
             ' \n\n' +
-            msgboost,
+            mBoost,
           thumbnail: { url: lemembre.user.avatarURL() },
         },
       });

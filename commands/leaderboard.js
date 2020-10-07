@@ -24,12 +24,13 @@ class Leaderboard extends Command {
         .setThumbnail(message.guild.iconURL({ format: 'png' }))
         .setTimestamp();
       const papotins = this.client.papotins;
+
       const collectionneur = message.member;
 
       let epingles = new Map();
       for (const [key, value] of papotins) {
-        if (value.epingles.length === 0) continue;
-        epingles.set(key, value.epingles.length);
+        if (value.length === 0) continue;
+        epingles.set(key, value.length);
       }
       const larray = Array.from(epingles.entries());
 

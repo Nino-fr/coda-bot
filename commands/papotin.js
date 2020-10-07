@@ -1,5 +1,7 @@
 const Command = require('../base/Command.js');
-const { Message } = require('discord.js');
+const { Message } = require('discord.js'),
+  fs = require('fs'),
+  papotins = JSON.parse(JSON.stringify(require('../databases/papotins.json')));
 
 class Papotin extends Command {
   constructor() {
@@ -29,7 +31,7 @@ class Papotin extends Command {
       );
       if (!message.member.roles.cache.has(papoRole.id))
         return this.repondre(message, "Vous n'avez acheté aucun papotin !");
-
+      let member = message.member;
       function randomise() {
         var num = Math.random() * 100;
 
@@ -39,18 +41,36 @@ class Papotin extends Command {
       }
       let base = randomise();
 
-      await this.client.papotins.ensure(message.author.id, {
-        epingles: [],
-        boost: false,
-        lastUpdate: new Date(),
-      });
-
-      if (this.client.papotins.get(message.author.id, 'boost') === 'boosted')
-        this.client.papotins.set(message.author.id, false, 'boost');
-      if (this.client.papotins.get(message.author.id, 'boost') === true) {
-        base = 1;
-        this.client.papotins.set(message.author.id, 'boosted', 'boost');
+      if (
+        !this.client.papotins.get(member.id) ||
+        this.client.papotins.get(member.id) === undefined ||
+        this.client.papotins.get(member.id) === null
+      ) {
+        this.client.papotins.set(member.id, []);
+        this.client.boosts.set(member.id, false);
+        papotins[member.id] = { epingles: [], boost: false };
       }
+      if (this.client.boosts.get(member.id) === undefined)
+        papotins[member.id].boost = false;
+      if (this.client.boosts.get(member.id) === true) {
+        base = 1;
+        papotins[member.id].boost = 'boosted';
+      }
+      if (this.client.boosts.get(member.id) === 'boosted') {
+        papotins[member.id].boost = false;
+      }
+
+      if (
+        !this.client.boosts.get(member.id) ||
+        this.client.boosts.get(member.id) === undefined
+      )
+        this.client.boosts.set(member.id, false);
+
+      if (this.client.boosts.get(member.id) === 'boosted')
+        this.client.boosts.set(member.id, false);
+
+      if (this.client.boosts.get(member.id) === true)
+        this.client.boosts.set(member.id, 'boosted');
 
       let epingle;
       console.log(base);
@@ -147,12 +167,12 @@ class Papotin extends Command {
           }
           if (epingle === undefined || epingle === null)
             epingle = [
+              'Argentavis',
+              'Mastodonte',
               'Banshee',
               'Gremlin',
-              'Lutin',
-              'Verminion',
-              'Jaculus',
-              'Alcyon',
+              'Gremlin',
+              'Banshee',
             ].random();
           console.log(epingle);
 
@@ -211,15 +231,23 @@ class Papotin extends Command {
           'Kraken',
         ].random();
       if (epingle === undefined || epingle === null) epingle = 'Alicorne';
-      await this.client.papotins
-        .get(message.author.id, 'epingles')
-        .push(epingle);
+      papotins[member.id].epingles.push(epingle);
 
       await message.member.roles
         .remove(papoRole.id)
         .catch((err) =>
           this.client.channels.cache.get('746688731557265481').send(err)
         );
+
+      this.client.papotins.get(member.id).push(epingle);
+
+      fs.writeFile(
+        './databases/papotins.json',
+        JSON.stringify(papotins),
+        (err) => {
+          if (err) throw err;
+        }
+      );
       let user = message.author;
       switch (epingle) {
         case 'Lutin':

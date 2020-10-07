@@ -1,6 +1,8 @@
 const Command = require('../base/Command.js');
 const { Message } = require('discord.js');
-const { red_dark } = require('../colours.json');
+const { red_dark } = require('../colours.json'),
+  fs = require('fs'),
+  warns = JSON.parse(JSON.stringify(require('../databases/papotins.json')));
 
 class Désavertir extends Command {
   constructor() {
@@ -32,19 +34,12 @@ class Désavertir extends Command {
       let reason = args.join(' ');
       if (reason) reason = 'Aucune';
 
-      if (
-        !this.client.warns.get(member.id) ||
-        this.client.warns.get(member.id, 'sanctions').length === 0
-      ) {
+      if (!warns[member.id] || warns[member.id].sanctions.length === 0)
         return this.repondre(message, "Ce membre n'a reçu aucune sanction !");
-      }
 
-      await this.client.warns
-        .get(member.id, 'sanctions')
-        .splice(this.client.warns.get(member.id, 'sanctions').length - 1);
-      /* fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
+      fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
         if (err) throw err;
-      }); */
+      });
 
       return this.repondre(message, {
         embed: {

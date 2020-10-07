@@ -1,5 +1,6 @@
 const Command = require('../base/Command.js');
-const fs = require('fs');
+const fs = require('fs'),
+  papotins = JSON.parse(JSON.stringify(require('../databases/papotins.json')));
 
 class GiveEpingle extends Command {
   constructor() {
@@ -32,32 +33,25 @@ class GiveEpingle extends Command {
         return this.repondre(message, 'Quelle épingle dois-je donner ?');
       let member = message.member;
 
-      if (
-        !this.client.papotins.get(member.id) ||
-        this.client.papotins.get(member.id, 'epingles').length === 0
-      )
-        return this.repondre(message, "Vous n'avez aucune épingle à donner");
+      if (!papotins[member.id] || papotins[member.id].epingles.length === 0)
+        return message.channel.send("Vous n'avez aucune épingle à donner");
 
       let epingle = 'lol';
-      let epingles = this.client.papotins.get(member.id, 'epingles');
+      let pins = papotins[member.id].epingles;
 
-      await this.client.papotins.ensure(destinataire.id, {
-        epingles: [],
-        boost: false,
-        lastUpdate: new Date(),
-      });
+      if (!papotins[destinataire.id])
+        papotins[destinataire.id] = {
+          epingles: [],
+          boost: false,
+        };
+      let destinataireEpingles = papotins[destinataire.id].epingles;
 
-      let destinatepingles = this.client.papotins.get(
-        destinataire.id,
-        'epingles'
-      );
-
-      for (let i of epingles) {
+      for (let i of pins) {
         if (i.toLowerCase() === nom.toLowerCase()) {
-          destinatepingles.push(i);
+          destinataireEpingles.push(i);
 
           epingle = i;
-          epingles.splice(epingles.indexOf(i), 1);
+          pins.splice(pins.indexOf(i));
 
           this.repondre(
             message,
@@ -70,7 +64,9 @@ class GiveEpingle extends Command {
           break;
         } else continue;
       }
-
+      fs.writeFile('./databases/papotins.json', papotins, (err) => {
+        if (err) throw err;
+      });
       if (epingle === 'lol')
         return this.repondre(
           message,
