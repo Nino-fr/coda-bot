@@ -180,6 +180,7 @@ class Help extends Command {
 
               embed
                 .addField('Commande :', command.help.name)
+                .addField('Description', command.help.description)
                 .addField(
                   'Utilisation :',
                   this.client.config.defaultSettings.prefix + command.help.usage
