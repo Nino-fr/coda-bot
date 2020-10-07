@@ -1,6 +1,6 @@
 const Command = require('../base/Command.js');
 
-class Say extends Command {
+class SayEmbed extends Command {
   constructor() {
     super({
       name: 'direEmbed',
@@ -41,4 +41,4 @@ class Say extends Command {
   }
 }
 
-module.exports = Say;
+module.exports = SayEmbed;
