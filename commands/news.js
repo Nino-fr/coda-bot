@@ -13,7 +13,12 @@ class News extends Command {
   }
 
   async run(message, args, level) {
-    const newsLink = `http://newsapi.org/v2/top-headlines?from=2020-08-06&sortBy=popularity&country=${args[0]}&apiKey=168d6360f85749908e5849d4e4f1aff4`;
+    const newDate = new Date().toLocaleDateString().replace(/\//g, '-');
+    let day = newDate.match(/\d+/);
+    let year = newDate.match(/(?<=-)\d{4}/);
+    let month = newDate.match(/(?<=-)\d{2}/);
+    let date = [year, month, day].join('-');
+    const newsLink = `http://newsapi.org/v2/top-headlines?from=${date}&sortBy=popularity&country=${args[0]}&apiKey=168d6360f85749908e5849d4e4f1aff4`;
     try {
       await axios.default.get(newsLink).then(async (res) => {
         let data = JSON.parse(JSON.stringify(res.data));
