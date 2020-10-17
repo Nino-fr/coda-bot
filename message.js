@@ -142,23 +142,8 @@ module.exports = class {
       }
     }
     // Deux conditions permettant d'envoyer un embed de prévisualisation des liens YouTube
-    if (/https\:\/\/youtu\.be\/[\w\d\-]+/.test(message.content)) {
-      function convertMS(ms) {
-        var d, h, m, s;
-        s = Math.floor(ms / 1000);
-        m = Math.floor(s / 60);
-        s = s % 60;
-        h = Math.floor(m / 60);
-        m = m % 60;
-        d = Math.floor(h / 24);
-        h = h % 24;
-        return {
-          d: d,
-          h: h,
-          m: m,
-          s: s,
-        };
-      }
+    if (/https\:\/\/youtu\.be\/[\w\d\-]+/.test(message.content) && bot.YTVisu) {
+      const { convertMS } = require('./fonctions');
 
       let regYt = /https\:\/\/youtu\.be\/[\w\d\-]+/;
       let url = message.content.match(regYt);
@@ -176,18 +161,26 @@ module.exports = class {
       let views = ytdvideo.data.items[0].statistics.viewCount;
       let commentCount = ytdvideo.data.items[0].statistics.commentCount;
 
-      const { getInfo } = require('ytdl-getinfo');
       let title, description, owner, urlowner, duration, totalduration;
       const fetchVideoInfo = require('updated-youtube-info');
-      await getInfo(url.toString()).then((info) => {
-        let item = info.items[0];
-        description = item.description;
-        title = item.fulltitle;
-        owner = item.uploader;
-        urlowner = item.uploader_url;
-        totalduration = convertMS(parseInt(item.duration + '000'));
-        duration = `${totalduration.h} heures ${totalduration.m} minutes et ${totalduration.s} secondes`;
-      });
+      await axios.default
+        .get(
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
+        )
+        .then((res) => {
+          let info = res.data;
+          let item = info.items[0].snippet,
+            channelId = item.channelId;
+          description = item.description;
+          title = item.title;
+          owner = item.channelTitle;
+          totalduration = convertMS(
+            new Date(info.items[0].contentDetails.duration).getMilliseconds()
+          );
+          urlowner = `https://www.youtube.com/channel/${channelId}`;
+          duration = `${totalduration.h} heures ${totalduration.m} minutes et ${totalduration.s} secondes`;
+        });
+
       let video = await fetchVideoInfo(videoId);
       message.channel.send({
         embed: {
@@ -245,24 +238,12 @@ module.exports = class {
       });
     }
     if (
-      /https\:\/\/www\.youtube\.com\/watch\?v\=[\w\d\-]+/.test(message.content)
+      /https\:\/\/www\.youtube\.com\/watch\?v\=[\w\d\-]+/.test(
+        message.content
+      ) &&
+      bot.YTVisu
     ) {
-      function convertMS(ms) {
-        var d, h, m, s;
-        s = Math.floor(ms / 1000);
-        m = Math.floor(s / 60);
-        s = s % 60;
-        h = Math.floor(m / 60);
-        m = m % 60;
-        d = Math.floor(h / 24);
-        h = h % 24;
-        return {
-          d: d,
-          h: h,
-          m: m,
-          s: s,
-        };
-      }
+      const { convertMS } = require('./fonctions');
 
       let regYt = /https\:\/\/www\.youtube\.com\/watch\?v\=[\w\d\-]+/;
       let url = message.content.match(regYt);
@@ -271,7 +252,6 @@ module.exports = class {
         .toString()
         .match(/(?<=https:\/\/www.youtube.com\/watch\?v=)[\w\d\-]+/)
         .toString();
-      // const fetch = require('node-fetch');
       const axios = require('axios');
       let ytdvideo = await axios.default.get(
         `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
@@ -283,18 +263,26 @@ module.exports = class {
       let views = ytdvideo.items[0].statistics.viewCount;
       let commentCount = ytdvideo.items[0].statistics.commentCount;
 
-      const { getInfo } = require('ytdl-getinfo');
       let title, description, owner, urlowner, duration, totalduration;
       const fetchVideoInfo = require('updated-youtube-info');
-      await getInfo(url.toString()).then((info) => {
-        let item = info.items[0];
-        description = item.description;
-        title = item.fulltitle;
-        owner = item.uploader;
-        urlowner = item.uploader_url;
-        totalduration = convertMS(parseInt(item.duration + '000'));
-        duration = `${totalduration.h} heures ${totalduration.m} minutes et ${totalduration.s} secondes`;
-      });
+      await axios.default
+        .get(
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
+        )
+        .then((res) => {
+          let info = res.data;
+          let item = info.items[0].snippet,
+            channelId = item.channelId;
+          description = item.description;
+          title = item.title;
+          owner = item.channelTitle;
+          totalduration = convertMS(
+            new Date(info.items[0].contentDetails.duration).getMilliseconds()
+          );
+          urlowner = `https://www.youtube.com/channel/${channelId}`;
+          duration = `${totalduration.h} heures ${totalduration.m} minutes et ${totalduration.s} secondes`;
+        });
+
       let video = await fetchVideoInfo(videoId);
       message.channel.send({
         embed: {
@@ -351,7 +339,6 @@ module.exports = class {
         },
       });
     }
-
     /**
      *
      * @param { TextChannel } channel Le salon où créer le webhook
@@ -378,16 +365,24 @@ module.exports = class {
               'https://cdn.discordapp.com/attachments/659433619881984021/734393942463741993/unnamed.jpg'
             )
             .then((webhook) => {
-              webhook.send(msg, {
-                username: title,
-                avatarURL: avatar,
-              });
+              webhook
+                .send(msg, {
+                  username: title,
+                  avatarURL: avatar,
+                })
+                .then(() =>
+                  webhook.delete('Libérer de la place, inutile de le laisser')
+                );
             });
         } else {
-          foundHook.send(msg, {
-            username: title,
-            avatarURL: avatar,
-          });
+          foundHook
+            .send(msg, {
+              username: title,
+              avatarURL: avatar,
+            })
+            .then(() =>
+              foundHook.delete('Libérer de la place, inutile de le laisser')
+            );
         }
       });
     }
