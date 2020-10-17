@@ -363,7 +363,11 @@ process.on('unhandledRejection', (error) => {
     )
     .addField('🔺 Précisions :', precisions + '```');
 
-  client.channels.cache.get('738363648447217695').send(api_error_embed);
+  try {
+    client.channels.cache.get('738363648447217695').send(api_error_embed);
+  } catch {
+    console.log(error, 'Précisions : ' + precisions.replace('```', ''));
+  }
 });
 
 // Puis enfin gérons les erreurs liées à l'API Discord
