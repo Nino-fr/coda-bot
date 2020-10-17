@@ -109,7 +109,4 @@ Vous vous en doutez, pour utiliser ce code, il faut installer plusieurs modules.
   <li>
     <a href="https://www.npmjs.com/package/weather-js">weather-js</a>
   </li>
-  <li>
-    <a href="https://www.npmjs.com/package/ytdl-getinfo">ytdl-getinfo</a>
-  </li>
 </ul>
