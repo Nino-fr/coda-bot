@@ -142,7 +142,7 @@ module.exports = class {
       }
     }
     // Deux conditions permettant d'envoyer un embed de prévisualisation des liens YouTube
-    if (/https\:\/\/youtu\.be\/[\w\d\-]+/.test(message.content) && bot.YTVisu) {
+    if (/https\:\/\/youtu\.be\/[\w\d\-]+/.test(message.content)) {
       const { convertMS } = require('./fonctions');
 
       let regYt = /https\:\/\/youtu\.be\/[\w\d\-]+/;
@@ -165,7 +165,7 @@ module.exports = class {
       const fetchVideoInfo = require('updated-youtube-info');
       await axios.default
         .get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
         )
         .then((res) => {
           let info = res.data;
@@ -174,11 +174,13 @@ module.exports = class {
           description = item.description;
           title = item.title;
           owner = item.channelTitle;
-          totalduration = convertMS(
-            new Date(info.items[0].contentDetails.duration).getMilliseconds()
-          );
+          totalduration = info.items[0].contentDetails.duration
+            .replace(/(\d+)M/i, ` $1 minutes`)
+            .replace(/(\d+)S/i, ` $1 secondes`)
+            .replace(/(\d+)H/i, `$1 heures,`)
+            .replace('PT', '');
+
           urlowner = `https://www.youtube.com/channel/${channelId}`;
-          duration = `${totalduration.h} heures ${totalduration.m} minutes et ${totalduration.s} secondes`;
         });
 
       let video = await fetchVideoInfo(videoId);
@@ -189,19 +191,14 @@ module.exports = class {
             {
               name: 'Description',
               value:
-                description.length > 1300
-                  ? description
-                      .slice(0, 1300)
-                      .split(/ +/g)
-                      .splice(
-                        description.slice(0, 1300).split(/ +/g).length - 2
-                      )
-                      .join(' ') + ` [\[...\]](${url})`
+                description.length > 900
+                  ? description.slice(0, 900).split(/ +/g).splice(1).join(' ') +
+                    ` [\[...\]](${url})`
                   : description,
             },
             {
               name: '⏲️ Durée de la vidéo',
-              value: duration,
+              value: totalduration,
               inline: true,
             },
             {
@@ -238,13 +235,8 @@ module.exports = class {
       });
     }
     if (
-      /https\:\/\/www\.youtube\.com\/watch\?v\=[\w\d\-]+/.test(
-        message.content
-      ) &&
-      bot.YTVisu
+      /https\:\/\/www\.youtube\.com\/watch\?v\=[\w\d\-]+/.test(message.content)
     ) {
-      const { convertMS } = require('./fonctions');
-
       let regYt = /https\:\/\/www\.youtube\.com\/watch\?v\=[\w\d\-]+/;
       let url = message.content.match(regYt);
       let videoId = message.content
@@ -267,7 +259,7 @@ module.exports = class {
       const fetchVideoInfo = require('updated-youtube-info');
       await axios.default
         .get(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
+          `https://www.googleapis.com/youtube/v3/videos?part=snippet&part=contentDetails&id=${videoId}&key=AIzaSyBIvSnYmTSRxjnyeDf106P1FsBqkngTKXs`
         )
         .then((res) => {
           let info = res.data;
@@ -276,11 +268,13 @@ module.exports = class {
           description = item.description;
           title = item.title;
           owner = item.channelTitle;
-          totalduration = convertMS(
-            new Date(info.items[0].contentDetails.duration).getMilliseconds()
-          );
+          totalduration = info.items[0].contentDetails.duration
+            .replace(/(\d+)M/i, ` $1 minutes`)
+            .replace(/(\d+)S/i, ` $1 secondes`)
+            .replace(/(\d+)H/i, `$1 heures,`)
+            .replace('PT', '');
+
           urlowner = `https://www.youtube.com/channel/${channelId}`;
-          duration = `${totalduration.h} heures ${totalduration.m} minutes et ${totalduration.s} secondes`;
         });
 
       let video = await fetchVideoInfo(videoId);
@@ -291,19 +285,14 @@ module.exports = class {
             {
               name: 'Description',
               value:
-                description.length > 1300
-                  ? description
-                      .slice(0, 1300)
-                      .split(/ +/g)
-                      .splice(
-                        description.slice(0, 1300).split(/ +/g).length - 2
-                      )
-                      .join(' ') + ` [\[...\]](${url})`
+                description.length > 900
+                  ? description.slice(0, 900).split(/ +/g).splice(1).join(' ') +
+                    ` [\[...\]](${url})`
                   : description,
             },
             {
               name: '⏲️ Durée de la vidéo',
-              value: duration,
+              value: totalduration,
               inline: true,
             },
             {
