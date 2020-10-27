@@ -12,7 +12,7 @@ module.exports = class {
    */
   async run(lien) {
     let lChannel = lien.guild.channels.cache.find((r) => r.name === 'logs');
-    let créateur = lien.inviter;
+    let créateur = `<@${lien.inviter.id}>`;
     let maxUses = lien.maxUses;
     let dateDeCréation = moment.utc(lien.createdAt).format('LL');
     lChannel.send({
