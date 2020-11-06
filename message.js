@@ -143,7 +143,7 @@ module.exports = class {
     }
     // Deux conditions permettant d'envoyer un embed de prévisualisation des liens YouTube
     if (/https\:\/\/youtu\.be\/[\w\d\-]+/.test(message.content)) {
-      const { convertMS } = require('./fonctions');
+      // const { convertMS } = require('./fonctions');
 
       let regYt = /https\:\/\/youtu\.be\/[\w\d\-]+/;
       let url = message.content.match(regYt);
@@ -1463,11 +1463,11 @@ module.exports = class {
       ) {
         return repondre('Vous ne pouvez pas faire ça !');
       }
-      const noblesse = await message.guild.roles.cache.find(
+      const noblesse = message.guild.roles.cache.find(
         (r) => r.name === 'Membre de la noblesse'
       );
       const reg = /<([^>]+)>/;
-      const metier = await message.guild.roles.cache.find(
+      const metier = message.guild.roles.cache.find(
         (r) =>
           r.name.toLowerCase() ===
           args
@@ -1479,7 +1479,7 @@ module.exports = class {
             .toString()
             .toLowerCase()
       );
-      const talent = await message.guild.roles.cache.find(
+      const talent = message.guild.roles.cache.find(
         (r) =>
           r.name.toLowerCase() ===
           args
@@ -1488,7 +1488,7 @@ module.exports = class {
             .match(/<[^>]+> <([^>]+)>/)[1]
             .toLowerCase()
       );
-      const prodig = await message.guild.roles.cache.find(
+      const prodig = message.guild.roles.cache.find(
         (r) => r.name.toLowerCase() === 'prodige'
       );
       let newPseudo = args
@@ -1547,6 +1547,174 @@ module.exports = class {
       });
       repondre(
         `Félicitations <@${member.id}> ! Te voilà membre de l'Élite de Foxfire, sur le chemin vers la noblesse !`
+      );
+    }
+
+    // Créer un métier de mentor avec les salons via une commande
+    if (message.content.toLowerCase().startsWith(prefix + 'creatementor')) {
+      const dirlo = message.guild.roles.cache.find(
+          (r) => r.name === 'Directrice de Foxfire'
+        ),
+        heraut = message.guild.roles.cache.find(
+          (r) => r.name === "Héraut de la Tour d'Argent"
+        );
+      if (
+        !message.member.roles.cache.has(modo.id) &&
+        !message.member.roles.cache.has(dirlo.id) &&
+        !message.member.roles.cache.has(heraut.id) &&
+        !message.member.permissions.has('ADMINISTRATOR')
+      ) {
+        return repondre('Vous ne pouvez pas faire ça !');
+      }
+      const reg = /<([^>]+)>/;
+      if (!reg.test(args.join(' ')))
+        return repondre(
+          'Veuillez renseigner tous les champs nécessaires : \n`' +
+            prefix +
+            'creatementor <Nom du rôle du mentor> <couleur du rôle (en MAJ et en anglais ou en (hexa)décimales)> <Nom du salon> <Élèves (prodiges|talent)>`'
+        );
+      let nom = args
+        .join(' ')
+        .match(reg)
+        .toString()
+        .match(/[^<>]+/)
+        .toString();
+
+      if (!args.join(' ').match(/<[^>]+> <([^>]+)>/))
+        return repondre(
+          'Veuillez renseigner tous les champs nécessaires : \n`' +
+            prefix +
+            'creatementor <Nom du rôle du mentor> <couleur du rôle (en MAJ et en anglais ou en (hexa)décimales)> <Nom du salon> <Élèves (prodiges|talent)>`'
+        );
+
+      const couleur = args
+
+        .join(' ')
+        .match(/<[^>]+> <([^>]+)>/)[1]
+        .toUpperCase();
+
+      let newMentor;
+      if (
+        !message.guild.roles.cache.find(
+          (r) => r.name.toLowerCase() === nom.toLowerCase()
+        )
+      ) {
+        newMentor = await message.guild.roles.create({
+          data: {
+            name: nom,
+            color: couleur,
+            mentionable: true,
+            position: message.guild.roles.cache.get('721746249426010192')
+              .position,
+            hoist: false,
+            permissions: [
+              'ADD_REACTIONS',
+              'ATTACH_FILES',
+              'CHANGE_NICKNAME',
+              'CONNECT',
+              'CREATE_INSTANT_INVITE',
+              'EMBED_LINKS',
+              'READ_MESSAGE_HISTORY',
+              'SEND_MESSAGES',
+              'SEND_TTS_MESSAGES',
+              'SPEAK',
+              'STREAM',
+              'USE_EXTERNAL_EMOJIS',
+            ],
+          },
+        });
+      } else
+        newMentor = message.guild.roles.cache.find(
+          (r) => r.name.toLowerCase() === nom.toLowerCase()
+        );
+
+      let matiere = args.join(' ').match(/<[^>]+> <[^>]+> <([^>]+)>/)[1];
+      console.log(args.join(' ').match(/<[^>]+> <[^>]+> <[^>]+> <([^>]+)>/));
+      let leType = args.join(' ').match(/<[^>]+> <[^>]+> <[^>]+> <([^>]+)>/)[1];
+
+      if (!matiere || !leType)
+        return message.channel.send(
+          'Veuillez renseigner tous les champs nécessaires : \n`' +
+            prefix +
+            'creatementor <Nom du rôle du mentor> <couleur du rôle (en MAJ et en anglais ou en (hexa)décimales)> <Nom du salon> <Élèves (prodiges|talent)>`'
+        );
+
+      if (
+        !message.guild.roles.cache.find(
+          (r) => r.name.toLowerCase() === leType.toLowerCase()
+        ) &&
+        leType.toLowerCase() !== 'prodige' &&
+        leType.toLowerCase() !== 'prodiges'
+      )
+        return message.channel.send(
+          "**L'un des paramètres est incorrect.** Veuillez renseigner **correctement** tous les champs nécessaires : \n`" +
+            prefix +
+            'creatementor <Nom du rôle du mentor> <couleur du rôle (en MAJ et en anglais ou en (hexa)décimales)> <Nom du salon> <Élèves (prodiges|talent)>`'
+        );
+
+      let salon = message.guild.channels.cache.has(matiere)
+        ? message.guild.channels.cache.find(
+            (s) => s.name === matiere.replace(/ +/g, '-')
+          )
+        : await message.guild.channels.create(matiere.replace(/ +/g, '-'), {
+            parent: message.guild.channels.cache
+              .sort((c) => c.type === 'category')
+              .find((c) => c.name === 'Foxfire'),
+            position: message.guild.channels.cache.get('604242426248560669')
+              .rawPosition,
+            type: 'text',
+            permissionOverwrites: [
+              { id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL' },
+              {
+                id: message.guild.roles.cache.find(
+                  (r) =>
+                    r.name.toLowerCase() ===
+                    (leType.toLowerCase() === 'prodige' ||
+                    leType.toLowerCase() === 'prodiges'
+                      ? 'prodige'
+                      : leType.toLowerCase())
+                ),
+                allow: [
+                  'VIEW_CHANNEL',
+                  'SEND_MESSAGES',
+                  'ADD_REACTIONS',
+                  'USE_EXTERNAL_EMOJIS',
+                ],
+              },
+              {
+                id:
+                  leType.toLowerCase() !== 'prodige' &&
+                  leType.toLowerCase() !== 'prodiges'
+                    ? message.guild.roles.cache.find(
+                        (r) => r.name === 'Membre de la noblesse'
+                      )
+                    : message.guild.roles.cache.find((r) => r.name === 'Muted'),
+                allow: 'VIEW_CHANNEL',
+                deny: 'SEND_MESSAGES',
+              },
+              {
+                id: newMentor,
+                allow: [
+                  'ADD_REACTIONS',
+                  'ATTACH_FILES',
+                  'CREATE_INSTANT_INVITE',
+                  'EMBED_LINKS',
+                  'MANAGE_MESSAGES',
+                  'MANAGE_WEBHOOKS',
+                  'MENTION_EVERYONE',
+                  'READ_MESSAGE_HISTORY',
+                  'SEND_MESSAGES',
+                  'SEND_TTS_MESSAGES',
+                  'VIEW_CHANNEL',
+                  'USE_EXTERNAL_EMOJIS',
+                ],
+              },
+            ],
+          });
+
+      console.log(newMentor, nom, couleur, matiere);
+      repondre(
+        `Un nouveau poste a été créé à Foxfire : **${newMentor.name}** ! Le salon de ce cours est ${salon}.`
       );
     }
   }
