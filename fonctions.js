@@ -1,5 +1,5 @@
 'use strict';
-/**
+/*
  * Convertir un nombre en millisecondes en jours, heures, minutes et secondes
  * @param { Number } ms Le nombre en millisecondes à convertir
  */
@@ -19,8 +19,8 @@ function convertMS(ms) {
     s: s,
   };
 }
-/**
- * @param { {} } obj L'object
+/*
+ * @param { ObjectConstructor } obj L'object
  * @param { String } key La clé de la valeur
  * @param {*} val La valeur de la clé
  * @returns
@@ -44,9 +44,9 @@ function getObjects(obj, key, val) {
   }
   return objects;
 }
-/**
+/*
  * Returns an array of values that match on a certain key
- * @param { {} } obj L'objet
+ * @param { ObjectConstructor } obj L'objet
  * @param {String} key La clé
  */
 function getValues(obj, key) {
@@ -61,9 +61,9 @@ function getValues(obj, key) {
   }
   return objects;
 }
-/**
+/*
  * Returns an array of keys that match on a certain value
- * @param { {} } obj
+ * @param { ObjectConstructor } obj
  * @param {*} val
  */
 function getKeys(obj, val) {
