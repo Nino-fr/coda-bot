@@ -1,6 +1,6 @@
 {
   "name": "coda",
-  "version": "2.5.0",
+  "version": "2.5.8",
   "description": "Un bot privé et multifonctionnel",
   "main": "index.js",
   "scripts": {
