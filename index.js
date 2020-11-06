@@ -30,6 +30,8 @@ class Coda extends Client {
 
     this.papotins = new Map();
     this.boosts = new Map();
+    this.warns = new Map();
+    this.immus = new Map();
 
     this.logger = require('./modules/Logger');
 
@@ -427,7 +429,7 @@ assistance.on('message', async (message) => {
         let args = message.content.slice(2).trim().split(/ +/g);
         args.shift();
         let ID = args.shift();
-        let destinataire = assistance.users.cache.get(ID);
+        let destinataire = message.guild.members.cache.get(ID).user;
         if (!destinataire) {
           return repondre(
             "L'ID est incorrect, veuillez réessayer avec le bon ID."
@@ -460,7 +462,7 @@ assistance.on('message', async (message) => {
         }
         let args = message.content.slice(2).trim().split(/ +/g);
         args.shift();
-        let destinataire = assistance.users.cache.get(args.shift());
+        let destinataire = message.guild.members.cache.get(args.shift()).user;
         destinataire.send(
           "Votre échange avec l'Assistance vient de se terminer. Si vous avez à nouveau besoin d'aide, renvoyez-moi un mp :)"
         );
@@ -567,25 +569,33 @@ assistance.on('ready', () => {
   let cites = assistance.guilds.cache.get('574626014664327178');
   cites.members.cache.forEach(async (member) => {
     if (
-      /[^A-Za-z\s\p{L}]/gu.test(
+      /[^\x00-\x7F]+/gu.test(
         member.nickname ? member.nickname : member.user.username
       )
     ) {
-      if (member.id !== '614029635101130762') {
-        let username = member.nickname ? member.nickname : member.user.username;
-        let newNickname = username
-          .replace(/_/g, ' ')
-          .replace(/-/g, ' ')
-          .replace(/[^A-Za-z\s\p{L}]/gu, '');
-        client.loguer(newNickname);
-        if (newNickname.length === 0) newNickname = 'Pseudo à changer';
-        await member.setNickname(newNickname);
-        await member.guild.channels.cache
-          .find((ch) => ch.name === 'logs')
-          .send(
-            `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
-          );
-      }
+      let username = member.nickname ? member.nickname : member.user.username;
+      let newNickname = username.replace(/_/g, ' ').replace(/-/g, ' ');
+      let tochange = newNickname.match(/([^\x00-\x7F]+)/gu);
+      tochange[1]
+        ? tochange.forEach(
+            (matched) =>
+              (newNickname = newNickname
+                .replace(matched, matched.normalize('NFKC'))
+                .replace(matched, ''))
+          )
+        : (newNickname = newNickname
+            .replace(matched, matched.normalize('NFKC'))
+            .replace(matched, ''));
+      newNickname = newNickname.replace(/([^\x00-\x7F]+)/gu, '');
+
+      client.loguer(newNickname);
+      if (newNickname.length === 0) newNickname = 'Pseudo à changer';
+      await member.setNickname(newNickname);
+      await member.guild.channels.cache
+        .find((ch) => ch.name === 'logs')
+        .send(
+          `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+        );
     }
   });
 });
@@ -619,6 +629,12 @@ setTimeout(() => {
     )) {
       client.papotins.set(key, value.epingles);
       client.boosts.set(key, value.boost);
+    }
+    for (const [key, value] of Object.entries(
+      require('./databases/warns.json')
+    )) {
+      client.warns.set(key, value.sanctions);
+      client.immus.set(key, value.immunisation);
     }
     client.logger.log('Bases de données initialisées');
   }
