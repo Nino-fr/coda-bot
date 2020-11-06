@@ -1,4 +1,4 @@
-// const Canvas = require('canvas');
+const Canvas = require('canvas');
 
 module.exports = class {
   constructor(client) {
@@ -9,8 +9,21 @@ module.exports = class {
     const verify = async () => {
       if (member.guild.id !== '574626014664327178') return;
       let username = member.user.username;
-      if (/[^A-Za-z\s\p{L}]/gu.test(member.user.username)) {
-        let newNickname = username.replace(/[^A-Za-z\s\p{L}]/gu, '');
+      if (/[^\x00-\x7F]+/gu.test(member.user.username)) {
+        let newNickname = username.replace(/_/g, ' ').replace(/-/g, ' ');
+        let tochange = newNickname.match(/([^\x00-\x7F]+)/gu);
+        tochange[1]
+          ? tochange.forEach(
+              (matched) =>
+                (newNickname = newNickname
+                  .replace(matched, matched.normalize('NFKC'))
+                  .replace(matched, ''))
+            )
+          : (newNickname = newNickname
+              .replace(matched, matched.normalize('NFKC'))
+              .replace(matched, ''));
+        newNickname = newNickname.replace(/([^\x00-\x7F]+)/gu, '');
+
         if (newNickname.length === 0) newNickname = 'Pseudo à changer';
         await member.setNickname(newNickname);
         await member.guild.channels.cache
@@ -26,7 +39,7 @@ module.exports = class {
         await member.guild.channels.cache
           .find((ch) => ch.name === 'logs')
           .send(
-            `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+            `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait un nom d'un personnage de GDCP.`
           );
       }
     };
@@ -55,6 +68,7 @@ module.exports = class {
      * @param {Canvas.Canvas} canvas
      * @param {string} text
      */
+
     const applyText = (canvas, text) => {
       try {
         const ctx = canvas.getContext('2d');
@@ -78,7 +92,7 @@ module.exports = class {
       ch.name.includes('bienvenue')
     );
 
-    /*  const canvas = Canvas.createCanvas(700, 250);
+    const canvas = Canvas.createCanvas(700, 250);
     const ctx = canvas.getContext('2d');
 
     const background = await Canvas.loadImage('./wallpaper.png');
@@ -122,6 +136,6 @@ module.exports = class {
           name: 'welcome.png',
         },
       ],
-    }); */
+    });
   }
 };
