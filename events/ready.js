@@ -30,7 +30,8 @@ module.exports = class {
     // Initialisons le statut du bot
     await this.client.user.setActivity(
       `${this.client.settings.get('default').prefix}help | ${
-        this.client.users.cache.size
+        this.client.guilds.cache.get('574626014664327178').memberCount +
+        this.client.guilds.cache.get('707875749343789066').memberCount
       } utilisateurs`
     );
     this.client.logger.log(`${this.client.commands.size} commandes`, 'log');
@@ -48,12 +49,15 @@ module.exports = class {
         if (
           regGDCP.test(member.nickname ? member.nickname : member.user.username)
         ) {
+          let oldnick = member.nickname
+            ? member.nickname
+            : member.user.username;
           if (member.user.bot) return;
           await member.setNickname('Pseudo à changer');
           member.guild.channels.cache
             .find((ch) => ch.name === 'logs')
             .send(
-              `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+              `Le pseudo de <@${member.id}> a été changé de ${oldnick} en ${member.nickname} car il contenait un nom d'un personnage de GDCP.`
             );
         }
       });
