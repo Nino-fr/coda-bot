@@ -12,16 +12,21 @@ module.exports = class {
       if (/[^\x00-\x7F]+/gu.test(member.user.username)) {
         let newNickname = username.replace(/_/g, ' ').replace(/-/g, ' ');
         let tochange = newNickname.match(/([^\x00-\x7F]+)/gu);
-        tochange[1]
-          ? tochange.forEach(
-              (matched) =>
-                (newNickname = newNickname
-                  .replace(matched, matched.normalize('NFKC'))
-                  .replace(matched, ''))
-            )
-          : (newNickname = newNickname
-              .replace(matched, matched.normalize('NFKC'))
-              .replace(matched, ''));
+        console.log(tochange);
+        try {
+          tochange.forEach(
+            (matched) =>
+              (newNickname = newNickname
+                .replace(matched, matched.normalize('NFKC'))
+                .replace(matched, ''))
+          );
+        } catch {
+          try {
+            newNickname = newNickname
+              .replace(tochange, tochange.normalize('NFKC'))
+              .replace(tochange, '');
+          } catch {}
+        }
         newNickname = newNickname.replace(/([^\x00-\x7F]+)/gu, '');
 
         if (newNickname.length === 0) newNickname = 'Pseudo à changer';

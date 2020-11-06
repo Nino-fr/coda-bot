@@ -566,38 +566,6 @@ assistance.on('ready', () => {
     name: 'Envoyez-moi un mp pour contacter les assistants',
     type: 'PLAYING',
   });
-  let cites = assistance.guilds.cache.get('574626014664327178');
-  cites.members.cache.forEach(async (member) => {
-    if (
-      /[^\x00-\x7F]+/gu.test(
-        member.nickname ? member.nickname : member.user.username
-      )
-    ) {
-      let username = member.nickname ? member.nickname : member.user.username;
-      let newNickname = username.replace(/_/g, ' ').replace(/-/g, ' ');
-      let tochange = newNickname.match(/([^\x00-\x7F]+)/gu);
-      tochange[1]
-        ? tochange.forEach(
-            (matched) =>
-              (newNickname = newNickname
-                .replace(matched, matched.normalize('NFKC'))
-                .replace(matched, ''))
-          )
-        : (newNickname = newNickname
-            .replace(matched, matched.normalize('NFKC'))
-            .replace(matched, ''));
-      newNickname = newNickname.replace(/([^\x00-\x7F]+)/gu, '');
-
-      client.loguer(newNickname);
-      if (newNickname.length === 0) newNickname = 'Pseudo à changer';
-      await member.setNickname(newNickname);
-      await member.guild.channels.cache
-        .find((ch) => ch.name === 'logs')
-        .send(
-          `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
-        );
-    }
-  });
 });
 
 // Affichons en console les différentes données d'utilisation du script.
@@ -641,5 +609,51 @@ setTimeout(() => {
   initDatabases();
 }, 20000);
 
+/* setTimeout(() => {
+  async function verify() {
+    let cites = assistance.guilds.cache.find(
+      (g) => g.id === '574626014664327178'
+    );
+    console.log(cites);
+
+    for (let [, member] of cites.members.cache) {
+      let username = member.nickname ? member.nickname : member.user.username;
+      console.log(username);
+
+      if (/[^\x00-\x7F]+/gu.test(username)) {
+        console.log(true);
+        let newNickname = username.replace(/_/g, ' ').replace(/-/g, ' ');
+        let tochange = newNickname.match(/([^\x00-\x7F]+)/gu);
+        console.log(tochange);
+        try {
+          tochange.forEach(
+            (matched) =>
+              (newNickname = newNickname
+                .replace(matched, matched.normalize('NFKC'))
+                .replace(matched, ''))
+          );
+        } catch {
+          try {
+            newNickname = newNickname
+              .replace(tochange, tochange.normalize('NFKC'))
+              .replace(tochange, '');
+          } catch {}
+        }
+
+        client.loguer(newNickname);
+
+        if (newNickname.length === 0) newNickname = 'Pseudo à changer';
+        await member.setNickname(newNickname);
+        await member.guild.channels.cache
+          .find((ch) => ch.name === 'logs')
+          .send(
+            `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+          );
+      }
+    }
+  }
+  verify().then(() => client.logger.log('Pseudos vérifiés !'));
+}, 60000);
+ */
 // Exportons le client.
 module.exports = { client };
