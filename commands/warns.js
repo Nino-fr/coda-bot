@@ -29,15 +29,17 @@ class Sanctions extends Command {
         ) ||
         message.member;
 
-      if (!warns[member.id] || warns[member.id].sanctions.length === 0) {
+      if (
+        !this.client.warns.get(member.id) ||
+        this.client.warns.get(member.id).length === 0
+      ) {
         return this.repondre(message, "Ce membre n'a reçu aucune sanction");
       }
 
       let sanctions = warns[member.id].sanctions;
-      let immunite =
-        warns[member.id].immunisation === true
-          ? "**Ce membre dispose d'un joker lui permettant d'esquiver la prochaine sanction.**"
-          : '';
+      let immunite = this.client.immus.get(member.id)
+        ? "**Ce membre dispose d'un joker lui permettant d'esquiver la prochaine sanction.**"
+        : '';
 
       return message.channel.send({
         embed: {

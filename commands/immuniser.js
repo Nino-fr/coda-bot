@@ -40,12 +40,13 @@ class Immuniser extends Command {
       if (!member)
         return this.repondre(message, 'Veuillez préciser un membre correct');
 
-      if (!warns[member.id])
+      if (!this.client.warns.get(member.id))
         warns[member.id] = {
           sanctions: [],
           immunisation: false,
         };
-      if (warns[member.id].immunisation === true) {
+
+      if (this.client.immus.get(member.id)) {
         return this.repondre(message, "Ce membre possède déjà l'immunité !");
       }
       warns[member.id].immunisation = true;
@@ -53,6 +54,9 @@ class Immuniser extends Command {
       fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
         if (err) throw err;
       });
+      this.client.warns.set(member.id, warns[member.id].sanctions);
+      this.client.immus.set(member.id, warns[member.id].immunisation);
+
       return this.repondre(
         message,
         `<:check:708245371792523317> \`${

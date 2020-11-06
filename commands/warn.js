@@ -30,13 +30,13 @@ class Avertir extends Command {
       let reason = args.join(' ');
       if (!args[0]) reason = 'Aucune';
 
-      if (!warns[member.id])
+      if (!this.client.warns.get(member.id))
         warns[member.id] = {
           sanctions: [],
           immunisation: false,
         };
 
-      if (warns[member.id].immunisation === true) {
+      if (this.client.immus.get(member.id)) {
         warns[member.id].immunisation = false;
         return this.repondre(
           message,
@@ -47,6 +47,8 @@ class Avertir extends Command {
       fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
         if (err) throw err;
       });
+      this.client.warns.set(member.id, warns[member.id].sanctions);
+      this.client.immus.set(member.id, warns[member.id].immunisation);
       message.delete();
       return this.repondre(message, {
         embed: {

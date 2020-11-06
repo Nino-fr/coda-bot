@@ -34,12 +34,18 @@ class Désavertir extends Command {
       let reason = args.join(' ');
       if (reason) reason = 'Aucune';
 
-      if (!warns[member.id] || warns[member.id].sanctions.length === 0)
+      if (
+        !this.client.warns.get(member.id) ||
+        this.client.warns.get(member.id).length === 0
+      )
         return this.repondre(message, "Ce membre n'a reçu aucune sanction !");
+
+      warns[member.id].sanctions.pop();
 
       fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
         if (err) throw err;
       });
+      this.client.warns.set(member.id, warns[member.id].sanctions);
 
       return this.repondre(message, {
         embed: {
