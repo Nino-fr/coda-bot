@@ -35,6 +35,7 @@ class ListePapotins extends Command {
         'Kraken',
         'Gorgodon',
         'Alicorne',
+        'Titanoboa',
       ];
       this.repondre(message, {
         embed: {
