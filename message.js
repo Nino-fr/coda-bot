@@ -1757,6 +1757,11 @@ module.exports = class {
 
     // Commande pour normaliser un pseudo
     if (message.content.toLowerCase().startsWith(prefix + 'normalize')) {
+      if (
+        !message.member.roles.cache.has(modo.id) &&
+        !message.member.permissions.has('MANAGE_NICKNAMES')
+      )
+        return;
       console.log(args);
       let member = message.mentions.members.first();
       if (!member) member = message.guild.members.cache.get(args[0]);
