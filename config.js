@@ -14,10 +14,9 @@ const config = {
   support: ['428582719044452352', '557612750734491661', '536283567865593856'],
 
   // Le token de votre bot, trouvable sur https://discordapp.com/developers/applications/me
-  token: 'Njk5Mjk0MTUyMTkzNzM2NzA0.XpSSbg.qerHQfRPyQLFIkWjbNrCEKVLYEc',
+  token: 'secretToken',
 
-  assistanceToken:
-    'NzM4NzI0MjY5MzgyNDM0ODM2.XyQElg.4oVf4e9mASike8d2jPxkVJRLUDY',
+  assistanceToken: 'tokenSecret',
 
   defaultSettings: {
     prefix: '&',
