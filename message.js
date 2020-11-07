@@ -539,7 +539,10 @@ module.exports = class {
     // Condition censurant les liens d'invitation Discord n'étant pas envoyés dans les bons salons.
     let invitationlink = /(?:https?:\/\/)?discord.gg\/[\w\d]+/gim;
     if (invitationlink.test(message.content)) {
-      if (!message.channel.name.includes('pub')) {
+      if (
+        !message.channel.name.includes('pub') &&
+        !message.channel.parentID === '596663882425040906'
+      ) {
         await message.delete();
         let nom = message.member.nickname
           ? message.member.nickname
@@ -1716,6 +1719,77 @@ module.exports = class {
       repondre(
         `Un nouveau poste a été créé à Foxfire : **${newMentor.name}** ! Le salon de ce cours est ${salon}.`
       );
+    }
+
+    /**
+     * Normaliser un string
+     * @param {string} string Le string à normaliser
+     */
+    async function normalize(string) {
+      string = string
+        .replace(/_/g, ' ')
+        .replace(/-/g, ' ')
+        .replace(/[^\p{L}A-Za-z]/gu, '');
+      let tochange = string.match(
+        /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]+/gu
+      );
+      try {
+        tochange.forEach(
+          (matched) =>
+            (string = string
+              .replace(matched, matched.normalize('NFKC'))
+              .replace(matched, ''))
+        );
+      } catch {
+        try {
+          string = string
+            .replace(tochange, tochange.normalize('NFKC'))
+            .replace(tochange, '');
+        } catch {}
+      }
+
+      return string.replace(
+        /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]/gu,
+        ''
+      );
+    }
+    exports.normalize = normalize;
+
+    // Commande pour normaliser un pseudo
+    if (message.content.toLowerCase().startsWith(prefix + 'normalize')) {
+      console.log(args);
+      let member = message.mentions.members.first();
+      if (!member) member = message.guild.members.cache.get(args[0]);
+      if (!member)
+        member = message.guild.members.cache.find((m) =>
+          m.nickname
+            ? m.nickname === args.join(' ')
+            : m.user.username === args.join(' ')
+        );
+      if (!member)
+        return repondre('Merci de mentionner un membre à normaliser');
+
+      let username = member.nickname ? member.nickname : member.user.username;
+      if (
+        /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]/gu.test(
+          username
+        ) ||
+        /[^\p{L}A-Za-z]/gu.test(username)
+      ) {
+        let newNickname = await normalize(username);
+        client.loguer(newNickname);
+
+        if (newNickname.length === 0) newNickname = 'Pseudo à changer';
+        await member.setNickname(newNickname);
+        await member.guild.channels.cache
+          .find((ch) => ch.name === 'logs')
+          .send(
+            `Le pseudo de <@${member.id}> a été changé de ${username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+          );
+        return message.channel.send(
+          `Le pseudo de ce membre a été changé de ${username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+        );
+      }
     }
   }
 };
