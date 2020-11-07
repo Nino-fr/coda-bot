@@ -30,7 +30,10 @@ class Stats extends Command {
     1024
   ).toFixed(2)} MB
   • Uptime            :: ${duration}
-  • Utilisateurs      :: ${this.client.users.cache.size.toLocaleString()}
+  • Utilisateurs      :: ${
+    this.client.guilds.cache.get('574626014664327178').memberCount +
+    this.client.guilds.cache.get('707875749343789066').memberCount
+  }
   • Discord.js        :: v${version}
   • NodeJS            :: ${process.version}
   • Développeur       :: Nino#3670`, //  • Serveurs          :: ${this.client.guilds.cache.size.toLocaleString()}

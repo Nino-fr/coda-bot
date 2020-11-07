@@ -30,12 +30,11 @@ class Immuniser extends Command {
     try {
       const member =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]) ||
-        message.guild.members.cache.find((mem) =>
-          mem.nickname
-            ? mem.nickname.toLowerCase() === args.join(' ').toLowerCase()
-            : mem.user.username.toLowerCase() === args.join(' ').toLowerCase()
-        );
+        (await message.guild.members.fetch(args[0])) ||
+        (await message.guild.members.fetch({
+          query: args.join(' '),
+          limit: 1,
+        }));
 
       if (!member)
         return this.repondre(message, 'Veuillez préciser un membre correct');

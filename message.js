@@ -1120,11 +1120,13 @@ module.exports = class {
     if (message.content === prefix + 'anciens') {
       let guild = message.guild;
       let anciensarray = [];
-      guild.members.cache.forEach((mem) => {
-        if (Date.now() - mem.joinedTimestamp >= 15778800000) {
-          anciensarray.push(mem.user.tag);
-        }
-      });
+      guild.members.fetch().then((mems) =>
+        mems.forEach((mem) => {
+          if (Date.now() - mem.joinedTimestamp >= 15778800000) {
+            anciensarray.push(mem.user.tag);
+          }
+        })
+      );
       repondre(anciensarray.join('\n'));
     }
     // Déclarer les args
@@ -1360,7 +1362,7 @@ module.exports = class {
         ) {
           const puni =
             message.mentions.members.first() ||
-            message.guild.members.cache.get(args[0]);
+            (await message.guild.members.fetch(args[0]));
           const muted = message.guild.roles.cache.find(
             (r) => r.name === 'muted'
           );
@@ -1421,7 +1423,7 @@ module.exports = class {
       ) {
         const puni =
           message.mentions.members.first() ||
-          message.guild.members.cache.get(args[0]);
+          (await message.guild.members.fetch(args[0]));
         const muted = message.guild.roles.cache.find((r) => r.name === 'muted');
         const prodig = message.guild.roles.cache.find(
           (r) => r.name === 'Prodige'
@@ -1448,7 +1450,7 @@ module.exports = class {
       );
       const noble =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]);
+        (await message.guild.members.fetch(args[0]));
       if (!noble) return repondre('Veuillez préciser un membre');
       if (!noble.roles.cache.has(elite.id))
         return repondre("Cette personne n'est pas dans l'Élite de Foxfire.");
@@ -1516,12 +1518,11 @@ module.exports = class {
     ) {
       let member =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]) ||
-        message.guild.members.cache.find((mem) =>
-          mem.nickname
-            ? mem.nickname === args.join(' ')
-            : mem.user.username === args.join(' ')
-        );
+        (await message.guild.members.fetch(args[0])) ||
+        (await message.guild.members.fetch({
+          query: args.join(' '),
+          limit: 1,
+        }));
       const dirlo = message.guild.roles.cache.get('602823657814753290');
       const heraut = message.guild.roles.cache.find(
         (r) => r.name === "Héraut de la Tour d'Argent"
@@ -1764,13 +1765,12 @@ module.exports = class {
         return;
       console.log(args);
       let member = message.mentions.members.first();
-      if (!member) member = message.guild.members.cache.get(args[0]);
+      if (!member) member = await message.guild.members.fetch(args[0]);
       if (!member)
-        member = message.guild.members.cache.find((m) =>
-          m.nickname
-            ? m.nickname === args.join(' ')
-            : m.user.username === args.join(' ')
-        );
+        member = await message.guild.members.fetch({
+          query: args.join(' '),
+          limit: 1,
+        });
       if (!member)
         return repondre('Merci de mentionner un membre à normaliser');
 
@@ -1796,5 +1796,6 @@ module.exports = class {
         );
       }
     }
+    return true;
   }
 };

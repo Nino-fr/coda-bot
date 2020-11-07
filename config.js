@@ -1,6 +1,6 @@
 const config = {
   ownerID: '428582719044452352',
-  version: '2.1.4',
+  version: '2.5.9',
 
   // Bot Admins. Tableau des ID des administrateurs du bot
   admins: [
@@ -14,9 +14,10 @@ const config = {
   support: ['428582719044452352', '557612750734491661', '536283567865593856'],
 
   // Le token de votre bot, trouvable sur https://discordapp.com/developers/applications/me
-  token: "Vous avez vraiment cru que j'allais vous donner le token de Coda ?",
+  token: 'Njk5Mjk0MTUyMTkzNzM2NzA0.XpSSbg.qerHQfRPyQLFIkWjbNrCEKVLYEc',
 
-  assistanceToken: 'Celui-ci non plus !',
+  assistanceToken:
+    'NzM4NzI0MjY5MzgyNDM0ODM2.XyQElg.4oVf4e9mASike8d2jPxkVJRLUDY',
 
   defaultSettings: {
     prefix: '&',
@@ -77,7 +78,7 @@ const config = {
       // Vérifie si l'utilisateur est le propriétaire du serveur
       check: (message) =>
         message.channel.type === 'text'
-          ? message.guild.owner.user.id === message.author.id
+          ? '428582719044452352' === message.author.id
             ? true
             : false
           : false,

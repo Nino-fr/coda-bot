@@ -27,7 +27,7 @@ class SetNickname extends Command {
           );
         let mem =
           message.mentions.members.first() ||
-          message.guild.members.cache.get(args[0]);
+          (await message.guild.members.fetch(args[0]));
         let newPseudo = args.slice(1).join(' ');
         if (!newPseudo) {
           return message.channel.send(

@@ -23,19 +23,11 @@ class Hug extends Command {
       if (args[0]) {
         member =
           message.mentions.members.first() ||
-          message.guild.members.cache.get(args[0]) ||
-          message.guild.members.cache.find(
-            (mem) =>
-              (mem.nickname
-                ? mem.nickname.toString().toLowerCase()
-                : mem.user.username.toString().toLowerCase()) ===
-              args.join(' ').toLowerCase()
-          ); /*  ||
-          message.guild.members.cache.find(
-            (mem) =>
-              mem.user.username.toString().toLowerCase() ===
-              args.join(' ').toLowerCase()
-          ); */
+          (await message.guild.members.fetch(args[0])) ||
+          (await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          }));
       }
 
       fetch(`https://some-random-api.ml/animu/hug`)

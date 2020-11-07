@@ -30,7 +30,7 @@ class Ban extends Command {
         );
       let banMember =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]);
+        (await message.guild.members.fetch(args[0]));
       if (!banMember) return message.channel.send('Qui dois-je bannir ?');
       if (!banMember.bannable)
         return message.channel.send(

@@ -20,13 +20,11 @@ class Bleu extends Command {
 
       member =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]) ||
-        message.guild.members.cache.find(
-          (mem) => mem.nickname === args.join(' ')
-        ) ||
-        message.guild.members.cache.find(
-          (mem) => mem.user.username === args.join(' ')
-        ) ||
+        (await message.guild.members.fetch(args[0])) ||
+        (await message.guild.members.fetch({
+          query: args.join(' '),
+          limit: 1,
+        })) ||
         message.member;
 
       let body = `https://some-random-api.ml/canvas/blue?avatar=${member.user.displayAvatarURL(

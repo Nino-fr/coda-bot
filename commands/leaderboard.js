@@ -38,7 +38,7 @@ class Leaderboard extends Command {
 
       let i = 0;
       for (const element of sortedArr) {
-        let theMember = message.guild.members.cache.get(element[0]);
+        let theMember = await message.guild.members.fetch(element[0]);
         if (!theMember) continue;
         i += 1;
         if (i === 11) break;

@@ -26,11 +26,11 @@ class UserInfo extends Command {
   async run(message, args) {
     const membre =
       message.mentions.members.first() ||
-      message.guild.members.cache.get(args[0]) ||
-      message.guild.members.cache.find((m) => m.user.username === args[0]) ||
-      message.guild.members.cache.find(
-        (me) => me.nickname === args.join(' ')
-      ) ||
+      (await message.guild.members.fetch(args[0])) ||
+      (await message.guild.members.fetch({
+        query: args.join(' '),
+        limit: 1,
+      })) ||
       message.member;
     let x = membre.user.presence.activities;
     let y;

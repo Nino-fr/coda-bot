@@ -25,7 +25,7 @@ class Avertir extends Command {
     try {
       const member =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]);
+        (await message.guild.members.fetch(args[0]));
       args.shift();
       let reason = args.join(' ');
       if (!args[0]) reason = 'Aucune';

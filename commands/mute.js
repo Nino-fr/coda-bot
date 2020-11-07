@@ -33,7 +33,7 @@ class Mute extends Command {
 
       let mutee =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]);
+        (await message.guild.members.fetch(args[0]));
       if (!mutee) return this.repondre(message, 'Qui dois-je mute ?');
 
       if (mutee.permissions.has('ADMINISTRATOR'))

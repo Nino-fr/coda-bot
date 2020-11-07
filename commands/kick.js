@@ -22,7 +22,7 @@ class Kick extends Command {
         );
       let kickMember =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]);
+        (await message.guild.members.fetch(args[0]));
       if (!kickMember) return this.repondre(message, 'Qui dois-je kick ?');
       args.shift();
       message.delete();

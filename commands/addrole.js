@@ -24,7 +24,7 @@ class Addrole extends Command {
     try {
       let rMember =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]);
+        (await message.guild.members.fetch(args[0]));
       let role =
         message.guild.roles.cache.find(
           (r) => r.name.toLowerCase() === args.join(' ').toLowerCase()

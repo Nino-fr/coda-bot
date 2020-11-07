@@ -429,7 +429,7 @@ assistance.on('message', async (message) => {
         let args = message.content.slice(2).trim().split(/ +/g);
         args.shift();
         let ID = args.shift();
-        let destinataire = message.guild.members.cache.get(ID).user;
+        let destinataire = (await message.guild.members.fetch(ID)).user;
         if (!destinataire) {
           return repondre(
             "L'ID est incorrect, veuillez réessayer avec le bon ID."
@@ -462,7 +462,8 @@ assistance.on('message', async (message) => {
         }
         let args = message.content.slice(2).trim().split(/ +/g);
         args.shift();
-        let destinataire = message.guild.members.cache.get(args.shift()).user;
+        let destinataire = (await message.guild.members.fetch(args.shift()))
+          .user;
         destinataire.send(
           "Votre échange avec l'Assistance vient de se terminer. Si vous avez à nouveau besoin d'aide, renvoyez-moi un mp :)"
         );

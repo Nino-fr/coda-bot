@@ -20,9 +20,11 @@ class Avatar extends Command {
   async run(message, args) {
     let membre =
       message.mentions.members.first() ||
-      message.guild.members.cache.get(args[0]) ||
-      message.guild.members.cache.find((m) => m.user.username === args[0]) ||
-      message.guild.members.cache.find((m) => m.nickname === args.join(' ')) ||
+      (await message.guild.members.fetch(args[0])) ||
+      (await message.guild.members.fetch({
+        query: args.join(' '),
+        limit: 1,
+      })) ||
       message.member;
 
     let avatarlink = membre.user.avatarURL({ format: 'png' });

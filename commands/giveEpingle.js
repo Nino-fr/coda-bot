@@ -20,7 +20,7 @@ class GiveEpingle extends Command {
     try {
       let destinataire =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args[0]);
+        (await message.guild.members.fetch(args[0]));
       let nom = args.slice(1).join(' ');
       if (!destinataire)
         return this.repondre(message, "À qui dois-je donner l'épingle ?");

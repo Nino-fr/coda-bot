@@ -23,13 +23,11 @@ class ClinDOeil extends Command {
       if (args[0]) {
         member =
           message.mentions.members.first() ||
-          message.guild.members.cache.get(args[0]) ||
-          message.guild.members.cache.find(
-            (mem) => mem.nickname === args.join(' ')
-          ) ||
-          message.guild.members.cache.find(
-            (mem) => mem.user.username === args.join(' ')
-          );
+          (await message.guild.members.fetch(args[0])) ||
+          (await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          }));
       }
 
       fetch(`https://some-random-api.ml/animu/wink`)

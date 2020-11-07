@@ -25,7 +25,7 @@ class Désavertir extends Command {
     try {
       const member =
         message.mentions.members.first() ||
-        message.guild.members.cache.get(args.shift());
+        (await message.guild.members.fetch(args.shift()));
       if (!member)
         return this.repondre(
           message,
