@@ -21,13 +21,18 @@ class Caresse extends Command {
       );
       let member;
       if (args[0]) {
-        member =
-          message.mentions.members.first() ||
-          (await message.guild.members.fetch(args[0])) ||
-          (await message.guild.members.fetch({
-            query: args.join(' '),
-            limit: 1,
-          }));
+        try {
+          member =
+            message.mentions.members.first() ||
+            (await message.guild.members.fetch(args[0]));
+        } catch {
+          member = (
+            await message.guild.members.fetch({
+              query: args.join(' '),
+              limit: 1,
+            })
+          ).first();
+        }
       }
 
       fetch(`https://some-random-api.ml/animu/pat`)

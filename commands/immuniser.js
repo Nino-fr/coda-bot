@@ -28,13 +28,19 @@ class Immuniser extends Command {
    */
   async run(message, args) {
     try {
-      const member =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0])) ||
-        (await message.guild.members.fetch({
-          query: args.join(' '),
-          limit: 1,
-        }));
+      let member;
+      try {
+        member =
+          message.mentions.members.first() ||
+          (await message.guild.members.fetch(args[0]));
+      } catch {
+        member = (
+          await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          })
+        ).first();
+      }
 
       if (!member)
         return this.repondre(message, 'Veuillez préciser un membre correct');

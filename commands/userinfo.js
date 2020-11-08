@@ -24,17 +24,37 @@ class UserInfo extends Command {
    * @param {Message} message La commande
    */
   async run(message, args) {
-    const membre =
-      message.mentions.members.first() ||
-      (await message.guild.members.fetch(args[0])) ||
-      (await message.guild.members.fetch({
-        query: args.join(' '),
-        limit: 1,
-      })) ||
-      message.member;
-    let x = membre.user.presence.activities;
+    let member;
+
+    try {
+      member =
+        message.mentions.members.first() ||
+        (await message.guild.members.fetch(args[0]));
+    } catch {
+      member = member = (
+        await message.guild.members.fetch({
+          query: args.join(' '),
+          limit: 1,
+        })
+      ).first();
+      if (!member) member = message.member;
+    }
+    try {
+      if (!member)
+        member = (
+          await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          })
+        ).first();
+      if (!member) member = message.member;
+    } catch {
+      member = message.member;
+    }
+
+    let x = member.user.presence.activities;
     let y;
-    switch (membre.user.presence.status) {
+    switch (member.user.presence.status) {
       case 'offline':
         y = 'Hors-ligne';
         break;
@@ -54,9 +74,9 @@ class UserInfo extends Command {
     message.channel.send({
       embed: {
         color: 15844367,
-        title: `Informations sur ${membre.user.tag}`,
+        title: `Informations sur ${member.user.tag}`,
         thumbnail: {
-          url: membre.user.avatarURL(),
+          url: member.user.avatarURL(),
         },
         fields: [
           {
@@ -65,7 +85,7 @@ class UserInfo extends Command {
           },
           {
             name: 'ID :',
-            value: membre.id,
+            value: member.id,
           },
           {
             name: 'Jeu :',
@@ -79,23 +99,23 @@ class UserInfo extends Command {
           },
           {
             name: 'Pseudo :',
-            value: membre.nickname ? membre.nickname : membre.user.username,
+            value: member.nickname ? member.nickname : member.user.username,
           },
           {
             name: 'Compte créé le :',
-            value: moment.utc(membre.user.createdAt).format('LLL'),
+            value: moment.utc(member.user.createdAt).format('LLL'),
           },
           {
             name: 'A rejoint le serveur le :',
-            value: moment.utc(membre.joinedAt).format('LLL'),
+            value: moment.utc(member.joinedAt).format('LLL'),
           },
           {
             name: 'Ce membre est-il un bot ?',
-            value: membre.user.bot ? 'Oui' : 'Non',
+            value: member.user.bot ? 'Oui' : 'Non',
           },
         ],
         footer: {
-          text: `Informations de l'utilisateur ${membre.user.tag}`,
+          text: `Informations de l'utilisateur ${member.user.tag}`,
         },
       },
     });

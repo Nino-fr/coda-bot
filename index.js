@@ -17,6 +17,10 @@ const {
   path = require('path');
 
 class Coda extends Client {
+  /**
+   *
+   * @param {import('discord.js').ClientOptions} options
+   */
   constructor(options) {
     super(options);
 
@@ -241,8 +245,8 @@ class Coda extends Client {
   }
 }
 
-const client = new Coda();
-const assistance = new Client();
+const client = new Coda(/* { fetchAllMembers: true } */);
+const assistance = new Client(/* { fetchAllMembers: true } */);
 
 // Initialisons les commandes et événements.
 
@@ -462,8 +466,7 @@ assistance.on('message', async (message) => {
         }
         let args = message.content.slice(2).trim().split(/ +/g);
         args.shift();
-        let destinataire = (await message.guild.members.fetch(args.shift()))
-          .user;
+        let destinataire = (await message.guild.members.fetch(args[0])).user;
         destinataire.send(
           "Votre échange avec l'Assistance vient de se terminer. Si vous avez à nouveau besoin d'aide, renvoyez-moi un mp :)"
         );
@@ -501,9 +504,6 @@ assistance.on('message', async (message) => {
     }
   }
   if (message.channel.type === 'dm') {
-    let assistant = assistance.guilds.cache
-      .get('574626014664327178')
-      .roles.cache.find((r) => r.name === 'Assistant');
     if (message.author.bot) return;
     if (message.content === 'alldelete') {
       (await message.channel.messages.fetch()).map(async (msg) => {
@@ -520,20 +520,39 @@ assistance.on('message', async (message) => {
       (await message.channel.messages.fetch()).size === 1
     ) {
       try {
-        let assistants = [];
-        assistant.members.forEach((mem) => {
-          if (
-            mem.presence.status === 'online' ||
-            mem.presence.status === 'idle'
-          )
-            assistants.push(mem);
-        });
-        if (assistants.length === 0) assistants.push('<@&605742116127375362>');
-        client.loguer(assistants);
+        let assistants = [
+            '649345095614726166',
+            '758286621510074379',
+            '463621512348303360',
+            '517282394336919559',
+            '703894942216486922',
+            '735468423353598004',
+            '744899600711942214',
+            '726405859365879868',
+          ],
+          onlines = [],
+          mentions = [];
+
+        const promesse = () => {
+          assistants.forEach(async (elem) => {
+            await client.guilds.cache
+              .get('574626014664327178')
+              .members.fetch(elem)
+              .then((membre) => {
+                membre.user.presence.status === 'online'
+                  ? onlines.push(membre.id)
+                  : undefined;
+              });
+          });
+        };
+        await promesse();
+
+        onlines.forEach((el) => mentions.push(`<@${el}>`));
+
         assistance.channels.cache
           .get('743778898088558614')
           .send(
-            `${assistants.join(' ')}\n**Nouvelle demande d'aide de <@${
+            `${mentions.join(' ')}\n**Nouvelle demande d'aide de <@${
               message.author.id
             }> (ID : ${message.author.id}):**\n${message.content}`
           );

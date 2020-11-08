@@ -1516,13 +1516,34 @@ module.exports = class {
       message.content.startsWith(prefix + 'elite') ||
       message.content.startsWith(prefix + 'élite')
     ) {
-      let member =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0])) ||
-        (await message.guild.members.fetch({
-          query: args.join(' '),
-          limit: 1,
-        }));
+      let member;
+
+      try {
+        member =
+          message.mentions.members.first() ||
+          (await message.guild.members.fetch(args[0]));
+      } catch {
+        member = member = (
+          await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          })
+        ).first();
+      }
+      try {
+        if (!member)
+          member = (
+            await message.guild.members.fetch({
+              query: args.join(' '),
+              limit: 1,
+            })
+          ).first();
+      } catch {
+        return repondre(
+          "Veuillez préciser un prodige qui doit rejoindre l'élite !"
+        );
+      }
+
       const dirlo = message.guild.roles.cache.get('602823657814753290');
       const heraut = message.guild.roles.cache.find(
         (r) => r.name === "Héraut de la Tour d'Argent"
@@ -1767,10 +1788,12 @@ module.exports = class {
       let member = message.mentions.members.first();
       if (!member) member = await message.guild.members.fetch(args[0]);
       if (!member)
-        member = await message.guild.members.fetch({
-          query: args.join(' '),
-          limit: 1,
-        });
+        member = (
+          await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          })
+        ).first();
       if (!member)
         return repondre('Merci de mentionner un membre à normaliser');
 

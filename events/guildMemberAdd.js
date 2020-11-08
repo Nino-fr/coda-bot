@@ -1,40 +1,35 @@
-const Canvas = require('canvas');
+const Canvas = require('canvas'),
+  { GuildMember } = require('discord.js');
 
 module.exports = class {
   constructor(client) {
     this.client = client;
   }
 
+  /**
+   *
+   * @param {GuildMember} member
+   */
   async run(member) {
     const verify = async () => {
       if (member.guild.id !== '574626014664327178') return;
       let username = member.user.username;
-      if (/[^\x00-\x7F]+/gu.test(member.user.username)) {
-        let newNickname = username.replace(/_/g, ' ').replace(/-/g, ' ');
-        let tochange = newNickname.match(/([^\x00-\x7F]+)/gu);
-        console.log(tochange);
-        try {
-          tochange.forEach(
-            (matched) =>
-              (newNickname = newNickname
-                .replace(matched, matched.normalize('NFKC'))
-                .replace(matched, ''))
-          );
-        } catch {
-          try {
-            newNickname = newNickname
-              .replace(tochange, tochange.normalize('NFKC'))
-              .replace(tochange, '');
-          } catch {}
-        }
-        newNickname = newNickname.replace(/([^\x00-\x7F]+)/gu, '');
+      let normalize = require('../message.js').normalize;
+      if (
+        /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]/gu.test(
+          username
+        ) ||
+        /[^\p{L}A-Za-z]/gu.test(username)
+      ) {
+        let newNickname = await normalize(username);
+        client.loguer(newNickname);
 
         if (newNickname.length === 0) newNickname = 'Pseudo à changer';
         await member.setNickname(newNickname);
         await member.guild.channels.cache
           .find((ch) => ch.name === 'logs')
           .send(
-            `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
+            `Le pseudo de <@${member.id}> a été changé de ${username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
           );
       }
       let regGDCP = /(?:(?:f+i+t+z+)|(?:k+e+f+e+)|(?:s+[yi]+l+v+e+n+[iy]+)|(?:g+r+a+d+y+)|(?:e+d+a+l+i+n+e+)|(?:d+e+l+l+a+)|(?:a+l+d+e+n+))/gi;

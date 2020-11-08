@@ -19,14 +19,34 @@ class Sanctions extends Command {
    */
   async run(message, args) {
     try {
-      const member =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0])) ||
-        (await message.guild.members.fetch({
-          query: args.join(' '),
-          limit: 1,
-        })) ||
-        message.member;
+      let member;
+
+      try {
+        member =
+          message.mentions.members.first() ||
+          (await message.guild.members.fetch(args[0]));
+      } catch {
+        member = member = (
+          await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          })
+        ).first();
+        if (!member) member = message.member;
+      }
+      try {
+        if (!member)
+          member = (
+            await message.guild.members.fetch({
+              query: args.join(' '),
+              limit: 1,
+            })
+          ).first();
+        if (!member) member = message.member;
+      } catch {
+        member = message.member;
+      }
+      if (!member) member = message.member;
 
       if (
         !this.client.warns.get(member.id) ||

@@ -18,18 +18,42 @@ class Vert extends Command {
     try {
       let member;
 
-      member =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0])) ||
-        (await message.guild.members.fetch({
-          query: args.join(' '),
-          limit: 1,
-        })) ||
-        message.member;
+      try {
+        member =
+          message.mentions.members.first() ||
+          (await message.guild.members.fetch(args[0]));
+      } catch {
+        member = member = (
+          await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          })
+        ).first();
+        if (!member) member = message.member;
+      }
+      try {
+        if (!member)
+          member = (
+            await message.guild.members.fetch({
+              query: args.join(' '),
+              limit: 1,
+            })
+          ).first();
+        if (!member) member = message.member;
+      } catch {
+        member = message.member;
+      }
 
-      let body = `https://some-random-api.ml/canvas/green?avatar=${member.user.displayAvatarURL(
-        { format: 'png' }
-      )}`;
+      let body;
+      try {
+        body = `https://some-random-api.ml/canvas/green?avatar=${member.user.displayAvatarURL(
+          { format: 'png' }
+        )}`;
+      } catch {
+        body = `https://some-random-api.ml/canvas/green?avatar=${message.member.user.displayAvatarURL(
+          { format: 'png' }
+        )}`;
+      }
 
       let selfEmbed = new MessageEmbed().setColor(green_light).setImage(body);
       message.channel.send(selfEmbed);

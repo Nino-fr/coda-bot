@@ -1,4 +1,5 @@
-const Command = require('../base/Command.js');
+const Command = require('../base/Command.js'),
+  { Message } = require('discord.js');
 
 class Papotins extends Command {
   constructor() {
@@ -19,14 +20,26 @@ class Papotins extends Command {
   async run(message, args) {
     try {
       if (!message.guild.id === '574532041836593153') return;
-      const lemembre =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0])) ||
-        (await message.guild.members.fetch({
-          query: args.join(' '),
-          limit: 1,
-        })) ||
-        message.member;
+      let lemembre;
+      try {
+        lemembre =
+          message.mentions.members.first() ||
+          (await message.guild.members.fetch(args[0]));
+      } catch {
+        try {
+          lemembre =
+            (
+              await message.guild.members.fetch({
+                query: args.join(' '),
+                limit: 1,
+              })
+            ).first() || message.member;
+        } catch {
+          lemembre = message.member;
+        }
+      }
+
+      if (!lemembre) lemembre = message.member;
 
       const member = lemembre.nickname
         ? lemembre.nickname

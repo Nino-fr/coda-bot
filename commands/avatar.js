@@ -18,16 +18,39 @@ class Avatar extends Command {
    * @param { String[] } args Les arguments passés après le message
    */
   async run(message, args) {
-    let membre =
-      message.mentions.members.first() ||
-      (await message.guild.members.fetch(args[0])) ||
-      (await message.guild.members.fetch({
-        query: args.join(' '),
-        limit: 1,
-      })) ||
-      message.member;
+    let member;
 
-    let avatarlink = membre.user.avatarURL({ format: 'png' });
+    try {
+      member =
+        message.mentions.members.first() ||
+        (await message.guild.members.fetch(args[0]));
+    } catch {
+      member = member = (
+        await message.guild.members.fetch({
+          query: args.join(' '),
+          limit: 1,
+        })
+      ).first();
+      if (!member) member = message.member;
+    }
+    try {
+      if (!member)
+        member = (
+          await message.guild.members.fetch({
+            query: args.join(' '),
+            limit: 1,
+          })
+        ).first();
+      if (!member) member = message.member;
+    } catch {
+      member = message.member;
+    }
+    let avatarlink;
+    try {
+      avatarlink = member.user.avatarURL({ format: 'png' });
+    } catch {
+      avatarlink = message.member.user.avatarURL({ format: 'png' });
+    }
     this.repondre(message, {
       files: [{ attachment: avatarlink, name: 'avatar.png' }],
     });
