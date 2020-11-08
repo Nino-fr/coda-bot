@@ -3,7 +3,7 @@ const { Message, TextChannel, Webhook } = require('discord.js'),
   prefix = client.config.defaultSettings.prefix,
   OwnerID = client.config.ownerID,
   moment = require('moment'),
-  { getValues } = require('./fonctions'),
+  { getValues, normalize } = require('./fonctions'),
   loguer = client.loguer,
   asc = require('./ascii.json'),
   axios = require('axios');
@@ -44,18 +44,12 @@ module.exports = class {
         let serveur = client.guilds.cache.get(serveurid);
         let salonid = mmm.substring(48, 66);
         let messageid = mmm.substring(67, 86);
+        /**
+         * @type {TextChannel}
+         */
         let salon = client.channels.cache.get(salonid);
         let lien = mmm;
         await salon.messages.fetch(messageid).then((m) => {
-          if (m.embeds.length !== 0) {
-            client.repondre(
-              message,
-              'Ce message contenait un embed. En voici une représentation ci-dessous.'
-            );
-            return message.channel.send({
-              embed: m.embeds[0],
-            });
-          }
           let mEmbed = {
             color: 12124160,
             title: `Message de ${m.author.tag}`,
@@ -68,9 +62,19 @@ module.exports = class {
           if (m.attachments.first())
             mEmbed.image = { url: m.attachments.first().url };
 
-          return message.channel.send({
-            embed: mEmbed,
-          });
+          if (m.content && m.content !== '')
+            message.channel.send({
+              embed: mEmbed,
+            });
+          if (m.embeds.length !== 0) {
+            client.repondre(
+              message,
+              'Ce message contenait un embed. En voici une représentation ci-dessous.'
+            );
+            return message.channel.send({
+              embed: m.embeds[0],
+            });
+          }
         });
       } catch (err) {
         console.log(err);
@@ -87,18 +91,12 @@ module.exports = class {
         let serveur = client.guilds.cache.get(serveurid);
         let salonid = mmm.substring(51, 69);
         let messageid = mmm.substring(70, 89);
+        /**
+         * @type {TextChannel}
+         */
         let salon = client.channels.cache.get(salonid);
         let lien = mmm;
         await salon.messages.fetch(messageid).then((m) => {
-          if (m.embeds.length !== 0) {
-            client.repondre(
-              message,
-              'Ce message contenait un embed. En voici une représentation ci-dessous.'
-            );
-            return message.channel.send({
-              embed: m.embeds[0],
-            });
-          }
           let mEmbed = {
             color: 12124160,
             title: `Message de ${m.author.tag}`,
@@ -111,9 +109,20 @@ module.exports = class {
           if (m.attachments.first())
             mEmbed.image = { url: m.attachments.first().url };
 
-          return message.channel.send({
-            embed: mEmbed,
-          });
+          if (m.content && m.content !== '')
+            message.channel.send({
+              embed: mEmbed,
+            });
+
+          if (m.embeds.length !== 0) {
+            client.repondre(
+              message,
+              'Ce message contenait un embed. En voici une représentation ci-dessous.'
+            );
+            return message.channel.send({
+              embed: m.embeds[0],
+            });
+          }
         });
       } catch (err) {
         console.log(err);
@@ -1743,40 +1752,6 @@ module.exports = class {
       );
     }
 
-    /**
-     * Normaliser un string
-     * @param {string} string Le string à normaliser
-     */
-    async function normalize(string) {
-      string = string
-        .replace(/_/g, ' ')
-        .replace(/-/g, ' ')
-        .replace(/[^\p{L}A-Za-z]/gu, '');
-      let tochange = string.match(
-        /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]+/gu
-      );
-      try {
-        tochange.forEach(
-          (matched) =>
-            (string = string
-              .replace(matched, matched.normalize('NFKC'))
-              .replace(matched, ''))
-        );
-      } catch {
-        try {
-          string = string
-            .replace(tochange, tochange.normalize('NFKC'))
-            .replace(tochange, '');
-        } catch {}
-      }
-
-      return string.replace(
-        /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]/gu,
-        ''
-      );
-    }
-    exports.normalize = normalize;
-
     // Commande pour normaliser un pseudo
     if (message.content.toLowerCase().startsWith(prefix + 'normalize')) {
       if (
@@ -1784,7 +1759,6 @@ module.exports = class {
         !message.member.permissions.has('MANAGE_NICKNAMES')
       )
         return;
-      console.log(args);
       let member = message.mentions.members.first();
       if (!member) member = await message.guild.members.fetch(args[0]);
       if (!member)
@@ -1805,7 +1779,6 @@ module.exports = class {
         /[^\p{L}A-Za-z]/gu.test(username)
       ) {
         let newNickname = await normalize(username);
-        client.loguer(newNickname);
 
         if (newNickname.length === 0) newNickname = 'Pseudo à changer';
         await member.setNickname(newNickname);

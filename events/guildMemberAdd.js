@@ -14,7 +14,7 @@ module.exports = class {
     const verify = async () => {
       if (member.guild.id !== '574626014664327178') return;
       let username = member.user.username;
-      let normalize = require('../message.js').normalize;
+      const { normalize } = require('../fonctions');
       if (
         /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]/gu.test(
           username

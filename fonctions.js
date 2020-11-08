@@ -78,9 +78,44 @@ function getKeys(obj, val) {
   }
   return objects;
 }
+
+/**
+ * Normaliser un string
+ * @param {string} string Le string à normaliser
+ */
+function normalize(string) {
+  string = string
+    .replace(/_/g, ' ')
+    .replace(/-/g, ' ')
+    .replace(/[^\p{L}A-Za-z]/gu, '');
+  let tochange = string.match(
+    /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]+/gu
+  );
+  try {
+    tochange.forEach(
+      (matched) =>
+        (string = string
+          .replace(matched, matched.normalize('NFKC'))
+          .replace(matched, ''))
+    );
+  } catch {
+    try {
+      string = string
+        .replace(tochange, tochange.normalize('NFKC'))
+        .replace(tochange, '');
+    } catch {}
+  }
+
+  return string.replace(
+    /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]/gu,
+    ''
+  );
+}
+
 module.exports = {
   getValues: getValues,
   getKeys: getKeys,
   getObjects: getObjects,
   convertMS: convertMS,
+  normalize: normalize,
 };
