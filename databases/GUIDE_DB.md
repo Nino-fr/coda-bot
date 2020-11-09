@@ -1,0 +1,5 @@
+# Guide pour les bases de données
+
+Dans ce code, les bases de données (databases en anglais) sont des fichiers JSON, et comme la plupart du temps la machine ne peut pas lire les fichiers directement, mais seulement après le redémarrage, et comme nous ne voulons pas avoir à redémarrer le bot dès qu'une donnée est ajoutée à la base (car c'est difficile, pas génial, et même impossible parfois), j'ai utilisé des Map() pour stocker les données entre temps. <br /> <br />
+
+Il vous faut donc deux fichiers pour deux bases de données : `warns.json` et `papotins.json` pour, respectivement, les warns et les papotins. <br />J'ai utilisé le module natif à NodeJS `fs` pour écrire dans les fichiers dès la réception d'une donnée et donc les Map() pour les stocker en attendant le redémarrage. <br />Les fichiers [`warns.example.json`](https://github.com/Nino-fr/coda-bot/blob/v2/databases/warns.example.json) et [`papotins.example.json`](https://github.com/Nino-fr/coda-bot/blob/v2/databases/papotins.example.json) vous montreront un exemple de ce à quoi les fichiers ressembleront, niveau organisation des données.
