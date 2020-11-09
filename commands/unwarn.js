@@ -2,7 +2,7 @@ const Command = require('../base/Command.js');
 const { Message } = require('discord.js');
 const { red_dark } = require('../colours.json'),
   fs = require('fs'),
-  warns = JSON.parse(JSON.stringify(require('../databases/papotins.json')));
+  warns = JSON.parse(JSON.stringify(require('../databases/warns.json')));
 
 class Désavertir extends Command {
   constructor() {
@@ -25,14 +25,15 @@ class Désavertir extends Command {
     try {
       const member =
         message.mentions.members.first() ||
-        (await message.guild.members.fetch(args.shift()));
+        (await message.guild.members.fetch(args[0]));
+      args.shift();
       if (!member)
         return this.repondre(
           message,
           'Veuillez spécifier un membre à warn dans la commande.'
         );
       let reason = args.join(' ');
-      if (reason) reason = 'Aucune';
+      if (!args[0]) reason = 'Aucune';
 
       if (
         !this.client.warns.get(member.id) ||
