@@ -1,0 +1,6 @@
+{
+  "GUILD_MEMBER_ID_HERE": {
+    "sanctions": ["Example", "Injure", "Manque de respect"],
+    "immunisation": "BOOLEAN"
+  }
+}
