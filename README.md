@@ -28,7 +28,7 @@ Merci de ne pas copier bêtement ce code, essaie de le comprendre et, pourquoi p
 Ce bot est construit avec la librairie [`discord.js`](https://discord.js.org/#/) basée sur l'API Discord.
 
 <p>
-    <img src="https://img.shields.io/badge/Fait%20avec-Discord.js%2012.3.1-blue.svg?style=for-the-badge"
+    <img src="https://img.shields.io/badge/Fait%20avec-Discord.js%2012.4.1-blue.svg?style=for-the-badge"
         alt="Fait avec Discord.js">
 </p>
 
