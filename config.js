@@ -77,7 +77,7 @@ const config = {
       // Vérifie si l'utilisateur est le propriétaire du serveur
       check: (message) =>
         message.channel.type === 'text'
-          ? '428582719044452352' === message.author.id
+          ? message.guild.owner.id === message.author.id
             ? true
             : false
           : false,
