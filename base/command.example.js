@@ -10,7 +10,7 @@ class Example extends Command {
       aliases: ['alias1', 'alias2'],
       guildOnly: false,
       enabled: true,
-      permLevel: 'User',
+      permLevel: 'Membre',
       category: 'Utilitaires',
     });
   }
