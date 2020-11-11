@@ -22,6 +22,10 @@ module.exports = class {
     const repondre = (msg) => {
       message.channel.send(msg);
     };
+    // Le bot check à chaque message si son statut est toujours là, car le statut disparaît de temps en temps
+    if (this.client.user.presence.activities[0] === '') {
+      this.client.user.setStatus('online');
+    }
     // Si le contenu du message est "postcode", le bot envoie un embed expliquant comment partager du code sur Discord.
     if (message.content === 'postcode') {
       return client.repondre(message, {
