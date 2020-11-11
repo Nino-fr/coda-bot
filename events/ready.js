@@ -19,17 +19,13 @@ module.exports = class {
       this.client.appInfo = await this.client.fetchApplication();
     }, 60000);
 
-    if (!this.client.settings.has('default')) {
-      if (!this.client.config.defaultSettings)
-        throw new Error(
-          "defaultSettings n'est pas preset dans config.js ou dans les settings. Le bot ne peut pas load ça."
-        );
-      this.client.settings.set('default', this.client.config.defaultSettings);
+    if (!this.client.settings.has('main')) {
+      this.client.settings.set('main', this.client.config.settings);
     }
 
     // Initialisons le statut du bot
     await this.client.user.setActivity(
-      `${this.client.settings.get('default').prefix}help | ${
+      `${this.client.settings.get('main').prefix}help | ${
         this.client.guilds.cache.get('574626014664327178').memberCount +
         this.client.guilds.cache.get('707875749343789066').memberCount
       } utilisateurs`

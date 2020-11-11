@@ -22,7 +22,7 @@ module.exports = class {
         /[^\p{L}A-Za-z]/gu.test(username)
       ) {
         let newNickname = await normalize(username);
-        client.loguer(newNickname);
+        this.client.loguer(newNickname);
 
         if (newNickname.length === 0) newNickname = 'Pseudo à changer';
         await member.setNickname(newNickname);

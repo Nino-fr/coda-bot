@@ -1,5 +1,6 @@
-const Command = require('../base/Command.js'),
-  { Message } = require('discord.js');
+const Command = require('../base/Command.js');
+const { Message } = require('discord.js'),
+  warns = JSON.parse(JSON.stringify(require('../databases/warns.json')));
 
 class Sanctions extends Command {
   constructor() {

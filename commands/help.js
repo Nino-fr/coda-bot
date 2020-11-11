@@ -58,7 +58,7 @@ class Help extends Command {
               0
             );
             let currentCategory = '';
-            let output = `= Liste des commandes =\n\n[Utilisez ${this.client.config.defaultSettings.prefix}help <commande> pour plus de détails]\n`;
+            let output = `= Liste des commandes =\n\n[Utilisez ${this.client.config.settings.prefix}help <commande> pour plus de détails]\n`;
             const sorted = myCommands
               .array()
               .sort((p, c) =>
@@ -145,7 +145,7 @@ class Help extends Command {
               'Utilitaires',
             ];
             embed.setDescription(
-              `**Utilisez ${this.client.config.defaultSettings.prefix}help <commande> pour plus de détails**\n`
+              `**Utilisez ${this.client.config.settings.prefix}help <commande> pour plus de détails**\n`
             );
             /* const sorted = myCommands
               .array()
@@ -183,7 +183,7 @@ class Help extends Command {
                 .addField('Description', command.help.description)
                 .addField(
                   'Utilisation :',
-                  this.client.config.defaultSettings.prefix + command.help.usage
+                  this.client.config.settings.prefix + command.help.usage
                 )
                 .addField('Aliases :', command.conf.aliases.join(', '))
                 .addField(
@@ -211,8 +211,7 @@ class Help extends Command {
                 .addField('Description :', command.help.description, true)
                 .addField(
                   'Utilisation :',
-                  this.client.config.defaultSettings.prefix +
-                    command.help.usage,
+                  this.client.config.settings.prefix + command.help.usage,
                   true
                 )
                 .addField('Aliases :', command.conf.aliases.join(', '))
