@@ -87,7 +87,7 @@ function normalize(string) {
   string = string
     .replace(/_/g, ' ')
     .replace(/-/g, ' ')
-    .replace(/[^\p{L}A-Za-z]/gu, '');
+    .replace(/[^\p{L}A-Za-z ]/gu, '');
   let tochange = string.match(
     /[^\x00-\x7A \x80-\x90 \x93-\x9A \xA0-\xA7 \xE0-\xF0]+/gu
   );
