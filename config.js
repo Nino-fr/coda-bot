@@ -1,6 +1,37 @@
+/**
+ * @type {{
+  ownerID: '428582719044452352',
+  version: string,
+
+  admins: string[],
+
+  support: string[],
+
+  token: string,
+
+  assistanceToken: string,
+
+  settings: {
+    prefix: string,
+    modLogChannel: string,
+    modRole: string,
+    adminRole: string,
+    systemNotice: string,
+    welcomeEnabled: string,
+    welcomeMessage: string,
+  },
+
+  permLevels: object[],
+}}
+ */
+let BotConfig;
+
+/**
+ * @type {BotConfig}
+ */
 const config = {
   ownerID: '428582719044452352',
-  version: '2.6.1',
+  version: '2.6.2',
 
   // Bot Admins. Tableau des ID des administrateurs du bot
   admins: [
@@ -70,37 +101,17 @@ const config = {
         }
       },
     },
-    // Niveau de permission du propriétaire du serveur
-    {
-      level: 4,
-      name: 'Propriétaire du serveur',
-      // Vérifie si l'utilisateur est le propriétaire du serveur
-      check: (message) =>
-        message.channel.type === 'text'
-          ? message.guild.owner.id === message.author.id
-            ? true
-            : false
-          : false,
-    },
-
-    // L'équipe de support du bot
-    {
-      level: 5,
-      name: 'Bot Support',
-      // Vérifie si l'utilisateur fait partie de l'équipe de support
-      check: (message) => config.support.includes(message.author.id),
-    },
 
     // Niveau de permission des administrateurs du bot
     {
-      level: 6,
+      level: 4,
       name: 'Bot Admin',
       check: (message) => config.admins.includes(message.author.id),
     },
 
     // Niveau de permission du/des propriétaire(s) du bot
     {
-      level: 7,
+      level: 5,
       name: 'Propriétaire',
       // Si un seul propriétaire, faire :
       check: (message) => config.ownerID === message.author.id,
