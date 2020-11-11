@@ -1,5 +1,5 @@
 /**
- * @type {{
+ * @typedef {{
   ownerID: '428582719044452352',
   version: string,
 
