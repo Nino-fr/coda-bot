@@ -21,16 +21,15 @@ class Papotin extends Command {
    */
   async run(message) {
     try {
-      if (!message.channel.id === '720691147340775535')
-        return this.repondre(
-          message,
+      if (message.channel.id !== '720691147340775535')
+        return message.repondre(
           'Veuillez vous rendre dans le salon <#720691147340775535> pour exécuter cette commande !'
         );
       let papoRole = message.guild.roles.cache.find(
         (r) => r.name.toLowerCase() === 'papotin'
       );
       if (!message.member.roles.cache.has(papoRole.id))
-        return this.repondre(message, "Vous n'avez acheté aucun papotin !");
+        return message.repondre("Vous n'avez acheté aucun papotin !");
       let member = message.member;
       function randomise() {
         var num = Math.random() * 100;
@@ -251,7 +250,7 @@ class Papotin extends Command {
 
       fs.writeFile(
         './databases/papotins.json',
-        JSON.stringify(papotins),
+        JSON.stringify(papotins, null, '\t'),
         (err) => {
           if (err) throw err;
         }

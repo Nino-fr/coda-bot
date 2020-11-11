@@ -55,7 +55,7 @@ class Sanctions extends Command {
         return this.repondre(message, "Ce membre n'a reçu aucune sanction");
       }
 
-      let sanctions = warns[member.id].sanctions;
+      let sanctions = this.client.warns.get(member.id);
       let immunite = this.client.immus.get(member.id)
         ? "**Ce membre dispose d'un joker lui permettant d'esquiver la prochaine sanction.**"
         : '';

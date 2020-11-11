@@ -43,9 +43,13 @@ class Désavertir extends Command {
 
       warns[member.id].sanctions.pop();
 
-      fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
-        if (err) throw err;
-      });
+      fs.writeFile(
+        './databases/warns.json',
+        JSON.stringify(warns, null, '\t'),
+        (err) => {
+          if (err) throw err;
+        }
+      );
       this.client.warns.set(member.id, warns[member.id].sanctions);
 
       return this.repondre(message, {

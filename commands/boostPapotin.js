@@ -45,7 +45,7 @@ class boostPapotin extends Command {
         );
       fs.writeFile(
         './databases/papotins.json',
-        JSON.stringify(papotins),
+        JSON.stringify(papotins, null, '\t'),
         (err) => {
           if (err) throw err;
         }

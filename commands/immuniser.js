@@ -56,9 +56,13 @@ class Immuniser extends Command {
       }
       warns[member.id].immunisation = true;
 
-      fs.writeFile('./databases/warns.json', JSON.stringify(warns), (err) => {
-        if (err) throw err;
-      });
+      fs.writeFile(
+        './databases/warns.json',
+        JSON.stringify(warns, null, '\t'),
+        (err) => {
+          if (err) throw err;
+        }
+      );
       this.client.warns.set(member.id, warns[member.id].sanctions);
       this.client.immus.set(member.id, warns[member.id].immunisation);
 
