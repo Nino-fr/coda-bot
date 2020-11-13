@@ -112,10 +112,89 @@ function normalize(string) {
   );
 }
 
+/**
+ * Make a request to an URL using https
+ * @param {string} url The URL to fetch in URI format
+ * @returns {Promise<string>}
+ */
+async function MAKEHTTPSRequest(url) {
+  const http = require('https');
+  let retour;
+
+  if (/http(?!s)/.test(url))
+    throw new TypeError(
+      'Erreur : la requête est au format HTTP et non HTTPS, veuillez réessayer correctement.'
+    );
+
+  await new Promise(async (resolve) => {
+    await http
+      .get(url, (req) => {
+        let data = '';
+        if (req.statusCode !== 200)
+          throw new Error('Request failed with status code ' + req.statusCode);
+
+        req.on('data', async (chunk) => {
+          await (data += chunk);
+        });
+
+        req.on('end', async () => {
+          await console.log('Request ended');
+          retour = data;
+        });
+      })
+      .on('error', (err) => {
+        throw new Error('Error while requesting ' + URL + ' : ' + err.message);
+      });
+
+    setTimeout(resolve, 6000);
+  });
+  return retour;
+}
+
+/**
+ * Make a request to an URL using https
+ * @param {string} url The URL to fetch in URI format
+ * @returns {Promise<string>}
+ */
+async function MAKEHTTPRequest(url) {
+  const http = require('http');
+  let retour;
+
+  if (/http(?!s)/.test(url))
+    throw new TypeError(
+      'Erreur : la requête est au format HTTP et non HTTPS, veuillez réessayer correctement.'
+    );
+  await new Promise(async (resolve) => {
+    await http
+      .get(url, (req) => {
+        let data = '';
+        if (req.statusCode !== 200)
+          throw new Error('Request failed with status code ' + req.statusCode);
+
+        req.on('data', async (chunk) => {
+          await (data += chunk);
+        });
+
+        req.on('end', async () => {
+          await console.log('Request ended');
+          retour = data;
+        });
+      })
+      .on('error', (err) => {
+        throw new Error('Error while requesting: ' + err.message);
+      });
+
+    setTimeout(resolve, 6000);
+  });
+  return retour;
+}
+
 module.exports = {
   getValues: getValues,
   getKeys: getKeys,
   getObjects: getObjects,
   convertMS: convertMS,
   normalize: normalize,
+  HTTPSRequest: MAKEHTTPSRequest,
+  HTTPRequest: MAKEHTTPRequest,
 };

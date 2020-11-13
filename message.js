@@ -2,9 +2,7 @@ const { Message, TextChannel, Webhook } = require('discord.js'),
   { client } = require('./index.js'),
   prefix = client.config.settings.prefix,
   OwnerID = client.config.ownerID,
-  { normalize } = require('./fonctions');
-
-moment.locale('fr');
+  { normalize, HTTPRequest, HTTPSRequest } = require('./fonctions');
 
 module.exports = class {
   constructor() {
@@ -1168,6 +1166,64 @@ module.exports = class {
         return message.channel.send(
           `Le pseudo de ce membre a été changé de ${username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
         );
+      }
+    }
+
+    // Obtenir le code source d'une page Web
+    if (message.content.toLowerCase().startsWith(prefix + 'getsource')) {
+      const URL = args.join('_'),
+        ISHTTPS = /https/.test(URL);
+
+      if (ISHTTPS) {
+        try {
+          HTTPSRequest(URL).then((res) => {
+            const ISJSON = res.startsWith('{');
+            if (ISJSON) {
+              if (res.length >= 1000) {
+                return message.channel.send({
+                  files: [
+                    { attachment: Buffer.from(res), name: 'source.json' },
+                  ],
+                });
+              } else return message.channel.send('```json\n' + res + '\n```');
+            } else {
+              if (res.length >= 1000) {
+                return message.channel.send({
+                  files: [
+                    { attachment: Buffer.from(res), name: 'source.html' },
+                  ],
+                });
+              } else return message.channel.send('```html\n' + res + '\n```');
+            }
+          });
+        } catch (err) {
+          return message.channel.send('```cs\n' + err.toString() + '\n```');
+        }
+      } else if (/http/.test(URL)) {
+        try {
+          await HTTPRequest(URL).then((res) => {
+            const ISJSON = res.startsWith('{');
+            if (ISJSON) {
+              if (res.length >= 1000) {
+                return message.channel.send({
+                  files: [
+                    { attachment: Buffer.from(res), name: 'source.json' },
+                  ],
+                });
+              } else return message.channel.send('```json\n' + res + '\n```');
+            } else {
+              if (res.length >= 1000) {
+                return message.channel.send({
+                  files: [
+                    { attachment: Buffer.from(res), name: 'source.html' },
+                  ],
+                });
+              } else return message.channel.send('```html\n' + res + '\n```');
+            }
+          });
+        } catch (err) {
+          return message.channel.send('```cs\n' + err.toString() + '\n```');
+        }
       }
     }
     return true;
