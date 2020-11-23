@@ -53,8 +53,9 @@ class Vote extends Command {
     let YES_Count = reactions.find((r) => r.emoji.name === 'positif');
     if (YES_Count === undefined) {
       YES_Count = 0;
-    } else
+    } else {
       YES_Count = reactions.find((r) => r._emoji.name === 'positif').count - 1;
+    }
     if (NO_Count === undefined) {
       NO_Count = 0;
     } else {
@@ -63,12 +64,12 @@ class Vote extends Command {
     let foo;
     if (NO_Count === YES_Count) {
       foo = 'Égalité';
-    }
-    if (NO_Count > YES_Count) {
+    } else if (NO_Count > YES_Count) {
       foo = 'Négatif';
-    }
-    if (NO_Count < YES_Count) {
+    } else if (NO_Count < YES_Count) {
       foo = 'Positif';
+    } else {
+      foo = 'Erreur';
     }
     let color;
     if (foo === 'Positif') {
@@ -78,6 +79,10 @@ class Vote extends Command {
     } else {
       color = 'RED';
     }
+
+    console.log(
+      `"foo" : ${foo}\n"NO_Count" : ${NO_Count}\n"YES_Count" : ${YES_Count}`
+    );
 
     const eembed = new MessageEmbed()
       .setTitle(`**${sujet}**`)
