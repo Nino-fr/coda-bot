@@ -10,6 +10,7 @@ const {
     MessageEmbed,
     Message,
     Guild,
+    APIMessage,
   } = require('discord.js'),
   { promisify } = require('util'),
   readdir = promisify(require('fs').readdir),
@@ -194,11 +195,11 @@ class Coda extends Client {
    * @returns {object}
    */
   getSettings(guild) {
-    const defaults = this.settings.get('default') || {};
+    const setss = this.settings.get('main') || {};
     const guildData = guild ? this.settings.get(guild.id) || {} : {};
     const returnObject = {};
-    Object.keys(defaults).forEach((key) => {
-      returnObject[key] = guildData[key] ? guildData[key] : defaults[key];
+    Object.keys(setss).forEach((key) => {
+      returnObject[key] = guildData[key] ? guildData[key] : setss[key];
     });
     return returnObject;
   }
@@ -209,11 +210,11 @@ class Coda extends Client {
    * @param {object} newSettings Les nouveaux réglages
    */
   writeSettings(id, newSettings) {
-    const defaults = this.settings.get('default');
+    const setss = this.settings.get('main');
     let settings = this.settings.get(id);
     if (typeof settings != 'object') settings = {};
     for (const key in newSettings) {
-      if (defaults[key] !== newSettings[key]) {
+      if (setss[key] !== newSettings[key]) {
         settings[key] = newSettings[key];
       } else {
         delete settings[key];
@@ -330,9 +331,10 @@ Array.prototype.random = function () {
   return this[Math.floor(Math.random() * this.length)];
 };
 
-Message.prototype.repondre = function (msg) {
-  this.channel.send(msg);
+Message.prototype.repondre = (content, ...options) => {
+  this.channel.send(content, ...options);
 };
+
 /**
  * Mettre la première lettre de chaque phrase en majuscule si les phrases sont séparées par des points
  */
@@ -588,6 +590,11 @@ assistance.on('ready', () => {
   });
 });
 
+assistance.on('message', async (message) => {
+  const Classe = new (require('./message-assistance'))();
+  await Classe.run(message);
+});
+
 // Affichons en console les différentes données d'utilisation du script.
 const used = process.memoryUsage().heapUsed / 1024 / 1024;
 console.log(
@@ -629,51 +636,5 @@ setTimeout(() => {
   initDatabases();
 }, 20000);
 
-/* setTimeout(() => {
-  async function verify() {
-    let cites = assistance.guilds.cache.find(
-      (g) => g.id === '574626014664327178'
-    );
-    console.log(cites);
-
-    for (let [, member] of cites.members.cache) {
-      let username = member.nickname ? member.nickname : member.user.username;
-      console.log(username);
-
-      if (/[^\x00-\x7F]+/gu.test(username)) {
-        console.log(true);
-        let newNickname = username.replace(/_/g, ' ').replace(/-/g, ' ');
-        let tochange = newNickname.match(/([^\x00-\x7F]+)/gu);
-        console.log(tochange);
-        try {
-          tochange.forEach(
-            (matched) =>
-              (newNickname = newNickname
-                .replace(matched, matched.normalize('NFKC'))
-                .replace(matched, ''))
-          );
-        } catch {
-          try {
-            newNickname = newNickname
-              .replace(tochange, tochange.normalize('NFKC'))
-              .replace(tochange, '');
-          } catch {}
-        }
-
-        client.loguer(newNickname);
-
-        if (newNickname.length === 0) newNickname = 'Pseudo à changer';
-        await member.setNickname(newNickname);
-        await member.guild.channels.cache
-          .find((ch) => ch.name === 'logs')
-          .send(
-            `Le pseudo de <@${member.id}> a été changé de ${member.user.username} en ${member.nickname} car il contenait plusieurs caractères non autorisés.`
-          );
-      }
-    }
-  }
-  verify().then(() => client.logger.log('Pseudos vérifiés !'));
-}, 60000);
- */
 // Exportons le client.
 module.exports = { client };
