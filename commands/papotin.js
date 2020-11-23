@@ -420,7 +420,7 @@ C'est...
 Le Kelpie est un animal vivant dans la *Vallée Crépusculaire*, près de Rimeshire (chez les Dizznee). C'est un endroit que certains décrivent comme le plus froid des Cités Perdues.
 On peut donc en déduire que le Kelpie est un animal qui apprécie le froid.
 
-Les Kelpies sont très rares. Il n'y a que 47 épingles comme celle-ci dans le monde.
+Les Kelpies sont très très rares. Il n'y a que 50 épingles comme celle-ci dans le monde.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Jaculus':
@@ -476,7 +476,7 @@ C'est...
 
 Les sasquatches sont de grandes créatures vertes, poilues, aux yeux pétillants et aux plumes vert vif. Ils ont le nez en forme de bec et, grâce à une caractéristique sur leurs mains et leurs pieds, ils sont capables de grimper aux arbres (en laissant des traces de rayures). Ils sont également capables de se balancer sur les vignes.
 
-Les sasquatches ne sont pas très rares. Cette épingle a 161 sœurs.
+Les sasquatches ne sont pas très rares. Cette épingle a 191 sœurs.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Argentavis':
@@ -498,7 +498,7 @@ Un Argentavis ! 🎉
 
 Les Argentavis sont de gigantesques oiseaux bleus argentés. Charognards de nature, ils peuvent devenir végétariens une fois apprivoisés. Ils ont aussi la capacité de voler très haut : d'après Sophie, il vole "parmi les étoiles scintillantes". Grady et Edaline en ont apprivoisé un.
 
-Ils sont très rares : il n'y en a plus que 83 dans le monde !
+Ils sont très rares : il n'y en a plus que 87 dans le monde !
 Accroche ton épingle où tu veux !`);
           break;
         case 'Banshee':
@@ -542,7 +542,7 @@ C'est...
 
 Il n'y a pas besoin de préciser ce qu'est un mastodonte !
 
-Ils sont très rares : il y en a  50 répertoriés.
+Ils sont très rares : il y en a  52 de répertoriés.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Méganeura':
@@ -565,7 +565,7 @@ C'est...
 
 Les méganeuras sont d’imposantes créatures aux ailes souvent assez jolies. Elles ressemblent à des libellules géantes.
 
-Elles sont très rares : 54 méganeuras sont répertoriées à ce jour.
+Elles sont très rares : 84 méganeuras sont répertoriées à ce jour.
 Accroche ton épingle où tu veux !`,
             {
               files: [
@@ -599,7 +599,7 @@ Les Selkies sont des créatures très imposantes à mi chemin entre les otaries 
 
 Leur peau congelée à différents usages : les elfes s'en servent comme un médicament ou pour attirer des escalurgeons qui trouvent cette odeur irrésistible.
 
-Cette épingle est très rare : il n'existe que 26 selkies.
+Cette épingle est très rare : il n'existe que 61 selkies.
 Accroche ton épingle où tu veux !`);
           break;
         case 'Gremlin':
