@@ -25,32 +25,23 @@ class UserInfo extends Command {
    */
   async run(message, args) {
     let member;
-
     try {
-      member =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0]));
+      member = message.mentions.members.first();
+      if (!member) member = await message.guild.members.fetch(args[0]);
     } catch {
-      member = member = (
-        await message.guild.members.fetch({
-          query: args.join(' '),
-          limit: 1,
-        })
-      ).first();
-      if (!member) member = message.member;
-    }
-    try {
-      if (!member)
-        member = (
+      try {
+        member = await (
           await message.guild.members.fetch({
             query: args.join(' '),
             limit: 1,
           })
         ).first();
-      if (!member) member = message.member;
-    } catch {
-      member = message.member;
+      } catch {
+        member = message.member;
+      }
     }
+
+    if (!member.user) member = message.member;
 
     let x = member.user.presence.activities;
     let y;
@@ -88,13 +79,29 @@ class UserInfo extends Command {
             value: member.id,
           },
           {
-            name: 'Jeu :',
+            name: 'Activité :',
             value: `${
               `${x}`
-                ? `${x
+                ? x
+                    .map((xx) =>
+                      xx.state !== '' &&
+                      xx.state !== undefined &&
+                      xx.state !== null
+                        ? xx.state
+                        : `${
+                            xx.type === 'PLAYING'
+                              ? 'Joue à '
+                              : xx.type === 'LISTENING'
+                              ? 'Écoute '
+                              : xx.type === 'WATCHING'
+                              ? 'Regarde '
+                              : xx.type === 'STREAMING'
+                              ? 'Stream '
+                              : 'Compétitionne '
+                          }${xx.name}`
+                    )
                     .join(', ')
-                    .replace('Custom Status', 'Statut personnalisé')}`
-                : 'Aucun jeu'
+                : 'Aucune'
             }`,
           },
           {

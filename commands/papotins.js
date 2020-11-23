@@ -22,25 +22,22 @@ class Papotins extends Command {
       if (!message.guild.id === '574532041836593153') return;
       let lemembre;
       try {
-        lemembre =
-          message.mentions.members.first() ||
-          (await message.guild.members.fetch(args[0]));
+        lemembre = message.mentions.members.first();
+        if (!lemembre) lemembre = await message.guild.members.fetch(args[0]);
       } catch {
         try {
-          lemembre =
-            (
-              await message.guild.members.fetch({
-                query: args.join(' '),
-                limit: 1,
-              })
-            ).first() || message.member;
+          lemembre = await (
+            await message.guild.members.fetch({
+              query: args.join(' '),
+              limit: 1,
+            })
+          ).first();
         } catch {
           lemembre = message.member;
         }
       }
 
-      if (!lemembre) lemembre = message.member;
-
+      if (!lemembre.user) lemembre = message.member;
       const member = lemembre.nickname
         ? lemembre.nickname
         : lemembre.user.username;
