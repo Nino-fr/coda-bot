@@ -23,6 +23,7 @@ class Ban extends Command {
    */
   async run(message, args) {
     try {
+      await message.delete();
       let reason = args.slice(1).join(' ');
       if (!message.member.permissions.has('BAN_MEMBERS'))
         return message.channel.send(
@@ -70,7 +71,7 @@ class Ban extends Command {
       );
       const lEmbed = new MessageEmbed()
         .setColor(colours.red_light)
-        .setAuthor(`Log de modération`, bot.user.avatarURL())
+        .setAuthor(`Log de modération`, this.client.user.avatarURL())
         .addField('Type :', 'Ban')
         .addField('Membre :', banMember.user.username)
         .addField('Modérateur :', message.author.username)
