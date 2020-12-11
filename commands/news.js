@@ -198,7 +198,7 @@ class News extends Command {
         }
       });
     } catch (err) {
-      message.repondre('Une erreur est survenue, veuillez réessayer.');
+      message.channel.send('Une erreur est survenue, veuillez réessayer.');
     }
   }
 }
