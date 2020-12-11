@@ -22,14 +22,14 @@ class Papotin extends Command {
   async run(message) {
     try {
       if (message.channel.id !== '720691147340775535')
-        return message.repondre(
+        return message.channel.send(
           'Veuillez vous rendre dans le salon <#720691147340775535> pour exécuter cette commande !'
         );
       let papoRole = message.guild.roles.cache.find(
-        (r) => r.name.toLowerCase() === 'papotin'
+        (r) => r.name === 'Papotin'
       );
       if (!message.member.roles.cache.has(papoRole.id))
-        return message.repondre("Vous n'avez acheté aucun papotin !");
+        return message.channel.send("Vous n'avez acheté aucun papotin !");
       let member = message.member;
       function randomise() {
         var num = Math.random() * 100;
