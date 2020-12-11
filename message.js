@@ -244,9 +244,9 @@ module.exports = class {
       });
     }
     if (
-      /https\:\/\/www\.youtube\.com\/watch\?v\=[\w\d\-]+/.test(message.content)
+      /https\:\/\/www\.youtube\.com\/watch\?v=[\w\d\-]+/.test(message.content)
     ) {
-      let regYt = /https\:\/\/www\.youtube\.com\/watch\?v\=[\w\d\-]+/;
+      let regYt = /https\:\/\/www\.youtube\.com\/watch\?v=[\w\d\-]+/;
       let url = message.content.match(regYt);
       let videoId = message.content
         .match(regYt)
@@ -755,7 +755,7 @@ module.exports = class {
                 .replace(/they/i, 'Eux')
                 .replace(/unknown/i, 'Inconnu');
               let storyCount = res.match(
-                /data\-id\="profile\-works"\>\n\<p\>(\d+)\<\/p\>\n\<p\>Works\<\/p\>\n\<\/div\>/
+                /data\-id="profile\-works">\s*<p>(\d+)<\/p>\n<p>Works<\/p>\n<\/div>/i
               )[1];
               let userAvatarURL = res.match(/(?<="avatar":")(?:.(?!,"is))+/);
               // let regAvatar = /(?<="avatar":")(?:.(?!,"is))+/;
@@ -776,21 +776,7 @@ module.exports = class {
               };
               let accountCreatedAt = `Le ${createdat.day}/${createdat.month}/${createdat.year} à ${createdat.hour}h${createdat.min} et ${createdat.sec} secondes`;
               let ascii = /&#x(\d+);/g;
-              /*  await pseudo.match(ascii).map(async (matched) => {
-          console.log(matched.match(/\d+/).toString());
-          console.log(
-            String.fromCharCode(getValues(asc, matched.match(/\d+/).toString()))
-          );
-        });
-        if (ascii.test(pseudo)) {
-          console.log(true);
-          await pseudo.match(ascii).forEach(async (ascc) => {
-            await pseudo.replace(
-              ascii,
-              String.fromCharCode(getValues(asc, ascc.match(/\d+/).toString()))
-            );
-          });
-        } */
+
               if (ascii.test(pseudo)) {
                 let pesdo = pseudo.match(ascii)[1];
                 message.channel.send({
@@ -1034,6 +1020,7 @@ module.exports = class {
     );
     // Mettre à jour les permissions du rôle modérateur
     if (message.content === 'updatemodo') {
+      if (message.guild.id === '786656458657104005') return;
       message.guild.channels.cache.forEach(async (ch) => {
         if (
           ch.name !== 'conseil' &&
@@ -1107,6 +1094,7 @@ module.exports = class {
     // Liste des membres étant depuis plus de six mois dans le serveur.
     if (message.content === prefix + 'anciens') {
       let guild = message.guild;
+      // if (guild.id === '786656458657104005') return;
       let anciensarray = [];
       guild.members.fetch().then((mems) =>
         mems.forEach((mem) => {
@@ -1149,14 +1137,14 @@ module.exports = class {
           .replace(/they/i, 'Eux')
           .replace(/unknown/i, 'Inconnu');
         let storyCount = await res.data.match(
-          /data\-id\="profile\-works"\>\n\<p\>(\d+)\<\/p\>\n\<p\>Works\<\/p\>\n\<\/div\>/
+          /data\-id="profile\-works">\n<p>(\d+)<\/p>\s*<p>Works<\/p>\n<\/div>/i
         )[1];
         let userAvatarURL = await res.data.match(
           /(?<="avatar":")(?:.(?!,"is))+/
         );
         // let regAvatar = /(?<="avatar":")(?:.(?!,"is))+/;
-        let pseudo = await res.data
-          .match(/(?<=<title>)(?:.(?!\/title))+/)
+        let pseudo = await res.data;
+        d.match(/(?<=<title>)(?:.(?!\/title))+/)
           .toString()
           .match(/(?:.(?! Wattpad))+/)
           .toString();
@@ -1299,6 +1287,7 @@ module.exports = class {
 
     // Sanctionner les messages contenant plus de huit mentions et n'étant pas envoyé par un admin ou un modérateur.
     if (message.mentions.members.size > 8) {
+      if (message.guild.id === '786656458657104005') return;
       if (
         message.member.roles.cache.has(modo.id) ||
         message.member.permissions.has('ADMINISTRATOR')
@@ -1313,6 +1302,7 @@ module.exports = class {
     // Censurer les insultes/mots grossiers.
     let bdw = /(?:(?:conna(?:r|s)(?:s|d|e))|(?:(?:s+a+l+o+p+e+)(?!t+e*))|(?:e+ncu+l[ée]*)|(?:(?<!\w)pu+t+e+s*)|(?:fd+p+))/gi;
     if (bdw.test(message.content)) {
+      if (message.guild.id === '786656458657104005') return;
       // if (message.member.roles.cache.has(modo.id)) return;
       /* repondre("Surveille ton langage ! Pour la peine, je te mets un warn !");
       warnMember(message.member, "Grossier personnage"); */
@@ -1394,6 +1384,7 @@ module.exports = class {
 
     // Mettre fin à une retenue.
     if (message.content.startsWith(prefix + 'finretenue')) {
+      if (message.guild.id === '786656458657104005') return;
       const mentor = message.guild.roles.cache.find((r) => r.name === 'Mentor');
       const dirlo = message.guild.roles.cache.find(
         (r) => r.name === 'Directrice de Foxfire'
@@ -1433,6 +1424,8 @@ module.exports = class {
 
     // Faire entrer un prodige dans la noblesse.
     if (message.content.startsWith(prefix + 'noblesse')) {
+      if (message.guild.id === '786656458657104005') return;
+
       const elite = message.guild.roles.cache.find(
         (r) => r.name === 'Élite de Foxfire'
       );
@@ -1505,6 +1498,8 @@ module.exports = class {
       message.content.startsWith(prefix + 'elite') ||
       message.content.startsWith(prefix + 'élite')
     ) {
+      if (message.guild.id === '786656458657104005') return;
+
       let member;
 
       try {
@@ -1566,6 +1561,8 @@ module.exports = class {
 
     // Créer un métier de mentor avec les salons via une commande
     if (message.content.toLowerCase().startsWith(prefix + 'creatementor')) {
+      if (message.guild.id === '786656458657104005') return;
+
       const dirlo = message.guild.roles.cache.find(
           (r) => r.name === 'Directrice de Foxfire'
         ),
