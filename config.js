@@ -31,7 +31,7 @@ let BotConfig;
  */
 const config = {
   ownerID: '428582719044452352',
-  version: '2.6.2',
+  version: '2.6.4',
 
   // Bot Admins. Tableau des ID des administrateurs du bot
   admins: [
