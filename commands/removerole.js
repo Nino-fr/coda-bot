@@ -79,7 +79,7 @@ class RemoveRole extends Command {
             : message.member.user.username
         )
         .addField('Date :', moment.utc(message.createdAt).format('LLL'))
-        .addField('Rôle :', rolearray[1])
+        .addField('Rôle :', role.toString())
         .addField('Raison :', raison);
 
       let sChannel = message.guild.channels.cache.find(
