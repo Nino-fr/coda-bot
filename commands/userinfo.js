@@ -15,7 +15,6 @@ class UserInfo extends Command {
         'ui',
         'membreinfos',
         'utilisateurinfos',
-        'info',
       ],
     });
   }

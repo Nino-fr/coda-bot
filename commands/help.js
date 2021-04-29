@@ -86,8 +86,8 @@ class Help extends Command {
           } else {
             // Show individual command's help.
             let command = args[0];
-            if (this.client.commands.has(command)) {
-              command = this.client.commands.get(command);
+            if (this.client.commands.has(command.toLowerCase())) {
+              command = this.client.commands.get(command.toLowerCase());
               /* if (level < this.client.levelCache[command.conf.permLevel])
                 return; */
               message.channel.send(
@@ -107,9 +107,9 @@ class Help extends Command {
                 }\nPuis-je l'exécuter ? :: Oui`,
                 { code: 'asciidoc' }
               );
-            } else if (this.client.aliases.has(command)) {
-              command = this.client.aliases.get(command);
-              command = this.client.commands.get(command);
+            } else if (this.client.aliases.has(command.toLowerCase())) {
+              command = this.client.aliases.get(command.toLowerCase());
+              command = this.client.commands.get(command.toLowerCase());
               /* if (level < this.client.levelCache[command.conf.permLevel])
                 return; */
               return message.channel.send(
@@ -137,13 +137,7 @@ class Help extends Command {
           if (!args[0]) {
             // Here we have to get the command names only, and we use that array to get the longest name.
             // This make the help commands "aligned" in the output.
-            const categories = [
-              'Fun',
-              'Gardiens des cités perdues',
-              'Modération',
-              'Système',
-              'Utilitaires',
-            ];
+            const categories = ['Fun', 'Modération', 'Système', 'Utilitaires'];
             embed.setDescription(
               `**Utilisez ${this.client.config.settings.prefix}help <commande> pour plus de détails**\n`
             );
@@ -173,8 +167,8 @@ class Help extends Command {
             );
             // Show individual command's help.
             let command = args[0];
-            if (this.client.commands.has(command)) {
-              command = this.client.commands.get(command);
+            if (this.client.commands.has(command.toLowerCase())) {
+              command = this.client.commands.get(command.toLowerCase());
               /* if (level < this.client.levelCache[command.conf.permLevel])
                 return; */
 
@@ -201,9 +195,9 @@ class Help extends Command {
                   'Oui <:check:708245371792523317>',
                   true
                 );
-            } else if (this.client.aliases.has(command)) {
-              command = this.client.aliases.get(command);
-              command = this.client.commands.get(command);
+            } else if (this.client.aliases.has(command.toLowerCase())) {
+              command = this.client.aliases.get(command.toLowerCase());
+              command = this.client.commands.get(command.toLowerCase());
               /* if (level < this.client.levelCache[command.conf.permLevel])
                 return; */
               embed

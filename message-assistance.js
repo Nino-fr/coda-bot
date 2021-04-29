@@ -170,11 +170,6 @@ module.exports = class {
                   value:
                     '5.3 • Il est naturellement obligatoire d’avoir lu au moins un tome de la série pour être ici. Le non respect de cette règle entraînera une expulsion immédiate.',
                 },
-                {
-                  name: '\u200b',
-                  value:
-                    '5.4 • À partir du 18/11/2020, tout spoil sur le tome 8.5 est formellement interdit, même avec de la censure. On peut en parler sans spoiler, mais les messages jugés "spoilant" seront supprimés. Une sanction peut être appliquée si vous récidivez. Les spoils sont interdits jusqu\'au **premier janvier 2021** à partir duquel vous pourrez spoiler en censurant (bien sûr).',
-                },
 
                 {
                   name: '\u200b',
@@ -207,7 +202,7 @@ __**Voici une explication détaillée des sanctions :**__
        */
       let msg = await message.guild.channels.cache
         .get('604342473363554315')
-        .messages.fetch('779486607379267615');
+        .messages.fetch('779741285241585681');
       let embed = new MessageEmbed(msg.embeds[0]);
       embed.fields[parseInt(args[0])].value = args.slice(1).join(' ');
 
@@ -223,7 +218,7 @@ __**Voici une explication détaillée des sanctions :**__
        */
       let msg = await message.guild.channels.cache
         .get('604342473363554315')
-        .messages.fetch('779639896314347520');
+        .messages.fetch('779741286637895722');
       let embed = new MessageEmbed(msg.embeds[0]);
       embed.fields[parseInt(args[0])].value = args.slice(1).join(' ');
 
@@ -239,7 +234,7 @@ __**Voici une explication détaillée des sanctions :**__
        */
       let msg = await message.guild.channels.cache
         .get('604342473363554315')
-        .messages.fetch('779486607379267615');
+        .messages.fetch('779741285241585681');
       let embed = new MessageEmbed(msg.embeds[0]);
       embed.spliceFields(parseInt(args[0]), 1);
 
@@ -255,7 +250,7 @@ __**Voici une explication détaillée des sanctions :**__
        */
       let msg = await message.guild.channels.cache
         .get('604342473363554315')
-        .messages.fetch('779639896314347520');
+        .messages.fetch('779741286637895722');
       let embed = new MessageEmbed(msg.embeds[0]);
       embed.spliceFields(parseInt(args[0]), 1);
 

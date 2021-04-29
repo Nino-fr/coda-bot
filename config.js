@@ -1,5 +1,5 @@
 /**
- * @typedef {{
+ * @type {{
   ownerID: '428582719044452352',
   version: string,
 
@@ -31,7 +31,7 @@ let BotConfig;
  */
 const config = {
   ownerID: '428582719044452352',
-  version: '2.6.4',
+  version: '2.6.7',
 
   // Bot Admins. Tableau des ID des administrateurs du bot
   admins: [
@@ -41,15 +41,12 @@ const config = {
     '699294152193736704',
   ],
 
-  // Bot Support. Tableau des ID des membres du support du bot du bot
-  support: ['428582719044452352', '557612750734491661', '536283567865593856'],
-
-  // Le token de votre bot, trouvable sur https://discordapp.com/developers/applications/me
+  // Le token du bot, trouvable sur https://discordapp.com/developers/applications/me
   token: 'secretToken',
 
-  assistanceToken: 'tokenSecret',
+  assistanceToken: 'secret',
 
-  defaultSettings: {
+  settings: {
     prefix: '&',
     modLogChannel: 'logs',
     modRole: 'Émissaire 『MODÉRATEUR 』',
@@ -74,15 +71,11 @@ const config = {
       name: 'Moderateur',
       // Les lignes suivantes vérifient que l'utilisateur possède bien un rôle contenant "mod"
       check: (message) => {
-        try {
-          const modRole = message.guild.roles.cache.find((r) =>
-            r.name.toLowerCase().includes('mod')
-          );
-          if (modRole && message.member.roles.cache.has(modRole.id))
-            return true;
-        } catch (e) {
-          return false;
-        }
+        const modRole = message.guild.roles.cache.find((r) =>
+          r.name.toLowerCase().includes('mod')
+        );
+        if (modRole && message.member.roles.cache.has(modRole.id)) return true;
+        else return false;
       },
     },
 

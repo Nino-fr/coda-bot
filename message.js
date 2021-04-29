@@ -459,7 +459,7 @@ module.exports = class {
       try {
         let mem = message.member;
         let role = message.guild.roles.cache.find(
-          (r) => r.name === "Les travaux d'Apollon"
+          (r) => r.name.trim().toLowerCase() === "les travaux d'apollon"
         );
         if (!role)
           return () => message.channel.send('Aucun rôle ne porte ce nom.');
@@ -776,7 +776,21 @@ module.exports = class {
               };
               let accountCreatedAt = `Le ${createdat.day}/${createdat.month}/${createdat.year} à ${createdat.hour}h${createdat.min} et ${createdat.sec} secondes`;
               let ascii = /&#x(\d+);/g;
-
+              /*  await pseudo.match(ascii).map(async (matched) => {
+          console.log(matched.match(/\d+/).toString());
+          console.log(
+            String.fromCharCode(getValues(asc, matched.match(/\d+/).toString()))
+          );
+        });
+        if (ascii.test(pseudo)) {
+          console.log(true);
+          await pseudo.match(ascii).forEach(async (ascc) => {
+            await pseudo.replace(
+              ascii,
+              String.fromCharCode(getValues(asc, ascc.match(/\d+/).toString()))
+            );
+          });
+        } */
               if (ascii.test(pseudo)) {
                 let pesdo = pseudo.match(ascii)[1];
                 message.channel.send({
@@ -892,16 +906,18 @@ module.exports = class {
 
     // Créer une prévisualisation des liens Wattpad vers une histoire.
     let storyURL = message.content.match(
-      /https:\/\/www.wattpad.com\/story\/\d+(\-[^\s]+)?/i
+      /https:\/\/www.wattpad.com\/story\/\d+(?:\-[^\s]+)?/i
     );
     if (storyURL) {
-      await axios.default.get(storyURL.toString()).then(async (ress) => {
+      await axios.default.get(storyURL[0]).then(async (ress) => {
         let res = ress.data;
-        let alles = res.match(
-          /<img src="(https:\/\/img\.wattpad\.com\/cover[^"]+)" height="\d+" width="\d+" alt="(?:.(?!><))+">\s?<\/div>\s?<h1>\s?((?:.(?!\/h1>))+)/
-        );
-
-        let nameOfStory = alles[2];
+        let coverURL = res.match(
+          /<img src="(https:\/\/img\.wattpad\.com\/cover[^"]+)"/
+        )[1];
+        console.log(storyURL[0]);
+        let nameOfStory = res.match(
+          /<div class="story-info__title">((?:.(?!\/div))+)/
+        )[1];
         let ascii = /&#x\d+;/g;
         if (ascii.test(nameOfStory)) {
           let authorName = res.match(
@@ -909,7 +925,6 @@ module.exports = class {
           );
           let reginfo = /tooltip"\s*data-placement="bottom"\s*title="((?:[\dKk,\. ](?!Reads))+)\s*Reads">\s*((?:[\dKkMm,\. ](?!Reads))+)\s*Reads?<\/span>\s*<span\s*data-toggle="tooltip"\s*data-placement="bottom"\s*title="((?:[\dKk,\. ](?!Votes))+)\s*Votes">\s*((?:[\dKk,Mm\. ](?!Votes))+)\s*Votes<\/span>\s*<span>([\d]+)/i;
           let infosStory = res.match(reginfo);
-          let coverURL = alles[1];
           let viewCount = infosStory[2];
           let viewCountPlus = infosStory[1];
           let voteCountPlus = infosStory[3];
@@ -967,7 +982,9 @@ module.exports = class {
           let reginfo = /tooltip"\s*data-placement="bottom"\s*title="((?:[\dKk,\. ](?!Reads))+)\s*Reads">\s*((?:[\dKkMm,\. ](?!Reads))+)\s*Reads?<\/span>\s*<span\s*data-toggle="tooltip"\s*data-placement="bottom"\s*title="((?:[\dKk,\. ](?!Votes))+)\s*Votes">\s*((?:[\dKk,Mm\. ](?!Votes))+)\s*Votes<\/span>\s*<span>([\d]+)/i;
           let infosStory = res.match(reginfo);
 
-          let coverURL = alles[1];
+          let coverURL = res.match(
+            /<img src="(https:\/\/img\.wattpad\.com\/cover[^"]+)"/
+          )[1];
           let viewCount = infosStory[2];
           let voteCount = infosStory[4];
           let chapterCount = infosStory[5];
@@ -1137,14 +1154,14 @@ module.exports = class {
           .replace(/they/i, 'Eux')
           .replace(/unknown/i, 'Inconnu');
         let storyCount = await res.data.match(
-          /data\-id="profile\-works">\n<p>(\d+)<\/p>\s*<p>Works<\/p>\n<\/div>/i
+          /data\-id\="profile\-works"\>\s*<p>(\d+)/
         )[1];
         let userAvatarURL = await res.data.match(
           /(?<="avatar":")(?:.(?!,"is))+/
         );
         // let regAvatar = /(?<="avatar":")(?:.(?!,"is))+/;
-        let pseudo = await res.data;
-        d.match(/(?<=<title>)(?:.(?!\/title))+/)
+        let pseudo = await res.data
+          .match(/(?<=<title>)(?:.(?!\/title))+/)
           .toString()
           .match(/(?:.(?! Wattpad))+/)
           .toString();
@@ -1176,61 +1193,113 @@ module.exports = class {
           });
         } */
         if (ascii.test(pseudo)) {
-          let pesdo = pseudo.match(ascii)[1];
-          await message.channel.send({
-            embed: {
-              author: {
-                name: 'Wattpad',
-                icon_url: 'https://logodix.com/logo/15417.png',
-              },
-              description: `**Informations sur ${username} :**`,
-              fields: [
-                {
-                  name: 'Pseudo',
-                  value: pseudo.replace(
-                    ascii,
-                    String.fromCharCode(
-                      getValues(asc, pesdo.match(/\d+/).toString())
-                    )
-                  ),
-                  inline: true,
+          try {
+            let pesdo = pseudo.match(ascii)[1];
+            await message.channel.send({
+              embed: {
+                author: {
+                  name: 'Wattpad',
+                  icon_url: 'https://logodix.com/logo/15417.png',
                 },
-                {
-                  name: `Nombre d'abonnés`,
-                  value: followersCount,
-                  inline: true,
+                description: `**Informations sur ${username} :**`,
+                fields: [
+                  {
+                    name: 'Pseudo',
+                    value: pseudo.replace(
+                      ascii,
+                      String.fromCharCode(
+                        getValues(asc, pesdo.match(/\d+/).toString())
+                      )
+                    ),
+                    inline: true,
+                  },
+                  {
+                    name: `Nombre d'abonnés`,
+                    value: followersCount,
+                    inline: true,
+                  },
+                  {
+                    name: `Nombre d'abonnements`,
+                    value: followingCount,
+                    inline: true,
+                  },
+                  {
+                    name: `Sexe`,
+                    value: gender,
+                    inline: true,
+                  },
+                  {
+                    name: `Histoires`,
+                    value: storyCount,
+                    inline: true,
+                  },
+                  {
+                    name: 'Compte créé le',
+                    value: accountCreatedAt,
+                    inline: true,
+                  },
+                ],
+                color: 16748341,
+                thumbnail: {
+                  url: userAvatarURL.toString(),
                 },
-                {
-                  name: `Nombre d'abonnements`,
-                  value: followingCount,
-                  inline: true,
-                },
-                {
-                  name: `Sexe`,
-                  value: gender,
-                  inline: true,
-                },
-                {
-                  name: `Histoires`,
-                  value: storyCount,
-                  inline: true,
-                },
-                {
-                  name: 'Compte créé le',
-                  value: accountCreatedAt,
-                  inline: true,
-                },
-              ],
-              color: 16748341,
-              thumbnail: {
-                url: userAvatarURL.toString(),
-              },
 
-              footer: {
-                text: `Informations sur ${username}`,
+                footer: {
+                  text: `Informations sur ${username}`,
+                },
               },
-            },
-          });
+            });
+          } catch {
+            await message.channel.send({
+              embed: {
+                author: {
+                  name: 'Wattpad',
+                  icon_url: 'https://logodix.com/logo/15417.png',
+                },
+                description: `**Informations sur ${`[${username}](${lien})`} :**`,
+                fields: [
+                  {
+                    name: 'Pseudo',
+                    value: pseudo,
+                    inline: true,
+                  },
+                  {
+                    name: `Nombre d'abonnés`,
+                    value: followersCount,
+                    inline: true,
+                  },
+                  {
+                    name: `Nombre d'abonnements`,
+                    value: followingCount,
+                    inline: true,
+                  },
+                  {
+                    name: `Sexe`,
+                    value: gender,
+                    inline: true,
+                  },
+                  {
+                    name: `Histoires`,
+                    value: storyCount,
+                    inline: true,
+                  },
+                  {
+                    name: 'Compte créé le',
+                    value: accountCreatedAt,
+                    inline: true,
+                  },
+                ],
+                color: 16748341,
+                thumbnail: {
+                  url: userAvatarURL.toString(),
+                },
+
+                footer: {
+                  text: `Informations sur ${username}`,
+                },
+              },
+            });
+          }
         } else {
           await message.channel.send({
             embed: {
@@ -1300,9 +1369,10 @@ module.exports = class {
     }
 
     // Censurer les insultes/mots grossiers.
-    let bdw = /(?:(?:conna(?:r|s)(?:s|d|e))|(?:(?:s+a+l+o+p+e+)(?!t+e*))|(?:e+ncu+l[ée]*)|(?:(?<!\w)pu+t+e+s*)|(?:fd+p+))/gi;
+    let bdw = /((?:(?:con+a(?:r|s)(?:s|d|e)+)|(?:(?:s+a+l+o+p+e+)(?!t+e*))|(?:e+ncu+l[éer]*)|(?:(?<!\w)pu+t+e+s*)|(?:fd+p+)|(?:f[eéèë]l+a[ts]+ion)|(?:(?<!\w)bit+e)|(?:partouze*)|(?:p[eé]+nis)|(?:(?<!\w)cu+l+(?!\w))))/gi;
     if (bdw.test(message.content)) {
-      if (message.guild.id === '786656458657104005') return;
+      if (message.guild.id === '786656458657104005' || message.author.bot)
+        return;
       // if (message.member.roles.cache.has(modo.id)) return;
       /* repondre("Surveille ton langage ! Pour la peine, je te mets un warn !");
       warnMember(message.member, "Grossier personnage"); */
@@ -1313,438 +1383,22 @@ module.exports = class {
       hook(
         undefined,
         nom,
-        message.content.replace(bdw, ' [mot grossier]'),
+        message.content.replace(bdw, ' ||$1||'),
         message.author.displayAvatarURL({ format: 'png' })
       );
-    }
-
-    // Commande retenue, permet au personnel de Foxfire de mute les prodiges insolents
-    if (message.content.startsWith(prefix + 'retenue')) {
-      if (message.guild.id === '574626014664327178') {
-        const mentor = message.guild.roles.cache.find(
-          (r) => r.name === 'Mentor'
-        );
-        const dirlo = message.guild.roles.cache.find(
-          (r) => r.name === 'Directrice de Foxfire'
-        );
-        const heraut = message.guild.roles.cache.find(
-          (r) => r.name === "Héraut de la Tour d'Argent"
-        );
-
-        if (
-          message.member.roles.cache.has(mentor.id) ||
-          message.member.roles.cache.has(dirlo.id) ||
-          message.member.roles.cache.has(heraut.id) ||
-          message.member.roles.cache.has(modo.id) ||
-          message.member.permissions.has('ADMINISTRATOR')
-        ) {
-          const puni =
-            message.mentions.members.first() ||
-            (await message.guild.members.fetch(args[0]));
-          const muted = message.guild.roles.cache.find(
-            (r) => r.name === 'muted'
-          );
-          if (!puni) return repondre('Qui dois-je mettre en retenue ?');
-          let raison = args.slice(1).join(' ');
-          const prodig = message.guild.roles.cache.find(
-            (r) => r.name === 'Prodige'
-          );
-          if (puni.roles.cache.has(prodig.id)) {
-            await puni.roles.add(muted.id);
-            repondre({
-              embed: {
-                title: `\`${
-                  message.member.nickname
-                    ? message.member.nickname
-                    : message.author.username
-                }\` a mis en retenue \`${
-                  puni.nickname ? puni.nickname : puni.user.username
-                }\``,
-                description: `\`\`\`markdown\n# Temps #\n2h\n# Raison #\n${
-                  raison ? raison : 'Aucune'
-                }\n\`\`\``,
-                color: 6071551,
-              },
-            });
-            setTimeout(function () {
-              puni.roles.remove(muted.id);
-              repondre(`La retenue de ${puni} est terminée !`);
-            }, 120000000);
-          } else {
-            return repondre(
-              'Vous ne pouvez mettre en retenue que les prodiges !'
-            );
+      return client.channels.cache
+        .get('837008064447905832')
+        .send(
+          ':warning: Attention : Utilisation de mots grossiers dans le salon ' +
+            message.channel.toString() +
+            ", je vous conseille d'aller contrôler et surveiller ce salon et sanctionner si besoin d'un warn ou plutôt d'un mute. :warning:",
+          {
+            embed: {
+              description: `[Sauter vers le message](${message.url})`,
+              color: '#FF0000',
+            },
           }
-        } else
-          return repondre(
-            "Vous n'avez pas le droit de mettre des gens en retenue !"
-          );
-      } else return repondre('Vous ne pouvez pas mettre des gens en retenue !');
-    }
-
-    // Mettre fin à une retenue.
-    if (message.content.startsWith(prefix + 'finretenue')) {
-      if (message.guild.id === '786656458657104005') return;
-      const mentor = message.guild.roles.cache.find((r) => r.name === 'Mentor');
-      const dirlo = message.guild.roles.cache.find(
-        (r) => r.name === 'Directrice de Foxfire'
-      );
-      const heraut = message.guild.roles.cache.find(
-        (r) => r.name === "Héraut de la Tour d'Argent"
-      );
-
-      if (
-        message.member.roles.cache.has(mentor.id) ||
-        message.member.roles.cache.has(dirlo.id) ||
-        message.member.roles.cache.has(heraut.id) ||
-        message.member.roles.cache.has(modo.id) ||
-        message.member.permissions.has('ADMINISTRATOR')
-      ) {
-        const puni =
-          message.mentions.members.first() ||
-          (await message.guild.members.fetch(args[0]));
-        const muted = message.guild.roles.cache.find((r) => r.name === 'muted');
-        const prodig = message.guild.roles.cache.find(
-          (r) => r.name === 'Prodige'
         );
-        if (!puni) return repondre('Qui doit arrêter sa retenue ?');
-        if (!puni.roles.cache.has(prodig.id))
-          return repondre(
-            "Cette personne n'est pas un prodige ! Comment pourrait-elle être en retenue ?"
-          );
-        let raison = args.slice(1).join(' ');
-        if (puni.roles.cache.has(muted.id)) {
-          await puni.roles.remove(muted.id);
-          repondre(
-            `Tu as de la chance ${puni} ! ${message.member} a décidé d'arrêter ta retenue pour la raison suivante : ${raison}`
-          );
-        } else return repondre("Cette personne n'est pas en retenue, voyons !");
-      } else return repondre("Tu n'as pas le droit de faire ça !");
-    }
-
-    // Faire entrer un prodige dans la noblesse.
-    if (message.content.startsWith(prefix + 'noblesse')) {
-      if (message.guild.id === '786656458657104005') return;
-
-      const elite = message.guild.roles.cache.find(
-        (r) => r.name === 'Élite de Foxfire'
-      );
-      const noble =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0]));
-      if (!noble) return repondre('Veuillez préciser un membre');
-      if (!noble.roles.cache.has(elite.id))
-        return repondre("Cette personne n'est pas dans l'Élite de Foxfire.");
-      const dirlo = message.guild.roles.cache.find(
-        (r) => r.name === 'Directrice de Foxfire'
-      );
-      const heraut = message.guild.roles.cache.find(
-        (r) => r.name === "Héraut de la Tour d'Argent"
-      );
-      if (
-        !message.member.roles.cache.has(modo.id) &&
-        !message.member.roles.cache.has(dirlo.id) &&
-        !message.member.roles.cache.has(heraut.id) &&
-        !message.member.permissions.has('ADMINISTRATOR')
-      ) {
-        return repondre('Vous ne pouvez pas faire ça !');
-      }
-      const noblesse = message.guild.roles.cache.find(
-        (r) => r.name === 'Membre de la noblesse'
-      );
-      const reg = /<([^>]+)>/;
-      const metier = message.guild.roles.cache.find(
-        (r) =>
-          r.name.toLowerCase() ===
-          args
-            .slice(1)
-            .join(' ')
-            .match(reg)
-            .toString()
-            .match(/[^<>]+/)
-            .toString()
-            .toLowerCase()
-      );
-      const talent = message.guild.roles.cache.find(
-        (r) =>
-          r.name.toLowerCase() ===
-          args
-            .slice(1)
-            .join(' ')
-            .match(/<[^>]+> <([^>]+)>/)[1]
-            .toLowerCase()
-      );
-      const prodig = message.guild.roles.cache.find(
-        (r) => r.name.toLowerCase() === 'prodige'
-      );
-      let newPseudo = args
-        .slice(1)
-        .join(' ')
-        .match(/<[^>]+> <[^>]+> <([^>]+)>/)[1];
-      console.log(noblesse, reg, metier, talent, prodig, elite);
-      await noble.roles.add(noblesse).catch((e) => console.error(e));
-      await noble.roles.add(metier).catch((e) => console.error(e));
-      await noble.roles.add(talent).catch((e) => console.error(e));
-      await noble.setNickname(newPseudo).catch((e) => console.error(e));
-      await noble.roles.remove(elite).catch((e) => console.error(e));
-      await noble.roles.remove(prodig).catch((e) => console.error(e));
-      repondre(
-        `Félicitations ${noble} ! Tu as rejoins la noblesse et obtenu le métier ${metier.name} et le talent ${talent.name}`
-      );
-    }
-
-    // Permettre au Directeur de Foxfire et au Héraut de pouvoir faire entrer un prodige dans l'élite via une commande
-    if (
-      message.content.startsWith(prefix + 'elite') ||
-      message.content.startsWith(prefix + 'élite')
-    ) {
-      if (message.guild.id === '786656458657104005') return;
-
-      let member;
-
-      try {
-        member =
-          message.mentions.members.first() ||
-          (await message.guild.members.fetch(args[0]));
-      } catch {
-        member = member = (
-          await message.guild.members.fetch({
-            query: args.join(' '),
-            limit: 1,
-          })
-        ).first();
-      }
-      try {
-        if (!member)
-          member = (
-            await message.guild.members.fetch({
-              query: args.join(' '),
-              limit: 1,
-            })
-          ).first();
-      } catch {
-        return repondre(
-          "Veuillez préciser un prodige qui doit rejoindre l'élite !"
-        );
-      }
-
-      const dirlo = message.guild.roles.cache.get('602823657814753290');
-      const heraut = message.guild.roles.cache.find(
-        (r) => r.name === "Héraut de la Tour d'Argent"
-      );
-      if (
-        !message.member.roles.cache.has(modo.id) &&
-        !message.member.roles.cache.has(dirlo.id) &&
-        !message.member.permissions.has('ADMINISTRATOR') &&
-        !message.member.roles.cache.has(heraut.id)
-      )
-        return this.repondre(
-          "Vous ne pouvez pas faire entrer quelqu'un dans l'élite ! Pour qui vous vous prenez ?"
-        );
-      if (!member)
-        return repondre(
-          "Veuillez préciser un prodige qui doit rejoindre l'élite !"
-        );
-      if (!member.roles.cache.has('574627365507039242'))
-        return repondre(
-          "Ce membre n'est pas prodige et ne peut donc pas rejoindre l'élite !"
-        );
-      if (member.roles.cache.has('724655338556489799'))
-        return repondre("Ce membre est déjà dans l'élite !");
-      await member.roles.add('724655338556489799').catch((err) => {
-        throw err;
-      });
-      repondre(
-        `Félicitations <@${member.id}> ! Te voilà membre de l'Élite de Foxfire, sur le chemin vers la noblesse !`
-      );
-    }
-
-    // Créer un métier de mentor avec les salons via une commande
-    if (message.content.toLowerCase().startsWith(prefix + 'creatementor')) {
-      if (message.guild.id === '786656458657104005') return;
-
-      const dirlo = message.guild.roles.cache.find(
-          (r) => r.name === 'Directrice de Foxfire'
-        ),
-        heraut = message.guild.roles.cache.find(
-          (r) => r.name === "Héraut de la Tour d'Argent"
-        );
-      if (
-        !message.member.roles.cache.has(modo.id) &&
-        !message.member.roles.cache.has(dirlo.id) &&
-        !message.member.roles.cache.has(heraut.id) &&
-        !message.member.permissions.has('ADMINISTRATOR')
-      ) {
-        return repondre('Vous ne pouvez pas faire ça !');
-      }
-      const reg = /<([^>]+)>/;
-      if (!reg.test(args.join(' ')))
-        return repondre(
-          'Veuillez renseigner tous les champs nécessaires : \n`' +
-            prefix +
-            'creatementor <Nom du rôle du mentor> <couleur du rôle (en MAJ et en anglais ou en (hexa)décimales)> <Nom du salon> <Élèves (prodiges|talent)>`'
-        );
-      let nom = args
-        .join(' ')
-        .match(reg)
-        .toString()
-        .match(/[^<>]+/)
-        .toString();
-
-      if (!args.join(' ').match(/<[^>]+> <([^>]+)>/))
-        return repondre(
-          'Veuillez renseigner tous les champs nécessaires : \n`' +
-            prefix +
-            'creatementor <Nom du rôle du mentor> <couleur du rôle (en MAJ et en anglais ou en (hexa)décimales)> <Nom du salon> <Élèves (prodiges|talent)>`'
-        );
-
-      const couleur = args
-
-        .join(' ')
-        .match(/<[^>]+> <([^>]+)>/)[1]
-        .toUpperCase();
-
-      let newMentor;
-      if (
-        !message.guild.roles.cache.find(
-          (r) => r.name.toLowerCase() === nom.toLowerCase()
-        )
-      ) {
-        newMentor = await message.guild.roles.create({
-          data: {
-            name: nom,
-            color: couleur,
-            mentionable: true,
-            position: message.guild.roles.cache.get('721746249426010192')
-              .position,
-            hoist: false,
-            permissions: [
-              'ADD_REACTIONS',
-              'ATTACH_FILES',
-              'CHANGE_NICKNAME',
-              'CONNECT',
-              'CREATE_INSTANT_INVITE',
-              'EMBED_LINKS',
-              'READ_MESSAGE_HISTORY',
-              'SEND_MESSAGES',
-              'SEND_TTS_MESSAGES',
-              'SPEAK',
-              'STREAM',
-              'USE_EXTERNAL_EMOJIS',
-            ],
-          },
-        });
-      } else
-        newMentor = message.guild.roles.cache.find(
-          (r) => r.name.toLowerCase() === nom.toLowerCase()
-        );
-
-      let matiere = args.join(' ').match(/<[^>]+> <[^>]+> <([^>]+)>/)[1];
-      console.log(args.join(' ').match(/<[^>]+> <[^>]+> <[^>]+> <([^>]+)>/));
-      let leType = args.join(' ').match(/<[^>]+> <[^>]+> <[^>]+> <([^>]+)>/)[1];
-
-      if (!matiere || !leType)
-        return message.channel.send(
-          'Veuillez renseigner tous les champs nécessaires : \n`' +
-            prefix +
-            'creatementor <Nom du rôle du mentor> <couleur du rôle (en MAJ et en anglais ou en (hexa)décimales)> <Nom du salon> <Élèves (prodiges|talent)>`'
-        );
-
-      if (
-        !message.guild.roles.cache.find(
-          (r) => r.name.toLowerCase() === leType.toLowerCase()
-        ) &&
-        leType.toLowerCase() !== 'prodige' &&
-        leType.toLowerCase() !== 'prodiges'
-      )
-        return message.channel.send(
-          "**L'un des paramètres est incorrect.** Veuillez renseigner **correctement** tous les champs nécessaires : \n`" +
-            prefix +
-            'creatementor <Nom du rôle du mentor> <couleur du rôle (en MAJ et en anglais ou en (hexa)décimales)> <Nom du salon> <Élèves (prodiges|talent)>`'
-        );
-
-      let salon = message.guild.channels.cache.has(matiere)
-        ? message.guild.channels.cache.find(
-            (s) => s.name === matiere.replace(/ +/g, '-')
-          )
-        : await message.guild.channels.create(matiere.replace(/ +/g, '-'), {
-            parent: message.guild.channels.cache
-              .sort((c) => c.type === 'category')
-              .find((c) => c.name === 'Foxfire'),
-            position: message.guild.channels.cache.get('604242426248560669')
-              .rawPosition,
-            type: 'text',
-            permissionOverwrites: [
-              { id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL' },
-              {
-                id: message.guild.roles.cache.find(
-                  (r) =>
-                    r.name.toLowerCase() ===
-                    (leType.toLowerCase() === 'prodige' ||
-                    leType.toLowerCase() === 'prodiges'
-                      ? 'prodige'
-                      : leType.toLowerCase())
-                ),
-                allow: [
-                  'VIEW_CHANNEL',
-                  'SEND_MESSAGES',
-                  'ADD_REACTIONS',
-                  'USE_EXTERNAL_EMOJIS',
-                ],
-              },
-              {
-                id:
-                  leType.toLowerCase() !== 'prodige' &&
-                  leType.toLowerCase() !== 'prodiges'
-                    ? message.guild.roles.cache.find(
-                        (r) => r.name === 'Membre de la noblesse'
-                      )
-                    : message.guild.roles.cache.find((r) => r.name === 'Muted'),
-                allow: 'VIEW_CHANNEL',
-                deny: 'SEND_MESSAGES',
-              },
-              {
-                id: newMentor,
-                allow: [
-                  'ADD_REACTIONS',
-                  'ATTACH_FILES',
-                  'CREATE_INSTANT_INVITE',
-                  'EMBED_LINKS',
-                  'MANAGE_MESSAGES',
-                  'MANAGE_WEBHOOKS',
-                  'MENTION_EVERYONE',
-                  'READ_MESSAGE_HISTORY',
-                  'SEND_MESSAGES',
-                  'SEND_TTS_MESSAGES',
-                  'VIEW_CHANNEL',
-                  'USE_EXTERNAL_EMOJIS',
-                ],
-              },
-              {
-                id: dirlo,
-                allow: [
-                  'ADD_REACTIONS',
-                  'ATTACH_FILES',
-                  'CREATE_INSTANT_INVITE',
-                  'EMBED_LINKS',
-                  'MANAGE_MESSAGES',
-                  'MANAGE_WEBHOOKS',
-                  'MENTION_EVERYONE',
-                  'READ_MESSAGE_HISTORY',
-                  'SEND_MESSAGES',
-                  'SEND_TTS_MESSAGES',
-                  'VIEW_CHANNEL',
-                  'USE_EXTERNAL_EMOJIS',
-                  'USE_VAD',
-                ],
-              },
-            ],
-          });
-
-      console.log(newMentor, nom, couleur, matiere);
-      repondre(
-        `Un nouveau poste a été créé à Foxfire : **${newMentor.name}** ! Le salon de ce cours est ${salon}.`
-      );
     }
 
     // Commande pour normaliser un pseudo
@@ -1845,6 +1499,20 @@ module.exports = class {
         }
       }
     }
+
+    // Système de suggestions
+    /* if (message.content.toLowerCase() === prefix + 'suggestion') {
+      if (message.channel.name.includes('suggestions')) {
+        await message.delete();
+
+        let msg = await message.channel.messages
+          .fetch({ limit: 1 })
+          .then((msg) => msg.first());
+
+        await msg.react('708245371792523317');
+        await msg.react('❌');
+      }
+    } */
     return true;
   }
 };

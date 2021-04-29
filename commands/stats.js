@@ -9,7 +9,7 @@ class Stats extends Command {
       name: 'stats',
       description: 'Donne plusieurs statistiques sur le bot',
       usage: 'stats',
-      aliases: ['botinfo', 'clientinfo', 'infos'],
+      aliases: ['botinfo', 'botinfos', 'clientinfo', 'clientinfos'],
     });
   }
   /**

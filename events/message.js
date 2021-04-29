@@ -12,6 +12,12 @@ module.exports = class {
    * @param {Message} message
    */
   async run(message) {
+    if (message.channel.type === 'dm')
+      return client.channels.cache
+        .get('800758460001550367')
+        .send(
+          `<@428582719044452352> **Message de ${message.author.tag} (${message.author.id}) :**\n${message.content}`
+        );
     const settings = this.client.getSettings(message.guild);
     // It's good practice to ignore other bots. This also makes your bot ignore itself
     //  and not get into a spam loop (we call that "botception").
@@ -19,10 +25,7 @@ module.exports = class {
       return;
 
     // Cancel any attempt to execute commands if the bot cannot respond to the user.
-    if (
-      message.guild &&
-      !message.channel.permissionsFor(message.guild.me).missing('SEND_MESSAGES')
-    )
+    if (message.guild && !message.guild.me.permissions.missing('SEND_MESSAGES'))
       return;
 
     // For ease of use in commands and functions, we'll attach the settings

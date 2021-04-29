@@ -11,14 +11,6 @@ module.exports = class {
     // Attendons un peu avant d'exécuter le code pour laisser au bot le temps de se lancer complètement
     await this.client.wait(1000);
 
-    // This loop ensures that client.appInfo always contains up to date data
-    // about the app's status. This includes whether the bot is public or not,
-    // its description, owner, etc. Used for the dashboard amongs other things.
-    this.client.appInfo = await this.client.fetchApplication();
-    setInterval(async () => {
-      this.client.appInfo = await this.client.fetchApplication();
-    }, 60000);
-
     if (!this.client.settings.has('main')) {
       this.client.settings.set('main', this.client.config.settings);
     }
@@ -30,6 +22,7 @@ module.exports = class {
         this.client.guilds.cache.get('707875749343789066').memberCount
       } utilisateurs`
     );
+    this.client.user.setStatus('idle');
     this.client.logger.log(`${this.client.commands.size} commandes`, 'log');
 
     // Mettre un message en console qui indique que le bot est prêt.

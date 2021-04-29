@@ -1,5 +1,6 @@
 const Command = require('../base/Command.js');
 const ms = require('ms');
+const { Message } = require('discord.js');
 
 class Mute extends Command {
   constructor() {
@@ -15,7 +16,12 @@ class Mute extends Command {
     });
   }
 
-  async run(message, args, level) {
+  /**
+   *
+   * @param {Message} message
+   * @param {string[]} args
+   */
+  async run(message, args) {
     try {
       message.delete();
       const newThis = this;
@@ -47,9 +53,11 @@ class Mute extends Command {
         .replace(/\+\s?time\s?\((\d+\s?[smhd])+\)/i, '');
       if (!reason) reason = 'Aucune raison';
 
-      let muterole = message.guild.roles.cache.find(
-        (r) => r.name.toLowerCase() === 'muted'
-      );
+      let muterole =
+        message.guild.roles.cache.find(
+          (r) => r.name.toLowerCase() === 'muted'
+        ) ||
+        message.guild.roles.cache.find((r) => r.name.toLowerCase() === 'mute');
       if (!muterole) {
         muterole = await message.guild.roles.create({
           data: {

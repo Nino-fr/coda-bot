@@ -2,7 +2,7 @@ const Command = require('../base/Command.js');
 const { Message } = require('discord.js');
 const { red_dark } = require('../colours.json'),
   fs = require('fs'),
-  warns = JSON.parse(JSON.stringify(require('../databases/warns.json')));
+  warns = require('../databases/warns.json');
 
 class Désavertir extends Command {
   constructor() {
@@ -23,13 +23,19 @@ class Désavertir extends Command {
    */
   async run(message, args) {
     try {
-      const member =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0]));
+      let member;
+      try {
+        member =
+          message.mentions.members.first() ||
+          (await message.guild.members.fetch(args[0]));
+      } catch {
+        return message.channel.send(
+          "Veuillez préciser le membre à unwarn en utilisant l'ID ou une mention"
+        );
+      }
       args.shift();
       if (!member)
-        return this.repondre(
-          message,
+        return message.channel.send(
           'Veuillez spécifier un membre à warn dans la commande.'
         );
       let reason = args.join(' ');
@@ -39,7 +45,7 @@ class Désavertir extends Command {
         !this.client.warns.get(member.id) ||
         this.client.warns.get(member.id).length === 0
       )
-        return this.repondre(message, "Ce membre n'a reçu aucune sanction !");
+        return message.channel.send("Ce membre n'a reçu aucune sanction !");
 
       warns[member.id].sanctions.pop();
 
@@ -52,7 +58,7 @@ class Désavertir extends Command {
       );
       this.client.warns.set(member.id, warns[member.id].sanctions);
 
-      return this.repondre(message, {
+      return message.channel.send({
         embed: {
           title: `:white_check_mark: \`${
             message.member.nickname

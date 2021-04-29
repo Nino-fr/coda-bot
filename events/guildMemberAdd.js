@@ -47,9 +47,6 @@ module.exports = class {
     // Load the guild's settings
     const settings = this.client.getSettings(member.guild);
 
-    // If welcome is off, don't proceed (don't welcome the user)
-    if (settings.welcomeEnabled !== 'true') return;
-
     // Replace the placeholders in the welcome message with actual data
     const welcomeMessage = settings.welcomeMessage.replace(
       '{{user}}',

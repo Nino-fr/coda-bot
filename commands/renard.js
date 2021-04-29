@@ -35,7 +35,7 @@ class Renard extends Command {
             .setColor(cyan)
             .setImage(body.image)
             .setTimestamp()
-            .setFooter("Image aléatoire d'oiseau");
+            .setFooter('Image aléatoire de renard');
 
           msg.edit('', dEmbed);
         });

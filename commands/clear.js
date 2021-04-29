@@ -13,7 +13,7 @@ class Clear extends Command {
       usage: 'clear <nombre de messages à supprimer>',
       aliases: ['supprimer', 'suppr', 'delete', 'bulkdelete', 'c'],
       guildOnly: true,
-      permLevel: 'Modérator',
+      permLevel: 'Moderateur',
       category: 'Modération',
     });
   }
@@ -45,10 +45,10 @@ class Clear extends Command {
           `Log de modération`,
           this.client.user.displayAvatarURL({ format: 'png' })
         )
-        .addField('Type :', 'Clear')
-        .addField('Nombre de messages :', messagesASupprimer)
-        .addField('Modérateur :', message.author.username)
-        .addField('Date :', moment().locale('fr').format('LLL'));
+        .addField('Type', 'Suppression en masse de message')
+        .addField('Nombre de messages', messagesASupprimer)
+        .addField('Modérateur', message.author.username)
+        .addField('Date', moment().locale('fr').format('LLL'));
 
       if (lChannel) lChannel.send(lEmbed);
     } catch (err) {

@@ -23,9 +23,18 @@ class Avertir extends Command {
    */
   async run(message, args) {
     try {
-      const member =
-        message.mentions.members.first() ||
-        (await message.guild.members.fetch(args[0]));
+      if (!args[0]) return message.channel.send('Qui dois-je warn ?');
+      let member;
+      try {
+        member =
+          message.mentions.members.first() ||
+          (await message.guild.members.fetch(args[0]));
+      } catch {
+        return message.channel.send(
+          'Aucun membre trouvé, veuillez réessayer avec une valeur correcte'
+        );
+      }
+
       args.shift();
       let reason = args.join(' ');
       if (!args[0]) reason = 'Aucune';

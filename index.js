@@ -10,7 +10,6 @@ const {
     MessageEmbed,
     Message,
     Guild,
-    APIMessage,
   } = require('discord.js'),
   { promisify } = require('util'),
   readdir = promisify(require('fs').readdir),
@@ -33,8 +32,6 @@ class Coda extends Client {
     this.settings = new Collection();
     this.utils = new Collection();
 
-    this.papotins = new Map();
-    this.boosts = new Map();
     this.warns = new Map();
     this.immus = new Map();
 
@@ -205,25 +202,6 @@ class Coda extends Client {
   }
 
   /**
-   * Changer des réglages.
-   * @param {String} id L'id du réglage à changer
-   * @param {object} newSettings Les nouveaux réglages
-   */
-  writeSettings(id, newSettings) {
-    const setss = this.settings.get('main');
-    let settings = this.settings.get(id);
-    if (typeof settings != 'object') settings = {};
-    for (const key in newSettings) {
-      if (setss[key] !== newSettings[key]) {
-        settings[key] = newSettings[key];
-      } else {
-        delete settings[key];
-      }
-    }
-    this.settings.set(id, settings);
-  }
-
-  /**
    * Attendre une réponse de à une `question`. Seul **un** utilisateur peut répondre.
    * Raccourci de la méthode `awaitMessages()`
    * @param {Message} msg Le message
@@ -246,8 +224,10 @@ class Coda extends Client {
   }
 }
 
-const client = new Coda(/* { fetchAllMembers: true } */);
-const assistance = new Client(/* { fetchAllMembers: true } */);
+const client = new Coda({
+  partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'],
+});
+const assistance = new Client();
 
 // Initialisons les commandes et événements.
 
@@ -595,6 +575,99 @@ assistance.on('message', async (message) => {
   await Classe.run(message);
 });
 
+client.on('message', async (message) => {
+  try {
+    if (
+      message.channel.id === '790907743812190248' &&
+      message.author.username.trim() !== 'Coda'
+    ) {
+      let authorRoles = message.member.roles.cache.array(),
+        content = message.content;
+      if (content.startsWith('>')) content = '\n' + content;
+
+      if (content.length > 1600) {
+        let content1 = content.slice(0, 1500),
+          content2 = content.slice(1500);
+
+        let isAdmin = false,
+          isMod = false;
+        await authorRoles.forEach((r) => {
+          if (r.name.toLowerCase().includes('administrateur')) {
+            isAdmin = true;
+          }
+        });
+        await authorRoles.forEach((r) => {
+          if (r.name.toLowerCase().includes('modérateur')) {
+            isMod = true;
+          }
+        });
+        let msg = `**(${
+          isAdmin ? 'Administrateur' : isMod ? 'Modérateur' : 'Membre'
+        }) ${
+          message.member.nickname
+            ? message.member.nickname
+            : message.author.username
+        } :** ${content1}`;
+
+        client.channels.cache
+          .get('790898364757049345')
+          .send(msg)
+          .then((m) => m.channel.send(content2));
+      } else {
+        let isAdmin = false,
+          isMod = false;
+        await authorRoles.forEach((r) => {
+          if (r.name.toLowerCase().includes('administrateur')) {
+            isAdmin = true;
+          }
+        });
+        await authorRoles.forEach((r) => {
+          if (r.name.toLowerCase().includes('modérateur')) {
+            isMod = true;
+          }
+        });
+
+        let msg = `**(${
+          isAdmin ? 'Administrateur' : isMod ? 'Modérateur' : 'Membre'
+        }) ${
+          message.member.nickname
+            ? message.member.nickname
+            : message.author.username
+        } :** ${content}`;
+
+        if (message.attachments.first()) {
+          let fichiers = [];
+          message.attachments.forEach((att) => {
+            fichiers.push(att);
+          });
+          client.channels.cache
+            .get('790898364757049345')
+            .send(msg, { files: fichiers });
+        } else {
+          client.channels.cache.get('790898364757049345').send(msg);
+        }
+      }
+    } else if (
+      message.channel.id === '790898364757049345' &&
+      message.content !== '' &&
+      message.author.id !== client.user.id
+    ) {
+      let msg = message.content;
+      if (message.attachments.first()) {
+        let fichiers = [];
+        message.attachments.forEach((att) => {
+          fichiers.push(att);
+        });
+        client.channels.cache
+          .get('790907743812190248')
+          .send(msg, { files: fichiers });
+      } else {
+        client.channels.cache.get('790907743812190248').send(msg);
+      }
+    }
+  } catch {}
+});
+
 // Affichons en console les différentes données d'utilisation du script.
 const used = process.memoryUsage().heapUsed / 1024 / 1024;
 console.log(
@@ -619,12 +692,6 @@ console.log(result);
 
 setTimeout(() => {
   function initDatabases() {
-    for (const [key, value] of Object.entries(
-      require('./databases/papotins.json')
-    )) {
-      client.papotins.set(key, value.epingles);
-      client.boosts.set(key, value.boost);
-    }
     for (const [key, value] of Object.entries(
       require('./databases/warns.json')
     )) {
