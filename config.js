@@ -36,7 +36,7 @@ const config = {
   // Bot Admins. Tableau des ID des administrateurs du bot
   admins: [
     '428582719044452352',
-    '557612750734491661',
+    '744899600711942214',
     '536283567865593856',
     '699294152193736704',
   ],
